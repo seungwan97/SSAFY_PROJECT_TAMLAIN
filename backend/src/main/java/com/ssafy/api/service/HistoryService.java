@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface HistoryService {
     List<ScheduleHistoryRes> getScheduleHistory(Long userId);
+    void deleteScheduleHistory(Long scheduleId);
 }

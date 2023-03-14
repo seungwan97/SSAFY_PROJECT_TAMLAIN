@@ -36,4 +36,13 @@ public class HistoryServiceImpl implements HistoryService {
 
         return scheduleHistoryResList;
     }
+
+    @Override
+    public void deleteScheduleHistory(Long scheduleId) {
+        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
+        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule history doesn't exist"));
+
+        schedule.setDelete(true);
+        scheduleRepository.save(schedule);
+    }
 }
