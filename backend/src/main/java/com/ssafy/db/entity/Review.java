@@ -23,7 +23,7 @@ public class Review {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
-    private ScheduleList scheduleList;
+    private ScheduleItems scheduleItems;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jeju_data_id")

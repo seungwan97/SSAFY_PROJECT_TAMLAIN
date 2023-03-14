@@ -39,5 +39,6 @@ public class Schedule {
     private String period;
     private boolean isDelete;
     private LocalDateTime createdDate;
+    private boolean isReview;
 
 }
