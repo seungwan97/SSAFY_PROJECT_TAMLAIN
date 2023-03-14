@@ -17,21 +17,21 @@ public class Review {
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_id")
     private ScheduleList scheduleList;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jeju_data_id")
     private JejuData jejuData;
 
     @Column(columnDefinition = "INT UNSIGNED")
     private Long rating;
 
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
+
 }

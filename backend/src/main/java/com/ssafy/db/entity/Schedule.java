@@ -18,14 +18,6 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
-    @Column(length = 40)
-    private String name;
-    @Column(length = 5)
-    private String day;
-    @Column(length = 8)
-    private String period;
-    private boolean isDelete;
-    private LocalDateTime createdDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -38,5 +30,14 @@ public class Schedule {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_profile_id")
     private ScheduleProfile scheduleProfile;
+
+    @Column(length = 40)
+    private String name;
+    @Column(length = 5)
+    private String day;
+    @Column(length = 8)
+    private String period;
+    private boolean isDelete;
+    private LocalDateTime createdDate;
 
 }

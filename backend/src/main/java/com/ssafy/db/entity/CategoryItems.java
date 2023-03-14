@@ -6,30 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Survey {
+public class CategoryItems {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
-
+    @Column(length = 40)
+    private String name;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private char gender;
-    @Column(length = 5)
-    private String ageRange;
-    private boolean isDelete;
-    private LocalDateTime createdDate;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
 }
