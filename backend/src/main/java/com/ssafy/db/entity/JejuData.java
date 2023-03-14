@@ -15,32 +15,26 @@ public class JejuData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
-
     @Column(length = 150)
     private String name;
-
     private Double latitude;
     private Double longitude;
-
-    @Column(name = "road_address")
     private String roadAddress;
-
-    @Column(name = "place_url")
     private String placeUrl;
-
-    @Column(name = "img_url")
     private String imgUrl;
-
-    @Column(name = "phone_number", length = 13)
+    @Column(length = 13)
     private String phoneNumber;
-
-    @Column(name = "sum_rating",columnDefinition = "INT UNSIGNED")
+    @Column(columnDefinition = "INT UNSIGNED")
     private Long sumRating;
-
-    @Column(name = "total_rating",columnDefinition = "INT UNSIGNED")
+    @Column(columnDefinition = "INT UNSIGNED")
     private Long totalRating;
 
-    @Enumerated(EnumType.STRING)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_items_id")
+    private CategoryItems categoryItems;
 
 }

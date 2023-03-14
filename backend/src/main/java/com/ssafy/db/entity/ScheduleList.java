@@ -25,4 +25,5 @@ public class ScheduleList {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "jeju_data_id")
     private JejuData jejuData;
+
 }

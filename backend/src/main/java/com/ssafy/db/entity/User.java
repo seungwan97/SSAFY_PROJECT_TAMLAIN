@@ -13,20 +13,16 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
 
-    @Column(name = "nick_name", length = 64)
+    @Column(length = 64)
     private String nickName;
-
-    @Column(name = "refresh_token", length = 64)
+    @Column(length = 64)
     private String refreshToken;
-
-    @Column(name = "created_date")
     private LocalDateTime createdDate;
+
 }

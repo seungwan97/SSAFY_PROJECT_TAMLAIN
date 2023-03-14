@@ -17,6 +17,6 @@ public class ScheduleProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false, columnDefinition = "INT UNSIGNED")
     private Long id;
-    @Column(length = 255)
     private String imageUrl;
+
 }
