@@ -9,4 +9,5 @@ public interface HistoryService {
     List<ScheduleHistoryRes> getScheduleHistory(Long userId);
     void deleteScheduleHistory(Long scheduleId);
     void modifyScheduleName(ScheduleModifyReq scheduleModifyReq);
+
 }

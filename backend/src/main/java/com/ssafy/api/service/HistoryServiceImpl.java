@@ -49,7 +49,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public void modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
-        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getId());
+        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
         schedule.setName(schedule.getName());

@@ -6,6 +6,7 @@ import com.ssafy.api.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,8 +15,10 @@ import java.util.List;
 @Api(value = "일정 내역 API", tags = {"History"})
 @RestController
 @RequiredArgsConstructor
+//@AllArgsConstructor
 @RequestMapping("/api/history")
 public class HisoryController {
+//    @Autowired
     private final HistoryService historyService;
     @ApiOperation(value = "일정 내역 조회", notes = "마이페이지에서 나의 일정 내역 조회하기")
     @GetMapping("/{userId}")
@@ -37,4 +40,5 @@ public class HisoryController {
         historyService.modifyScheduleName(scheduleModifyReq);
         return ResponseEntity.status(200).body("일정명 수정");
     }
+
 }

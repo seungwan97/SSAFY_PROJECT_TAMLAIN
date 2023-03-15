@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ScheduleModifyReq {
-    private Long id;
+    private Long scheduleId;
     private String name;
 }
