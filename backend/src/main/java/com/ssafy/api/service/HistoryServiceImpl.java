@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ScheduleModifyReq;
 import com.ssafy.api.response.ScheduleHistoryRes;
 import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.repository.ScheduleRepository;
@@ -16,20 +17,20 @@ public class HistoryServiceImpl implements HistoryService {
     private final ScheduleRepository scheduleRepository;
     @Override
     public List<ScheduleHistoryRes> getScheduleHistory(Long userId) {
-        Optional<List<Schedule>> scheduleList = scheduleRepository.findAllByUserId(userId);
+        Optional<List<Schedule>> oScheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
         List<ScheduleHistoryRes> scheduleHistoryResList = new ArrayList<>();
-        int size = scheduleList.get().size();
+        int size = oScheduleList.get().size();
 
         for(int i = 0; i < size; i++) {
             ScheduleHistoryRes scheduleHistoryRes = new ScheduleHistoryRes(
-                    scheduleList.get().get(i).getId(),
-                    scheduleList.get().get(i).getName(),
-                    scheduleList.get().get(i).getScheduleProfile().getImageUrl(),
-                    scheduleList.get().get(i).getDay(),
-                    scheduleList.get().get(i).getPeriod(),
-                    scheduleList.get().get(i).isReview(),
-                    scheduleList.get().get(i).getSurvey().getStartDate(),
-                    scheduleList.get().get(i).getSurvey().getEndDate());
+                    oScheduleList.get().get(i).getId(),
+                    oScheduleList.get().get(i).getName(),
+                    oScheduleList.get().get(i).getScheduleProfile().getImageUrl(),
+                    oScheduleList.get().get(i).getDay(),
+                    oScheduleList.get().get(i).getPeriod(),
+                    oScheduleList.get().get(i).isReview(),
+                    oScheduleList.get().get(i).getSurvey().getStartDate(),
+                    oScheduleList.get().get(i).getSurvey().getEndDate());
 
             scheduleHistoryResList.add(scheduleHistoryRes);
         }
@@ -40,9 +41,18 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public void deleteScheduleHistory(Long scheduleId) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
-        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule history doesn't exist"));
+        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
         schedule.setDelete(true);
+        scheduleRepository.save(schedule);
+    }
+
+    @Override
+    public void modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getId());
+        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
+
+        schedule.setName(schedule.getName());
         scheduleRepository.save(schedule);
     }
 }
