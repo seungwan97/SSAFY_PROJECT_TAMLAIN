@@ -1,8 +1,6 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: var(--font-GmarketSans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #3a3a3a;
@@ -13,6 +11,15 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+@font-face {
+  font-family: "GmarketSans";
+  src: url(/public/assets/fonts/GmarketSansTTF/GmarketSansTTFBold.ttf);
+}
+
+:root {
+  --font-GmarketSans: "GmarketSans";
 }
 
 ::-webkit-scrollbar {
