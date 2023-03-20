@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const GenderAndAge = styled.div`
+export const Rest = styled.div`
   top: 55%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
@@ -11,14 +11,14 @@ export const GenderAndAge = styled.div`
   font-size: 20px;
 `;
 
-export const FormGenderBtn = styled.div`
+export const FormBtn = styled.div`
   float: left;
   width: 150px;
   height: 50px;
   border: 1px solid #eae7e7;
   border-radius: 10px;
   box-shadow: 1px 1px 3px 1px #dadce0;
-  input[type="radio"] {
+  input[type="checkbox"] {
     display: none;
   }
   label {
@@ -30,11 +30,11 @@ export const FormGenderBtn = styled.div`
 
     line-height: 45px;
   }
-  input[type="radio"]:checked + label {
+  input[type="checkbox"]:checked + label {
     background: #fc872a;
     color: #fff;
   }
-  input[type="radio"] + label {
+  input[type="checkbox"] + label {
     background: #f9fafc;
     color: #666;
     &:hover {
@@ -44,35 +44,31 @@ export const FormGenderBtn = styled.div`
   }
 `;
 
-export const FormAgeBtn = styled.div`
+export const FormAllBtn = styled.div`
+  margin-left: 13%;
   float: left;
-  width: 150px;
-  height: 50px;
-  border: 1px solid #eae7e7;
-  border-radius: 10px;
-  box-shadow: 1px 1px 3px 1px #dadce0;
-  input[type="radio"] {
+  input[id="selectAll"] + label {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #bcbcbc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  input[id="selectAll"]:checked + label {
+    background-color: #fc872a;
+    border: 2px solid #fc872a;
+  }
+  input[id="selectAll"] {
     display: none;
   }
-  label {
-    cursor: pointer;
-    display: block;
-    border-radius: 10px;
-    text-align: center;
-    padding-top: 5px;
-
-    line-height: 45px;
+  input[id="labelAll"] {
+    position: relative;
+    top: 10px;
   }
-  input[type="radio"]:checked + label {
-    background: #32b64f;
-    color: #fff;
-  }
-  input[type="radio"] + label {
-    background: #f9fafc;
+  label[id="all"] {
     color: #666;
-    &:hover {
-      background: #32b64f;
-      color: #fff;
-    }
+    position: relative;
+    top: -10px;
   }
 `;

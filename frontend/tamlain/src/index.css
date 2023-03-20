@@ -1,6 +1,8 @@
+@import url("https://webfontworld.github.io/gmarket/GmarketSans.css");
+
 body {
   margin: 0;
-  font-family: var(--font-GmarketSans);
+  font-family: "GmarketSans";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #fff;
@@ -11,11 +13,6 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
-}
-
-@font-face {
-  font-family: "GmarketSans";
-  src: url(/public/assets/fonts/GmarketSansTTF/GmarketSansTTFBold.ttf);
 }
 
 :root {
