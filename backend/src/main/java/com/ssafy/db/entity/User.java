@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,5 +23,6 @@ public class User {
     private String nickName;
     @Column(length = 64)
     private String refreshToken;
+    @CreatedDate
     private LocalDateTime createdDate;
 }

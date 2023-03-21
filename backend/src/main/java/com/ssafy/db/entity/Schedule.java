@@ -3,13 +3,16 @@ package com.ssafy.db.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.DynamicUpdate;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @DynamicUpdate
@@ -35,5 +38,6 @@ public class Schedule {
     private int period;
     private boolean isDelete;
     private boolean isReview;
+    @CreatedDate
     private LocalDateTime createdDate;
 }
