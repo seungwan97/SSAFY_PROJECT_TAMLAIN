@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleReviewReq;
+import com.ssafy.api.response.ReviewRes;
 import com.ssafy.api.response.ReviewScheduleItemRes;
 import com.ssafy.api.service.ReviewService;
 import io.swagger.annotations.Api;
@@ -30,6 +31,13 @@ public class ReviewController {
     public ResponseEntity<?> registReview(@RequestBody ScheduleReviewReq scheduleReviewReq) {
         reviewService.registReview(scheduleReviewReq);
         return ResponseEntity.status(200).body("별점 등록 성공");
+    }
+
+    @ApiOperation(value = "별점 조회", notes = "내가 등록한 별점 조회하기")
+    @GetMapping("/{scheduleId}")
+    public ResponseEntity<?> getReview(@PathVariable("scheduleId") int scheduleId) {
+        List<ReviewRes> reviewResList = reviewService.getReview(scheduleId);
+        return ResponseEntity.status(200).body(reviewResList);
     }
 
 }

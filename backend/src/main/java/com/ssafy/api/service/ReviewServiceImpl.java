@@ -2,12 +2,10 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.request.ReviewItemReq;
 import com.ssafy.api.request.ScheduleReviewReq;
+import com.ssafy.api.response.ReviewRes;
 import com.ssafy.api.response.ReviewScheduleItemRes;
 import com.ssafy.db.entity.*;
-import com.ssafy.db.repository.JejuDataRepository;
-import com.ssafy.db.repository.ReviewRepository;
-import com.ssafy.db.repository.ScheduleItemRepository;
-import com.ssafy.db.repository.UserRepository;
+import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +16,7 @@ import java.util.Optional;
 @Service("reviewService")
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
+    private final ScheduleRepository scheduleRepository;
     private final ScheduleItemRepository scheduleItemRepository;
     private final UserRepository userRepository;
     private final JejuDataRepository jejuDataRepository;
@@ -66,6 +65,33 @@ public class ReviewServiceImpl implements ReviewService {
 
             reviewRepository.save(review);
         }
+    }
+
+    @Override
+    public List<ReviewRes> getReview(int scheduleId) {
+        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
+        List<ReviewRes> reviewResList = new ArrayList<>();
+        int size = oScheduleItemList.get().size();
+
+        for(int i = 0; i < size; i++) {
+            ScheduleItem scheduleItem = oScheduleItemList.get().get(i);
+
+            ReviewRes reviewRes = new ReviewRes();
+            reviewRes.setThumbnailImageUrl(scheduleItem.getSchedule().getScheduleThumbnail().getThumbnailImageUrl());
+            reviewRes.setJejuPlaceName(scheduleItem.getJejuPlace().getName());
+
+            Optional<Review> review = reviewRepository.findById(scheduleItem.getId());
+            if(!review.isEmpty()) {
+                reviewRes.setScore(review.get().getScore());
+                reviewRes.setVisit(true);
+            } else {
+                reviewRes.setScore(0);
+                reviewRes.setVisit(false);
+            }
+
+            reviewResList.add(reviewRes);
+        }
+        return reviewResList;
     }
 
 }

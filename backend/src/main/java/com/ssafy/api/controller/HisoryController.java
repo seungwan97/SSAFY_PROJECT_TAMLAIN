@@ -24,7 +24,7 @@ public class HisoryController {
         return ResponseEntity.status(200).body(scheduleHistoryResList);
     }
 
-    @ApiOperation(value = "일정 내역 삭제", notes = "마이페이지에서 나의 일정 내역 삭제하기")
+    @ApiOperation(value = "일정 삭제", notes = "마이페이지에서 나의 일정 삭제하기")
     @PatchMapping("/delete/{scheduleId}")
     public ResponseEntity<?> deleteScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
         historyService.deleteScheduleHistory(scheduleId);
