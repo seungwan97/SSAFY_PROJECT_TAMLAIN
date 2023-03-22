@@ -1,18 +1,13 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import java.util.List;
 
-@Data
 public class ReviewScheduleItemRes {
-    private String thumbnailImageUrl;
-    private String jejuPlaceName;
-    private int scheduleItemId;
-    private int jejuPlaceId;
+    private MypageCommonInfo mypageCommonInfo;
+    private List<ReviewScheduleItem> reviewScheduleItemList;
 
-    public ReviewScheduleItemRes(String thumbnailImageUrl, String jejuPlaceName, int scheduleItemId, int jejuPlaceId) {
-        this.thumbnailImageUrl = thumbnailImageUrl;
-        this.jejuPlaceName = jejuPlaceName;
-        this.scheduleItemId = scheduleItemId;
-        this.jejuPlaceId = jejuPlaceId;
+    public ReviewScheduleItemRes(MypageCommonInfo mypageCommonInfo, List<ReviewScheduleItem> reviewScheduleItemList) {
+        this.mypageCommonInfo = mypageCommonInfo;
+        this.reviewScheduleItemList = reviewScheduleItemList;
     }
 }

@@ -3,7 +3,7 @@ package com.ssafy.api.request;
 import lombok.Getter;
 
 @Getter
-public class ReviewItemReq {
+public class ReviewRegistItem {
     private int scheduleItemId;
     private int jejuPlaceId;
     private int score;

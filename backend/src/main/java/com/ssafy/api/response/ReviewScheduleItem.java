@@ -1,0 +1,18 @@
+package com.ssafy.api.response;
+
+import lombok.Data;
+
+@Data
+public class ReviewScheduleItem {
+    private String jejuPlaceImgUrl;
+    private String jejuPlaceName;
+    private int scheduleItemId;
+    private int jejuPlaceId;
+
+    public ReviewScheduleItem(String jejuPlaceImgUrl, String jejuPlaceName, int scheduleItemId, int jejuPlaceId) {
+        this.jejuPlaceImgUrl = jejuPlaceImgUrl;
+        this.jejuPlaceName = jejuPlaceName;
+        this.scheduleItemId = scheduleItemId;
+        this.jejuPlaceId = jejuPlaceId;
+    }
+}

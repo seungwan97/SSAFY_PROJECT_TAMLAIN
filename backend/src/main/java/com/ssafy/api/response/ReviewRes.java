@@ -1,13 +1,17 @@
 package com.ssafy.api.response;
 
+import com.ssafy.api.request.ReviewRegistItem;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
-@NoArgsConstructor
 public class ReviewRes {
-    private String thumbnailImageUrl;
-    private String jejuPlaceName;
-    private int score;
-    private boolean isVisit;
+    private MypageCommonInfo mypageCommonInfo;
+    private List<ReviewItem> reviewItemList;
+
+    public ReviewRes(MypageCommonInfo mypageCommonInfo, List<ReviewItem> reviewItemList) {
+        this.mypageCommonInfo = mypageCommonInfo;
+        this.reviewItemList = reviewItemList;
+    }
 }
