@@ -116,22 +116,4 @@ public class OauthService {
                 .block();
     }
 
-    /**
-     * refresh Token 으로 Access Token 이 만료 되었을 경우 재발급
-     * Redis Server 에서 refresh Token 을 가져옴
-     */
-//    public AccessTokenResponse accessTokenByRefreshToken(String accessToken, RefreshTokenRequest refreshTokenRequest) {
-//        refreshTokenExtractor(refreshTokenRequest);
-//        String id = jwtTokenProvider.getPayload(accessToken);
-//        String data = redisUtil.getData(id);
-//        if (!data.equals(refreshTokenRequest.getRefreshToken())) {
-//            log.info("Exception!!");
-//            throw new CustomException(ErrorCode.UNAUTHORIZED_REFRESH_TOKEN);
-//        }
-//
-//        Token newAccessToken = jwtTokenProvider.createAccessToken(id);
-//
-//        return new AccessTokenResponse(newAccessToken.getValue());
-//    }
-
 }

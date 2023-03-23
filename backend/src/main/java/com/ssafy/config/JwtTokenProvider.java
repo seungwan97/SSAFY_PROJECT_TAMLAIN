@@ -1,5 +1,6 @@
 package com.ssafy.config;
 
+import com.ssafy.db.entity.Token;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,11 @@ public class JwtTokenProvider {
         new Random().nextBytes(array);
         String generatedString = new String(array, StandardCharsets.UTF_8);
         return createToken(generatedString, refreshTokenValidityInMilliseconds);
+    }
+
+    public Token createAccessTok(String payload) {
+        String value = createToken(payload, accessTokenValidityInMilliseconds);
+        return new Token(value, accessTokenValidityInMilliseconds);
     }
 
     public String createToken(String payload, long expireLength) {
