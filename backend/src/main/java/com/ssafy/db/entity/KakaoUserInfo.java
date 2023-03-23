@@ -2,7 +2,7 @@ package com.ssafy.db.entity;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-
+ 
 public class KakaoUserInfo implements Oauth2UserInfo {
 
     private Map<String, Object> attributes;
