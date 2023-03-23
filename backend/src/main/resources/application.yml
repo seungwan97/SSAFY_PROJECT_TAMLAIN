@@ -1,0 +1,54 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+#    url: jdbc:mysql://j8b204.p.ssafy.io:3305/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: jdbc:mysql://127.0.0.1:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    username: tamla
+    username: root
+    password: 1234
+  jpa:
+    open-in-view: false
+    generate-ddl: true
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        format_sql: true
+        check_nullability: true
+  redis:
+    host: localhost
+    port: 6379
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: 35dab37fd8177e7be249b4c287d70029
+#            redirect-uri: http://localhost:8080/oauth/callback/kakao
+            redirect-uri: http://localhost:3000/oauth/callback/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope:
+              - profile_nickname
+              - account_email
+            client_name: kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
+jwt:
+  token:
+    secret-key: 43e9eb055aa64d62e580cfad4facc0be7287427947261ca05dd3809be2ff8208a8a23776dd87357a4dda6c5c6a07c5228d0cd5b36374c39ba4c5c5c46a908246
+  access-token:
+    expire-length: 1800000
+  refresh-token:
+    expire-length: 1209600000
