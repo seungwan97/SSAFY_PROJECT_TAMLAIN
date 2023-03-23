@@ -38,4 +38,10 @@ public class HisoryController {
         return ResponseEntity.status(200).body("일정명 수정");
     }
 
+//    @ApiOperation(value = "세부 일정 조회", notes = "세부 일정 내역 조회하기")
+//    @GetMapping("/scheduleDetail/{scheduleId}")
+//    public ResponseEntity<?> getScheduleDetail(@PathVariable("scheduleId") int scheduleId) {
+//
+//    }
+
 }

@@ -28,8 +28,6 @@ public class JejuPlace {
     private String roadAddress;
     private String placeUrl;
     private String imgUrl;
-    @Column(length = 13)
-    private String phoneNumber;
     private int reviewScoreSum;
     private int reviewCount;
     @Column(length = 150)
