@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const OAuthRedirectPage = () => {
   const navigate = useNavigate();
-  const backUri = REACT_APP_SERVER_URI;
+  const backUri = process.env.REACT_APP_SERVER_URI;
 
   const code = new URL(window.location.href).searchParams.get("code");
   useEffect(() => {
