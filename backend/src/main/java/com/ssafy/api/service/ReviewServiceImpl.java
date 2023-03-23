@@ -18,7 +18,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleItemRepository scheduleItemRepository;
     private final UserRepository userRepository;
-    private final JejuDataRepository jejuDataRepository;
+    private final JejuPlaceRepository jejuPlaceRepository;
     private final ReviewRepository reviewRepository;
 
     @Override
@@ -74,7 +74,7 @@ public class ReviewServiceImpl implements ReviewService {
             Optional<ScheduleItem> oScheduleItem = scheduleItemRepository.findById(reviewRegistItem.getScheduleItemId());
             ScheduleItem scheduleItem = oScheduleItem.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
 
-            Optional<JejuPlace> oJejuPlace = jejuDataRepository.findById(reviewRegistItem.getJejuPlaceId());
+            Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(reviewRegistItem.getJejuPlaceId());
             JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
             Review review = new Review();
@@ -84,6 +84,11 @@ public class ReviewServiceImpl implements ReviewService {
             review.setScore(reviewRegistItem.getScore());
 
             reviewRepository.save(review);
+
+            jejuPlace.setReviewScoreSum(jejuPlace.getReviewScoreSum()+reviewRegistItem.getScore());
+            jejuPlace.setReviewCount(jejuPlace.getReviewCount()+1);
+
+            jejuPlaceRepository.save(jejuPlace);
         }
     }
 
@@ -95,12 +100,22 @@ public class ReviewServiceImpl implements ReviewService {
 
         for(int i = 0; i < size; i++) {
             ScheduleItem scheduleItem = oScheduleItemList.get().get(i);
+            boolean flag = true;
+
+            for(int j = 0; j < reviewItemList.size(); j++) {
+                if(reviewItemList.get(j).getJejuPlaceName().equals(scheduleItem.getJejuPlace().getName())) {
+                    flag = false;
+                    break;
+                }
+            }
+
+            if(!flag) continue;
 
             ReviewItem reviewItem = new ReviewItem();
             reviewItem.setJejuPlaceImgUrl(scheduleItem.getJejuPlace().getImgUrl());
             reviewItem.setJejuPlaceName(scheduleItem.getJejuPlace().getName());
 
-            Optional<Review> review = reviewRepository.findById(scheduleItem.getId());
+            Optional<Review> review = reviewRepository.findByScheduleItemId(scheduleItem.getId());
             if(!review.isEmpty()) {
                 reviewItem.setScore(review.get().getScore());
                 reviewItem.setVisit(true);
