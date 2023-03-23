@@ -25,11 +25,14 @@ public class ReviewServiceImpl implements ReviewService {
     public ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId) {
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
         List<ReviewScheduleItem> reviewScheduleItemList = new ArrayList<>();
+        List<String> scheduleNameList = new ArrayList<>();
         int size = oScheduleItemList.get().size();
 
         for(int i = 0; i < size; i++) {
             int scheduleItemId = oScheduleItemList.get().get(i).getId();
             JejuPlace jejuPlace = oScheduleItemList.get().get(i).getJejuPlace();
+
+            if(scheduleNameList.contains(jejuPlace.getName())) continue;
 
             ReviewScheduleItem reviewScheduleItem = new ReviewScheduleItem(
                     jejuPlace.getImgUrl(),
@@ -38,6 +41,7 @@ public class ReviewServiceImpl implements ReviewService {
                     jejuPlace.getId());
 
             reviewScheduleItemList.add(reviewScheduleItem);
+            scheduleNameList.add(jejuPlace.getName());
         }
 
         ReviewScheduleItemRes reviewScheduleItemRes = new ReviewScheduleItemRes(getMyPageCommonInfo(scheduleId), reviewScheduleItemList);

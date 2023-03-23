@@ -10,8 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Api(value = "리뷰(별점) API", tags = {"Review"})
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +20,8 @@ public class ReviewController {
     @ApiOperation(value = "별점 일정 목록 조회", notes = "별점을 등록할 일정 목록 조회하기")
     @GetMapping("/scheduleItem/{scheduleId}")
     public ResponseEntity<?> getReviewScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
-        ReviewScheduleItemRes reviewScheduleItemsResList = reviewService.getReviewScheduleHistory(scheduleId);
-        return ResponseEntity.status(200).body(reviewScheduleItemsResList);
+        ReviewScheduleItemRes reviewScheduleItemRes = reviewService.getReviewScheduleHistory(scheduleId);
+        return ResponseEntity.status(200).body(reviewScheduleItemRes);
     }
 
     @ApiOperation(value = "별점 등록", notes = "각 장소마다 별점 등록하기")
