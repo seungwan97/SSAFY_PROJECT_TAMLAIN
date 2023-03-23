@@ -25,10 +25,10 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+**/JasyptConfigTest
 
 ### application-properties ###
 **/application.properties
-**/application.yml
 
 ### NetBeans ###
 /nbproject/private/

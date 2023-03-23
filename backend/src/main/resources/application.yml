@@ -1,14 +1,18 @@
 server:
   port: 8080
 
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password : 0837333
+
 spring:
   datasource:
-#    url: jdbc:mysql://j8b204.p.ssafy.io:3305/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    url: jdbc:mysql://127.0.0.1:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
+#    url: jdbc:mysql://127.0.0.1:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
     driver-class-name: com.mysql.cj.jdbc.Driver
-#    username: tamla
-    username: root
-    password: 1234
+    username: ENC(F301hhYYYd0rvHquA7NOgA==)
+    password: ENC(rqkqAtx5oXQkJdp8OtsRZQ==)
   jpa:
     open-in-view: false
     generate-ddl: true
@@ -29,9 +33,10 @@ spring:
       client:
         registration:
           kakao:
-            client-id: 35dab37fd8177e7be249b4c287d70029
+            client-id: ENC(pspsCp49iwIKXZSfdz59qYd1AWOrsKMbrPKjLEtPp3FjTKLSC5sdLSAS0fOLgi9/)
 #            redirect-uri: http://localhost:8080/oauth/callback/kakao
-            redirect-uri: http://localhost:3000/oauth/callback/kakao
+#            redirect-uri: http://localhost:3000/oauth/callback/kakao
+            redirect-uri: ENC(gR5YHZ7AwDZ13S8Sl/pfv+Fa7r9xtdwnzaaFZr3m9ZxNkEv4PkRl5rZQkRwPHBcBZ0cVE6/4ulk=)
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -47,7 +52,7 @@ spring:
 
 jwt:
   token:
-    secret-key: 43e9eb055aa64d62e580cfad4facc0be7287427947261ca05dd3809be2ff8208a8a23776dd87357a4dda6c5c6a07c5228d0cd5b36374c39ba4c5c5c46a908246
+    secret-key: ENC(kaKqOrrX5YmcpNoH4rOlq4BIhQobzfPfpHLB4SlHnnR68EuLOxCBZ888oMXgeCH8wFuf/Z6uP/4aA/YAMUKc7fqNG99RdBxcOIqYuaHvXGNDaQDCxsuN/Hng8djDZ44wFjcnpf8JYztW1dZSpzuQkRHeoGV45359RVR6PKy0bL6oun3O+eDBKmMRQyEP+y0w)
   access-token:
     expire-length: 1800000
   refresh-token:
