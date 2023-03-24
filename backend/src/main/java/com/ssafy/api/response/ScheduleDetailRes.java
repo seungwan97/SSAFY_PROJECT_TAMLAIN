@@ -7,9 +7,9 @@ import java.util.List;
 @Data
 public class ScheduleDetailRes {
     private MypageCommonInfo mypageCommonInfo;
-    private List<ScheduleDetailItem> scheduleDetailItemList;
+    private List<List<ScheduleDetailItem>> scheduleDetailItemList;
 
-    public ScheduleDetailRes(MypageCommonInfo mypageCommonInfo, List<ScheduleDetailItem> scheduleDetailItemList) {
+    public ScheduleDetailRes(MypageCommonInfo mypageCommonInfo, List<List<ScheduleDetailItem>> scheduleDetailItemList) {
         this.mypageCommonInfo = mypageCommonInfo;
         this.scheduleDetailItemList = scheduleDetailItemList;
     }
