@@ -25,7 +25,7 @@ public class HistoryServiceImpl implements HistoryService {
             ScheduleHistoryRes scheduleHistoryRes = new ScheduleHistoryRes(
                     oScheduleList.get().get(i).getId(),
                     oScheduleList.get().get(i).getScheduleThumbnail().getThumbnailImageUrl(),
-                    oScheduleList.get().get(i).getUser().getNickName(),
+                    oScheduleList.get().get(i).getUser().getUserProfile().getNickName(),
                     oScheduleList.get().get(i).getName(),
                     oScheduleList.get().get(i).getSurvey().getStartDate(),
                     oScheduleList.get().get(i).getSurvey().getEndDate(),

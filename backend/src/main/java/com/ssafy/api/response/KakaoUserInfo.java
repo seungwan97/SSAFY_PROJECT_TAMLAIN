@@ -1,4 +1,4 @@
-package com.ssafy.db.entity;
+package com.ssafy.api.response;
 
 import java.time.LocalDateTime;
 import java.util.Map;

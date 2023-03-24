@@ -1,5 +1,10 @@
 server:
   port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 
 jasypt:
   encryptor:
@@ -7,10 +12,13 @@ jasypt:
 
 spring:
   datasource:
+    # server
     url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
-#    url: jdbc:mysql://127.0.0.1:3306/tamlain?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
     username: ENC(F301hhYYYd0rvHquA7NOgA==)
+    # local
+#    url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
+#    username: ENC(eua8htGfOZ5mvZwFK2he9g==)
+    driver-class-name: com.mysql.cj.jdbc.Driver
     password: ENC(rqkqAtx5oXQkJdp8OtsRZQ==)
   jpa:
     open-in-view: false
@@ -20,6 +28,7 @@ spring:
       ddl-auto: none
     properties:
       hibernate:
+        enable_lazy_load_no_trans: true
         globally_quoted_identifiers: true
         format_sql: true
         check_nullability: true
@@ -49,6 +58,10 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
 jwt:
   token:
