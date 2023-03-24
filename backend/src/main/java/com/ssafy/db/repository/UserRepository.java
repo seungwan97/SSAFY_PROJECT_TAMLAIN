@@ -3,8 +3,10 @@ package com.ssafy.db.repository;
 import com.ssafy.db.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface  UserRepository extends JpaRepository<User, Integer> {
-    public User findByEmail(String email);
-    public User findById(int Id);
+@Repository
+public interface UserRepository extends JpaRepository<User, Integer> {
+    Optional<User> findByEmail(String email);
+
+    Optional<User> findById(int id);
 
 }
