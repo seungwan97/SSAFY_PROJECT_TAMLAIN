@@ -41,7 +41,7 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public PlaceDetailRes getPlaceDetail(int jejuPlaceId) {
         Optional<JejuPlace> oJejuPlaces = jejuPlaceRepository.findById(jejuPlaceId);
-        JejuPlace jejuPlace = oJejuPlaces.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"))
+        JejuPlace jejuPlace = oJejuPlaces.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
         return PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
