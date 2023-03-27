@@ -1,16 +1,11 @@
 package com.ssafy.db.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class SurveyFavorCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +18,10 @@ public class SurveyFavorCategory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @Builder
+    public SurveyFavorCategory(Survey survey, Category category) {
+        this.survey = survey;
+        this.category = category;
+    }
 }

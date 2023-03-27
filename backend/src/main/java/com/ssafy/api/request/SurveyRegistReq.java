@@ -3,6 +3,7 @@ package com.ssafy.api.request;
 import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Getter
@@ -15,5 +16,5 @@ public class SurveyRegistReq {
     private String travelMember;
     private boolean isCar;
     private String travelTheme;
-    private List<String>[] surveyFavorCategoryList;
+    private LinkedHashMap<Integer, List<String>> surveyFavorCategoryMap;
 }
