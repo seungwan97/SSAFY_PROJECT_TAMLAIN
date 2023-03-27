@@ -1,14 +1,13 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.ScheduleRegistReq;
 import com.ssafy.api.response.ScheduleThumbnailRes;
 import com.ssafy.api.service.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,5 +25,11 @@ public class ScheduleController {
         return ResponseEntity.status(200).body(scheduleThumbnailResList);
     }
 
+    @ApiOperation(value = "일정 등록", notes = "사용자가 만든 일정 등록하기")
+    @PostMapping()
+    public ResponseEntity<?> registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
+        scheduleService.registSchedule(scheduleRegistReq);
+        return ResponseEntity.status(200).body("일정 등록");
+    }
 
 }

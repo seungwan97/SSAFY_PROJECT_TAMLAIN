@@ -1,9 +1,6 @@
 package com.ssafy.db.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 
@@ -14,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 @DynamicUpdate
 public class Schedule {
     @Id
@@ -40,4 +36,15 @@ public class Schedule {
     private boolean isReview;
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @Builder
+    public Schedule(User user, Survey survey, ScheduleThumbnail scheduleThumbnail, String name, int period, boolean isDelete, boolean isReview) {
+        this.user = user;
+        this.survey = survey;
+        this.scheduleThumbnail = scheduleThumbnail;
+        this.name = name;
+        this.period = period;
+        this.isDelete = isDelete;
+        this.isReview = isReview;
+    }
 }
