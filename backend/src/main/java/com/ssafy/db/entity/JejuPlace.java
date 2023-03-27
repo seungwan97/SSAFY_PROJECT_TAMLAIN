@@ -23,6 +23,7 @@ public class JejuPlace {
 
     @Column(length = 150)
     private String name;
+    private String phoneNumber;
     private Double latitude;
     private Double longitude;
     private String roadAddress;

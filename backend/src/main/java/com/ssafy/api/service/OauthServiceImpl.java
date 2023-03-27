@@ -1,7 +1,7 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.response.LoginResponse;
-import com.ssafy.api.response.OauthTokenResponse;
+import com.ssafy.api.response.LoginRes;
+import com.ssafy.api.response.OauthTokenRes;
 import com.ssafy.config.JwtTokenProvider;
 import com.ssafy.api.response.KakaoUserInfo;
 import com.ssafy.api.response.Oauth2UserInfo;
@@ -36,16 +36,16 @@ public class OauthServiceImpl implements OauthService{
     private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public LoginResponse login(String providerName, String code) {
+    public LoginRes login(String providerName, String code) {
 
         ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName);
-        OauthTokenResponse tokenResponse = getToken(code, provider);
+        OauthTokenRes tokenResponse = getToken(code, provider);
         User user = getUserProfile(providerName,tokenResponse, provider);
 
         String accessToken = jwtTokenProvider.createAccessToken(String.valueOf(user.getId()));
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        return LoginResponse.builder()
+        return LoginRes.builder()
                 .id(user.getId())
                 .name(user.getUserProfile().getNickName())
                 .email(user.getEmail())
@@ -56,7 +56,7 @@ public class OauthServiceImpl implements OauthService{
                 .build();
     }
 
-    public OauthTokenResponse getToken(String code, ClientRegistration provider) {
+    public OauthTokenRes getToken(String code, ClientRegistration provider) {
         return WebClient.create()
                 .post()
                 .uri(provider.getProviderDetails().getTokenUri())
@@ -66,7 +66,7 @@ public class OauthServiceImpl implements OauthService{
                 })
                 .bodyValue(tokenRequest(code, provider))
                 .retrieve()
-                .bodyToMono(OauthTokenResponse.class)
+                .bodyToMono(OauthTokenRes.class)
                 .block();
     }
 
@@ -79,7 +79,7 @@ public class OauthServiceImpl implements OauthService{
         return formData;
     }
 
-    public User getUserProfile(String providerName, OauthTokenResponse tokenResponse, ClientRegistration provider) {
+    public User getUserProfile(String providerName, OauthTokenRes tokenResponse, ClientRegistration provider) {
         Map<String, Object> userAttributes = getUserAttributes(provider, tokenResponse);
         Oauth2UserInfo oauth2UserInfo = null;
         if(providerName.equals("kakao")) {
@@ -106,7 +106,7 @@ public class OauthServiceImpl implements OauthService{
         return userEntity;
     }
 
-    public Map<String, Object> getUserAttributes(ClientRegistration provider, OauthTokenResponse tokenResponse) {
+    public Map<String, Object> getUserAttributes(ClientRegistration provider, OauthTokenRes tokenResponse) {
         return WebClient.create()
                 .get()
                 .uri(provider.getProviderDetails().getUserInfoEndpoint().getUri())

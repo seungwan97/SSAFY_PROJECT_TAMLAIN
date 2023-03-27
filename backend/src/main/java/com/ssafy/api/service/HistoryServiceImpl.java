@@ -4,6 +4,7 @@ import com.ssafy.api.request.ScheduleModifyReq;
 import com.ssafy.api.response.ScheduleHistoryRes;
 import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.repository.ScheduleRepository;
+import com.ssafy.exception.ScheduleException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

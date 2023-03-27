@@ -1,7 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.RefreshTokenRequest;
-import com.ssafy.api.response.AccessTokenResponse;
+import com.ssafy.api.response.AccessTokenRes;
 import org.apache.tomcat.websocket.AuthenticationException;
 
 public interface AuthService {
@@ -10,7 +10,7 @@ public interface AuthService {
 
     public void logout(String accessToken);
 
-    public AccessTokenResponse refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) throws AuthenticationException ;
+    public AccessTokenRes refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) throws AuthenticationException ;
 
     //    public LoginMember findMemberByToken(String accessToken);
 }

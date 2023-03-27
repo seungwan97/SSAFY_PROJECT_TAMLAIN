@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Getter
 @NoArgsConstructor
-public class OauthTokenResponse {
+public class OauthTokenRes {
 
     @JsonProperty("access_token")
     private String accessToken;
@@ -29,7 +29,7 @@ public class OauthTokenResponse {
     String errorUri;
 
     @Builder
-    public OauthTokenResponse(String accessToken, String scope, String tokenType, String error, String errorDescription, String errorUri) {
+    public OauthTokenRes(String accessToken, String scope, String tokenType, String error, String errorDescription, String errorUri) {
         this.accessToken = accessToken;
         this.scope = scope;
         this.tokenType = tokenType;

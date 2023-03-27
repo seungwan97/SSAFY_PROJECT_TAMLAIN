@@ -1,16 +1,17 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.RefreshTokenRequest;
-import com.ssafy.api.response.AccessTokenResponse;
+import com.ssafy.api.response.AccessTokenRes;
 import com.ssafy.api.service.AuthService;
 import com.ssafy.api.service.OauthService;
-import com.ssafy.api.response.LoginResponse;
+import com.ssafy.api.response.LoginRes;
 import com.ssafy.util.AuthorizationExtractor;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.websocket.AuthenticationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,9 +31,9 @@ public class OauthController {
 
     @ApiOperation(value = "로그인", notes = "로그인")
     @GetMapping("/callback/{provider}")
-    public ResponseEntity<LoginResponse> login(@PathVariable String provider, @RequestParam String code){
+    public ResponseEntity<LoginRes> login(@PathVariable String provider, @RequestParam String code){
         System.out.println("여기까지 들어오나 ? ");
-        LoginResponse loginResponse = oauthService.login(provider, code);
+        LoginRes loginResponse = oauthService.login(provider, code);
         System.out.println(loginResponse);
         return ResponseEntity.ok().body(loginResponse);
     }
@@ -42,8 +43,8 @@ public class OauthController {
      */
     @ApiOperation(value = "토큰", notes = "access token 갱신")
     @PostMapping(value = "/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<AccessTokenResponse> refreshAccessToken(HttpServletRequest request,
-                                                                  @ModelAttribute RefreshTokenRequest refreshToken) throws AuthenticationException {
+    public ResponseEntity<AccessTokenRes> refreshAccessToken(HttpServletRequest request,
+                                                             @ModelAttribute RefreshTokenRequest refreshToken) throws AuthenticationException {
         String accessToken = AuthorizationExtractor.extract(request);
         return ResponseEntity.ok().body(authService.refreshAccessToken(accessToken, refreshToken));
     }

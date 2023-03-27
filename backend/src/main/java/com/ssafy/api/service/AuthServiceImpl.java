@@ -1,12 +1,12 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.RefreshTokenRequest;
-import com.ssafy.api.response.AccessTokenResponse;
+import com.ssafy.api.response.AccessTokenRes;
 import com.ssafy.config.JwtTokenProvider;
 import com.ssafy.db.entity.Token;
 import com.ssafy.db.repository.UserRepository;
+import com.ssafy.exception.AuthenticationException;
 import com.ssafy.util.RedisUtil;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService{
         this.userRepository = userRepository;
     }
 
-    public void validatesAccessToken(String accessToken) throws AuthenticationException {
+    public void validatesAccessToken(String accessToken) {
         if (!jwtTokenProvider.validateToken(accessToken)) {
             throw new AuthenticationException("access token이 유효하지 않습니다.");
         }
@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService{
 //    }
 
     @Transactional
-    public AccessTokenResponse refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) throws AuthenticationException {
+    public AccessTokenRes refreshAccessToken(String accessToken, RefreshTokenRequest refreshTokenRequest) {
         String refreshToken = refreshTokenRequest.getRefreshToken();
         if (!jwtTokenProvider.validateToken(refreshToken)) {
             throw new AuthenticationException("refresh token이 유효하지 않습니다.");
@@ -57,7 +57,7 @@ public class AuthServiceImpl implements AuthService{
 
         Token newAccessToken = jwtTokenProvider.createAccessTok(id);
 
-        return new AccessTokenResponse(newAccessToken.getValue());
+        return new AccessTokenRes(newAccessToken.getValue());
     }
 
     @Transactional
