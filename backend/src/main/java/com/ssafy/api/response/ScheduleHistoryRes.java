@@ -1,9 +1,11 @@
 package com.ssafy.api.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
+@Getter
 public class ScheduleHistoryRes {
     private int scheduleId;
     private String thumbnailImageUrl;

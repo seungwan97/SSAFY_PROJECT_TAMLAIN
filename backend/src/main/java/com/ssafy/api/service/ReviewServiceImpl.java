@@ -125,9 +125,9 @@ public class ReviewServiceImpl implements ReviewService {
             int score = 0;
             boolean visited = false;
 
-            Optional<Review> review = reviewRepository.findByScheduleItemId(scheduleItem.getId());
-            if(review.isPresent()) {
-                score = review.get().getScore();
+            Optional<Review> oReview = reviewRepository.findByScheduleItemId(scheduleItem.getId());
+            if(oReview.isPresent()) {
+                score = oReview.get().getScore();
                 visited = true;
             }
 

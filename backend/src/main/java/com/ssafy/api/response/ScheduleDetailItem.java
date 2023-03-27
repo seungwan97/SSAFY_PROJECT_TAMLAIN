@@ -1,7 +1,9 @@
 package com.ssafy.api.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class ScheduleDetailItem {
     private int scheduleItemId;
     private int day;

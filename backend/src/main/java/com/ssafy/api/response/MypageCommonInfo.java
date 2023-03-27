@@ -1,9 +1,11 @@
 package com.ssafy.api.response;
 
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
+@Getter
 public class MypageCommonInfo {
     private String thumbnailImageUrl;
     private String name;

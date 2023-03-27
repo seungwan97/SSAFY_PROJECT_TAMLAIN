@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,74 +96,43 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
         List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
 
-        List<List<ScheduleDetailItem>> scheduleDetailItemAllList = new ArrayList<>();
+        LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap = new LinkedHashMap<>();
         List<ScheduleDetailItem> scheduleDetailItemList = new ArrayList<>();
         int beforeDay = 1;
 
-//        scheduleItemList.forEach(scheduleItem -> {
-//            JejuPlace jejuPlace = scheduleItem.getJejuPlace();
-//            int currentDay = scheduleItem.getDay();
-//            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
-//
-//            if(beforeDay != currentDay) {
-//                sheduleDetailItemAllList.add(scheduleDetailItemList);
-//                scheduleDetasilItemList = new ArrayList<>();
-//            }
-//
-//            ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
-//                    .scheduleItemId(scheduleItem.getId())
-//                    .day(currentDay)
-//                    .jejuPlaceId(jejuPlace.getId())
-//                    .jejuPlaceName(jejuPlace.getName())
-//                    .latitude(jejuPlace.getLatitude())
-//                    .longitude(jejuPlace.getLongitude())
-//                    .roadAddress(jejuPlace.getRoadAddress())
-//                    .placeUrl(jejuPlace.getPlaceUrl())
-//                    .imageUrl(jejuPlace.getImgUrl())
-//                    .reviewCount(jejuPlace.getReviewCount())
-//                    .reviewScore(Math.round(reviewScore*10)/10.0)
-//                    .tag(jejuPlace.getTag())
-//                    .build();
-//
-//            scheduleDetailItemList.add(scheduleDetailItem);
-//            beforeDay = currentDay;
-//                });
+        for(ScheduleItem scheduleItem : scheduleItemList) {
+            JejuPlace jejuPlace = scheduleItem.getJejuPlace();
+            int currentDay = scheduleItem.getDay();
+            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
 
+            if(beforeDay != currentDay) {
+                scheduleDetailItemMap.put(beforeDay, scheduleDetailItemList);
+                scheduleDetailItemList = new ArrayList<>();
+            }
 
+            ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
+                    .scheduleItemId(scheduleItem.getId())
+                    .day(currentDay)
+                    .jejuPlaceId(jejuPlace.getId())
+                    .jejuPlaceName(jejuPlace.getName())
+                    .latitude(jejuPlace.getLatitude())
+                    .longitude(jejuPlace.getLongitude())
+                    .roadAddress(jejuPlace.getRoadAddress())
+                    .placeUrl(jejuPlace.getPlaceUrl())
+                    .imageUrl(jejuPlace.getImgUrl())
+                    .reviewCount(jejuPlace.getReviewCount())
+                    .reviewScore(Math.round(reviewScore*10)/10.0)
+                    .tag(jejuPlace.getTag())
+                    .build();
 
-//        for(ScheduleItem scheduleItem : oScheduleItemList.get()) {
-//            JejuPlace jejuPlace = scheduleItem.getJejuPlace();
-//            int currentDay = scheduleItem.getDay();
-//            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
-//
-//            if(beforeDay != currentDay) {
-//                scheduleDetailItemAllList.add(scheduleDetailItemList);
-//                scheduleDetailItemList = new ArrayList<>();
-//            }
-//
-//            ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
-//                    .scheduleItemId(scheduleItem.getId())
-//                    .day(currentDay)
-//                    .jejuPlaceId(jejuPlace.getId())
-//                    .jejuPlaceName(jejuPlace.getName())
-//                    .latitude(jejuPlace.getLatitude())
-//                    .longitude(jejuPlace.getLongitude())
-//                    .roadAddress(jejuPlace.getRoadAddress())
-//                    .placeUrl(jejuPlace.getPlaceUrl())
-//                    .imageUrl(jejuPlace.getImgUrl())
-//                    .reviewCount(jejuPlace.getReviewCount())
-//                    .reviewScore(Math.round(reviewScore*10)/10.0)
-//                    .tag(jejuPlace.getTag())
-//                    .build();
-//
-//            scheduleDetailItemList.add(scheduleDetailItem);
-//            beforeDay = currentDay;
-//        }
+            scheduleDetailItemList.add(scheduleDetailItem);
+            beforeDay = currentDay;
+        }
 
-        scheduleDetailItemAllList.add(scheduleDetailItemList);
+        scheduleDetailItemMap.put(beforeDay, scheduleDetailItemList);
         ScheduleDetailRes scheduleDetailRes = ScheduleDetailRes.builder()
                 .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
-                .scheduleDetailItemList(scheduleDetailItemAllList)
+                .scheduleDetailItemMap(scheduleDetailItemMap)
                 .build();
         return scheduleDetailRes;
     }
