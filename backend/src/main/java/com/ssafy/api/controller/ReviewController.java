@@ -21,6 +21,7 @@ public class ReviewController {
     @GetMapping("/scheduleItem/{scheduleId}")
     public ResponseEntity<?> getReviewScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
         ReviewScheduleItemRes reviewScheduleItemRes = reviewService.getReviewScheduleHistory(scheduleId);
+        if(reviewScheduleItemRes == null) return ResponseEntity.status(200).body("여행 마지막 날짜 이후 리뷰 등록 가능");
         return ResponseEntity.status(200).body(reviewScheduleItemRes);
     }
 

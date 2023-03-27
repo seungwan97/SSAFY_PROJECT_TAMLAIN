@@ -8,8 +8,10 @@ import com.ssafy.api.response.ScheduleHistoryRes;
 import com.ssafy.db.entity.JejuPlace;
 import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.entity.ScheduleItem;
+import com.ssafy.db.entity.Survey;
 import com.ssafy.db.repository.ScheduleItemRepository;
 import com.ssafy.db.repository.ScheduleRepository;
+import com.ssafy.db.repository.SurveyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,7 @@ import java.util.Optional;
 public class HistoryServiceImpl implements HistoryService {
     private final ScheduleRepository scheduleRepository;
     private final ScheduleItemRepository scheduleItemRepository;
+    private final SurveyRepository surveyRepository;
     @Override
     public List<ScheduleHistoryRes> getScheduleHistory(int userId) {
         Optional<List<Schedule>> oScheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
@@ -50,8 +53,15 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
+        int surveyId = schedule.getSurvey().getId();
+        Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
+        Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
+
         schedule.setDelete(true);
         scheduleRepository.save(schedule);
+
+        survey.setDelete(true);
+        surveyRepository.save(survey);
     }
 
     @Override

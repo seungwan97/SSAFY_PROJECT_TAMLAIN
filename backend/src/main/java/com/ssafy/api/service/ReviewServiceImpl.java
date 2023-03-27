@@ -8,6 +8,7 @@ import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,11 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId) {
+        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
+        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
+
+        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return null;
+
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
         List<ReviewScheduleItem> reviewScheduleItemList = new ArrayList<>();
         List<String> scheduleNameList = new ArrayList<>();
