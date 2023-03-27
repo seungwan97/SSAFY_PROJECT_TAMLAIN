@@ -1,18 +1,13 @@
 package com.ssafy.db.entity;
 
 import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class JejuPlace {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +27,10 @@ public class JejuPlace {
     private int reviewCount;
     @Column(length = 150)
     private String tag;
+
+    @Builder
+    public JejuPlace(int reviewScoreSum, int reviewCount) {
+        this.reviewScoreSum = reviewScoreSum;
+        this.reviewCount = reviewCount;
+    }
 }

@@ -29,18 +29,20 @@ public class HistoryServiceImpl implements HistoryService {
     public List<ScheduleHistoryRes> getScheduleHistory(int userId) {
         Optional<List<Schedule>> oScheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
         List<ScheduleHistoryRes> scheduleHistoryResList = new ArrayList<>();
-        int size = oScheduleList.get().size();
 
-        for(int i = 0; i < size; i++) {
-            ScheduleHistoryRes scheduleHistoryRes = new ScheduleHistoryRes(
-                    oScheduleList.get().get(i).getId(),
-                    oScheduleList.get().get(i).getScheduleThumbnail().getThumbnailImageUrl(),
-                    oScheduleList.get().get(i).getUser().getNickName(),
-                    oScheduleList.get().get(i).getName(),
-                    oScheduleList.get().get(i).getSurvey().getStartDate(),
-                    oScheduleList.get().get(i).getSurvey().getEndDate(),
-                    oScheduleList.get().get(i).getPeriod(),
-                    oScheduleList.get().get(i).isReview());
+        if(!oScheduleList.isPresent()) return null;
+
+        for(Schedule schedule : oScheduleList.get()) {
+            ScheduleHistoryRes scheduleHistoryRes = ScheduleHistoryRes.builder()
+                    .scheduleId(schedule.getId())
+                    .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
+                    .nickName(schedule.getUser().getNickName())
+                    .name(schedule.getName())
+                    .startDate(schedule.getSurvey().getStartDate())
+                    .endDate(schedule.getSurvey().getEndDate())
+                    .period(schedule.getPeriod())
+                    .isReview(schedule.isReview())
+                    .build();
 
             scheduleHistoryResList.add(scheduleHistoryRes);
         }
@@ -77,12 +79,13 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
-        MypageCommonInfo mypageCommonInfo = new MypageCommonInfo(
-                schedule.getScheduleThumbnail().getThumbnailImageUrl(),
-                schedule.getName(),
-                schedule.getSurvey().getStartDate(),
-                schedule.getSurvey().getEndDate(),
-                schedule.getPeriod());
+        MypageCommonInfo mypageCommonInfo = MypageCommonInfo.builder()
+                .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
+                .name(schedule.getName())
+                .startDate(schedule.getSurvey().getStartDate())
+                .endDate(schedule.getSurvey().getEndDate())
+                .period(schedule.getPeriod())
+                .build();
 
         return  mypageCommonInfo;
     }
@@ -90,13 +93,13 @@ public class HistoryServiceImpl implements HistoryService {
     @Override
     public ScheduleDetailRes getScheduleDetail(int scheduleId) {
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
+        if(!oScheduleItemList.isPresent()) return null;
+
         List<List<ScheduleDetailItem>> scheduleDetailItemAllList = new ArrayList<>();
         List<ScheduleDetailItem> scheduleDetailItemList = new ArrayList<>();
-        int size = oScheduleItemList.get().size();
         int beforeDay = 1;
 
-        for(int i = 0; i < size; i++) {
-            ScheduleItem scheduleItem = oScheduleItemList.get().get(i);
+        for(ScheduleItem scheduleItem : oScheduleItemList.get()) {
             JejuPlace jejuPlace = scheduleItem.getJejuPlace();
             int currentDay = scheduleItem.getDay();
             Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
@@ -106,26 +109,30 @@ public class HistoryServiceImpl implements HistoryService {
                 scheduleDetailItemList = new ArrayList<>();
             }
 
-            ScheduleDetailItem scheduleDetailItem = new ScheduleDetailItem(
-                    scheduleItem.getId(),
-                    currentDay,
-                    jejuPlace.getId(),
-                    jejuPlace.getName(),
-                    jejuPlace.getLatitude(),
-                    jejuPlace.getLongitude(),
-                    jejuPlace.getRoadAddress(),
-                    jejuPlace.getPlaceUrl(),
-                    jejuPlace.getImgUrl(),
-                    jejuPlace.getReviewCount(),
-                    Math.round(reviewScore*10)/10.0,
-                    jejuPlace.getTag());
+            ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
+                    .scheduleItemId(scheduleItem.getId())
+                    .day(currentDay)
+                    .jejuPlaceId(jejuPlace.getId())
+                    .jejuPlaceName(jejuPlace.getName())
+                    .latitude(jejuPlace.getLatitude())
+                    .longitude(jejuPlace.getLongitude())
+                    .roadAddress(jejuPlace.getRoadAddress())
+                    .placeUrl(jejuPlace.getPlaceUrl())
+                    .imageUrl(jejuPlace.getImgUrl())
+                    .reviewCount(jejuPlace.getReviewCount())
+                    .reviewScore(Math.round(reviewScore*10)/10.0)
+                    .tag(jejuPlace.getTag())
+                    .build();
 
             scheduleDetailItemList.add(scheduleDetailItem);
             beforeDay = currentDay;
         }
 
         scheduleDetailItemAllList.add(scheduleDetailItemList);
-        ScheduleDetailRes scheduleDetailRes = new ScheduleDetailRes(getMyPageCommonInfo(scheduleId), scheduleDetailItemAllList);
+        ScheduleDetailRes scheduleDetailRes = ScheduleDetailRes.builder()
+                .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
+                .scheduleDetailItemList(scheduleDetailItemAllList)
+                .build();
         return scheduleDetailRes;
     }
 }

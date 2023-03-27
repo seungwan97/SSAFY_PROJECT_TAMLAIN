@@ -77,8 +77,5 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleItemRepository.save(scheduleItem);
         }
-
     }
-
-
 }

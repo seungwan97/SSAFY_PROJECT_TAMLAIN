@@ -7,6 +7,7 @@ import com.ssafy.api.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class HisoryController {
     @GetMapping("/{userId}")
     public ResponseEntity<?> getScheduleHistory(@PathVariable("userId") int userId) {
         List<ScheduleHistoryRes> scheduleHistoryResList = historyService.getScheduleHistory(userId);
+        if(scheduleHistoryResList == null) return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
         return ResponseEntity.status(200).body(scheduleHistoryResList);
     }
 
