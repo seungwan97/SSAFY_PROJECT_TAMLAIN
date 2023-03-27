@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,6 +23,4 @@ public class User {
     private String nickName;
     @Column(length = 64)
     private String refreshToken;
-    @CreatedDate
-    private LocalDateTime createdDate;
 }

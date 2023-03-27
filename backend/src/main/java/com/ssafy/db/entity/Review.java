@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,8 +23,6 @@ public class Review {
     @JoinColumn(name = "jeju_place_id")
     private JejuPlace jejuPlace;
     private int score;
-    @CreatedDate
-    private LocalDateTime createdDate;
 
     @Builder
     public Review(User user, ScheduleItem scheduleItem, JejuPlace jejuPlace, int score) {

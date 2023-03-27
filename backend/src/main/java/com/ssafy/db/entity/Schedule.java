@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @DynamicUpdate
-public class Schedule {
+public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -34,8 +34,6 @@ public class Schedule {
     private int period;
     private boolean isDelete;
     private boolean isReview;
-    @CreatedDate
-    private LocalDateTime createdDate;
 
     @Builder
     public Schedule(User user, Survey survey, ScheduleThumbnail scheduleThumbnail, String name, int period, boolean isDelete, boolean isReview) {

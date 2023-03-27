@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class ScheduleItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
