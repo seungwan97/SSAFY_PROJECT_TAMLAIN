@@ -44,4 +44,9 @@ public class Survey extends BaseEntity {
         this.season = season;
         this.isDelete = isDelete;
     }
+
+    public static Survey of(Survey survey) {
+        survey.setDelete(true);
+        return survey;
+    }
 }

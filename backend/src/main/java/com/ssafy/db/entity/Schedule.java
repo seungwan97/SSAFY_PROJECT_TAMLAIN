@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
-@DynamicUpdate
 public class Schedule extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,4 +44,15 @@ public class Schedule extends BaseEntity {
         this.isDelete = isDelete;
         this.isReview = isReview;
     }
+
+    public static Schedule of(Schedule schedule, String name) {
+        schedule.setName(name);
+        return schedule;
+    }
+
+    public static Schedule of(Schedule schedule) {
+        schedule.setDelete(true);
+        return schedule;
+    }
+
 }

@@ -2,11 +2,13 @@ package com.ssafy.db.entity;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class JejuPlace {
     @Id
@@ -32,5 +34,11 @@ public class JejuPlace {
     public JejuPlace(int reviewScoreSum, int reviewCount) {
         this.reviewScoreSum = reviewScoreSum;
         this.reviewCount = reviewCount;
+    }
+
+    public static JejuPlace of(JejuPlace jejuPlace, int reviewScoreSum, int reviewCount) {
+        jejuPlace.setReviewScoreSum(reviewScoreSum);
+        jejuPlace.setReviewCount(reviewCount);
+        return jejuPlace;
     }
 }

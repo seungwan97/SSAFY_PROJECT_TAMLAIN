@@ -60,11 +60,8 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-        schedule.setDelete(true);
-        scheduleRepository.save(schedule);
-
-        survey.setDelete(true);
-        surveyRepository.save(survey);
+        scheduleRepository.save(Schedule.of(schedule));
+        surveyRepository.save(Survey.of(survey));
     }
 
     @Override
@@ -72,8 +69,7 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
-        schedule.setName(scheduleModifyReq.getName());
-        scheduleRepository.save(schedule);
+        scheduleRepository.save(Schedule.of(schedule, scheduleModifyReq.getName()));
     }
 
     public MypageCommonInfo getMyPageCommonInfo(int scheduleId) {

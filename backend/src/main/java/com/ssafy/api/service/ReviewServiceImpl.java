@@ -95,12 +95,11 @@ public class ReviewServiceImpl implements ReviewService {
 
             reviewRepository.save(review);
 
-            jejuPlace = JejuPlace.builder()
-                    .reviewScoreSum(jejuPlace.getReviewScoreSum()+reviewRegistItem.getScore())
-                    .reviewCount(jejuPlace.getReviewCount()+1)
-                    .build();
+            JejuPlace newJejuPlace = JejuPlace.of(jejuPlace,
+                    jejuPlace.getReviewScoreSum()+reviewRegistItem.getScore(),
+                    jejuPlace.getReviewCount()+1);
 
-            jejuPlaceRepository.save(jejuPlace);
+            jejuPlaceRepository.save(newJejuPlace);
         }
     }
 
