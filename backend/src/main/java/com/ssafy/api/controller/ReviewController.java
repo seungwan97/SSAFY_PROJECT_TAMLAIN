@@ -30,7 +30,7 @@ public class ReviewController {
     @PostMapping()
     public ResponseEntity<?> registReview(@RequestBody ReviewRegistReq reviewRegistReq) {
         reviewService.registReview(reviewRegistReq);
-        return ResponseEntity.status(200).body("별점 등록 성공");
+        return ResponseEntity.status(201).body("별점 등록 성공");
     }
 
     @ApiOperation(value = "별점 조회", notes = "내가 등록한 별점 조회하기")
