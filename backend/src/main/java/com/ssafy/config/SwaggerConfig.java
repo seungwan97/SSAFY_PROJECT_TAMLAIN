@@ -19,7 +19,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(true)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(regex("/(api|oauth)/.*"))
+                .paths(regex("/(schedule|history|review|survey|oauth)/.*"))
                 .build();
     }
 
