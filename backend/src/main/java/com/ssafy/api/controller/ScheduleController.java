@@ -17,7 +17,7 @@ import java.util.List;
 @Api(value = "일점 API", tags = {"Schedule"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/schedule")
+@RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleService scheduleService;
 

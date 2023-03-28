@@ -14,7 +14,7 @@ import java.util.List;
 @Api(value = "일정 내역 API", tags = {"History"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/history")
+@RequestMapping("/history")
 public class HisoryController {
     private final HistoryService historyService;
 
