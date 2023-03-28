@@ -7,6 +7,7 @@ import com.ssafy.api.service.ReviewService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ public class ReviewController {
     @GetMapping("/scheduleItem/{scheduleId}")
     public ResponseEntity<?> getReviewScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
         ReviewScheduleItemRes reviewScheduleItemRes = reviewService.getReviewScheduleHistory(scheduleId);
+        if(reviewScheduleItemRes == null) return ResponseEntity.status(204).body("여행 마지막 날짜 이후부터 리뷰 등록 가능");
         return ResponseEntity.status(200).body(reviewScheduleItemRes);
     }
 
@@ -35,6 +37,7 @@ public class ReviewController {
     @GetMapping("/{scheduleId}")
     public ResponseEntity<?> getReview(@PathVariable("scheduleId") int scheduleId) {
         ReviewRes reviewRes = reviewService.getReview(scheduleId);
+        if(reviewRes == null) return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
         return ResponseEntity.status(200).body(reviewRes);
     }
 

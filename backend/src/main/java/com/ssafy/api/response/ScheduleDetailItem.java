@@ -1,8 +1,9 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
 public class ScheduleDetailItem {
     private int scheduleItemId;
     private int day;
@@ -14,10 +15,11 @@ public class ScheduleDetailItem {
     private String placeUrl;
     private String imageUrl;
     private int reviewCount;
-    private int reviewScore;
+    private Double reviewScore;
     private String tag;
 
-    public ScheduleDetailItem(int scheduleItemId, int day, int jejuPlaceId, String jejuPlaceName, Double latitude, Double longitude, String roadAddress, String placeUrl, String imageUrl, int reviewCount, int reviewScore, String tag) {
+    @Builder
+    public ScheduleDetailItem(int scheduleItemId, int day, int jejuPlaceId, String jejuPlaceName, Double latitude, Double longitude, String roadAddress, String placeUrl, String imageUrl, int reviewCount, Double reviewScore, String tag) {
         this.scheduleItemId = scheduleItemId;
         this.day = day;
         this.jejuPlaceId = jejuPlaceId;

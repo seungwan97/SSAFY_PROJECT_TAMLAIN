@@ -1,16 +1,19 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
-@Data
+@Getter
 public class ScheduleDetailRes {
     private MypageCommonInfo mypageCommonInfo;
-    private List<ScheduleDetailItem> scheduleDetailItemList;
+    private LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap;
 
-    public ScheduleDetailRes(MypageCommonInfo mypageCommonInfo, List<ScheduleDetailItem> scheduleDetailItemList) {
+    @Builder
+    public ScheduleDetailRes(MypageCommonInfo mypageCommonInfo, LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap) {
         this.mypageCommonInfo = mypageCommonInfo;
-        this.scheduleDetailItemList = scheduleDetailItemList;
+        this.scheduleDetailItemMap = scheduleDetailItemMap;
     }
 }

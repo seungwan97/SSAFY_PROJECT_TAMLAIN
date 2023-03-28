@@ -1,11 +1,20 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
-@Data
+@Getter
 public class ReviewItem {
     private String jejuPlaceImgUrl;
     private String jejuPlaceName;
     private int score;
     private boolean isVisit;
+
+    @Builder
+    public ReviewItem(String jejuPlaceImgUrl, String jejuPlaceName, int score, boolean isVisit) {
+        this.jejuPlaceImgUrl = jejuPlaceImgUrl;
+        this.jejuPlaceName = jejuPlaceName;
+        this.score = score;
+        this.isVisit = isVisit;
+    }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,11 +28,25 @@ public class ScheduleController {
         List<SearchPlaceRes> serarchPlaceResList = scheduleService.getserarchPlace(keyword);
         return ResponseEntity.status(200).body(serarchPlaceResList);
     }
-
     @ApiOperation(value = "장소 상세 정보", notes = "장소 아이디 입력시 해당 장소의 상세정보")
     @GetMapping("/{jejuPlaceId}")
     public ResponseEntity<?> getPlaceDetail(@PathVariable("jejuPlaceId") int jejuPlaceId) {
         PlaceDetailRes placeDetailRes = scheduleService.getPlaceDetail(jejuPlaceId);
         return ResponseEntity.status(200).body(placeDetailRes);
     }
+
+    @ApiOperation(value = "일정 썸네일 사진 조회", notes = "일정 등록할 썸네일 사진 조회하기")
+    @GetMapping("/thumbnail")
+    public ResponseEntity<?> getScheduleThumbnail() {
+        List<ScheduleThumbnailRes> scheduleThumbnailResList = scheduleService.getScheduleThumbnail();
+        return ResponseEntity.status(200).body(scheduleThumbnailResList);
+    }
+
+    @ApiOperation(value = "일정 등록", notes = "사용자가 만든 일정 등록하기")
+    @PostMapping()
+    public ResponseEntity<?> registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
+        scheduleService.registSchedule(scheduleRegistReq);
+        return ResponseEntity.status(200).body("일정 등록");
+    }
+
 }

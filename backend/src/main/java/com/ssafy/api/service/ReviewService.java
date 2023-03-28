@@ -4,8 +4,6 @@ import com.ssafy.api.request.ReviewRegistReq;
 import com.ssafy.api.response.ReviewRes;
 import com.ssafy.api.response.ReviewScheduleItemRes;
 
-import java.util.List;
-
 public interface ReviewService {
     ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId);
     void registReview(ReviewRegistReq reviewRegistReq);

@@ -8,8 +8,6 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class TravelMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

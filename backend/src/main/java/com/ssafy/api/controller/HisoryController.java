@@ -1,11 +1,13 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleModifyReq;
+import com.ssafy.api.response.ScheduleDetailRes;
 import com.ssafy.api.response.ScheduleHistoryRes;
 import com.ssafy.api.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ public class HisoryController {
     @GetMapping("/{userId}")
     public ResponseEntity<?> getScheduleHistory(@PathVariable("userId") int userId) {
         List<ScheduleHistoryRes> scheduleHistoryResList = historyService.getScheduleHistory(userId);
+        if(scheduleHistoryResList == null) return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
         return ResponseEntity.status(200).body(scheduleHistoryResList);
     }
 
@@ -39,10 +42,11 @@ public class HisoryController {
         return ResponseEntity.status(200).body("일정명 수정");
     }
 
-//    @ApiOperation(value = "세부 일정 조회", notes = "세부 일정 내역 조회하기")
-//    @GetMapping("/scheduleDetail/{scheduleId}")
-//    public ResponseEntity<?> getScheduleDetail(@PathVariable("scheduleId") int scheduleId) {
-//
-//    }
+    @ApiOperation(value = "세부 일정 조회", notes = "세부 일정 내역 조회하기")
+    @GetMapping("/scheduleDetail/{scheduleId}")
+    public ResponseEntity<?> getScheduleDetail(@PathVariable("scheduleId") int scheduleId) {
+        ScheduleDetailRes scheduleDetailRes = historyService.getScheduleDetail(scheduleId);
+        return ResponseEntity.status(200).body(scheduleDetailRes);
+    }
 
 }

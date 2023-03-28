@@ -1,10 +1,11 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
 public class MypageCommonInfo {
     private String thumbnailImageUrl;
     private String name;
@@ -12,6 +13,7 @@ public class MypageCommonInfo {
     private LocalDate endDate;
     private int period;
 
+    @Builder
     public MypageCommonInfo(String thumbnailImageUrl, String name, LocalDate startDate, LocalDate endDate, int period) {
         this.thumbnailImageUrl = thumbnailImageUrl;
         this.name = name;

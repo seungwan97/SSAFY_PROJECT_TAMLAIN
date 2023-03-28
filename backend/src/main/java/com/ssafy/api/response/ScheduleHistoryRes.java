@@ -1,10 +1,11 @@
 package com.ssafy.api.response;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Data
+@Getter
 public class ScheduleHistoryRes {
     private int scheduleId;
     private String thumbnailImageUrl;
@@ -15,6 +16,7 @@ public class ScheduleHistoryRes {
     private int period;
     private boolean isReview;
 
+    @Builder
     public ScheduleHistoryRes(int scheduleId, String thumbnailImageUrl, String nickName, String name, LocalDate startDate, LocalDate endDate, int period, boolean isReview) {
         this.scheduleId = scheduleId;
         this.thumbnailImageUrl = thumbnailImageUrl;

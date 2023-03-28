@@ -8,6 +8,7 @@ import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -23,28 +24,38 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId) {
+        Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
+        Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
+
+        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return null;
+
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
+        List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
+
         List<ReviewScheduleItem> reviewScheduleItemList = new ArrayList<>();
         List<String> scheduleNameList = new ArrayList<>();
-        int size = oScheduleItemList.get().size();
 
-        for(int i = 0; i < size; i++) {
-            int scheduleItemId = oScheduleItemList.get().get(i).getId();
-            JejuPlace jejuPlace = oScheduleItemList.get().get(i).getJejuPlace();
+        for(ScheduleItem scheduleItem : scheduleItemList) {
+            int scheduleItemId = scheduleItem.getId();
+            JejuPlace jejuPlace = scheduleItem.getJejuPlace();
 
             if(scheduleNameList.contains(jejuPlace.getName())) continue;
 
-            ReviewScheduleItem reviewScheduleItem = new ReviewScheduleItem(
-                    jejuPlace.getImgUrl(),
-                    jejuPlace.getName(),
-                    scheduleItemId,
-                    jejuPlace.getId());
+            ReviewScheduleItem reviewScheduleItem = ReviewScheduleItem.builder()
+                    .jejuPlaceImgUrl(jejuPlace.getImgUrl())
+                    .jejuPlaceName(jejuPlace.getName())
+                    .scheduleItemId(scheduleItemId)
+                    .jejuPlaceId(jejuPlace.getId())
+                    .build();
 
             reviewScheduleItemList.add(reviewScheduleItem);
             scheduleNameList.add(jejuPlace.getName());
         }
 
-        ReviewScheduleItemRes reviewScheduleItemRes = new ReviewScheduleItemRes(getMyPageCommonInfo(scheduleId), reviewScheduleItemList);
+        ReviewScheduleItemRes reviewScheduleItemRes = ReviewScheduleItemRes.builder()
+                .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
+                .reviewScheduleItemList(reviewScheduleItemList)
+                .build();
         return reviewScheduleItemRes;
     }
 
@@ -52,12 +63,13 @@ public class ReviewServiceImpl implements ReviewService {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
-        MypageCommonInfo mypageCommonInfo = new MypageCommonInfo(
-                schedule.getScheduleThumbnail().getThumbnailImageUrl(),
-                schedule.getName(),
-                schedule.getSurvey().getStartDate(),
-                schedule.getSurvey().getEndDate(),
-                schedule.getPeriod());
+        MypageCommonInfo mypageCommonInfo = MypageCommonInfo.builder()
+                .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
+                .name(schedule.getName())
+                .startDate(schedule.getSurvey().getStartDate())
+                .endDate(schedule.getSurvey().getEndDate())
+                .period(schedule.getPeriod())
+                .build();
 
         return  mypageCommonInfo;
     }
@@ -66,68 +78,73 @@ public class ReviewServiceImpl implements ReviewService {
     public void registReview(ReviewRegistReq reviewRegistReq) {
         Optional<User> oUser = userRepository.findById(reviewRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
-        int size = reviewRegistReq.getReviewRegistItemList().size();
 
-        for(int i = 0; i < size; i++) {
-            ReviewRegistItem reviewRegistItem = reviewRegistReq.getReviewRegistItemList().get(i);
-
+        for(ReviewRegistItem reviewRegistItem : reviewRegistReq.getReviewRegistItemList()) {
             Optional<ScheduleItem> oScheduleItem = scheduleItemRepository.findById(reviewRegistItem.getScheduleItemId());
             ScheduleItem scheduleItem = oScheduleItem.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
 
             Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(reviewRegistItem.getJejuPlaceId());
             JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
-            Review review = new Review();
-            review.setUser(user);
-            review.setScheduleItem(scheduleItem);
-            review.setJejuPlace(jejuPlace);
-            review.setScore(reviewRegistItem.getScore());
+            Review review = Review.builder()
+                    .user(user)
+                    .scheduleItem(scheduleItem)
+                    .jejuPlace(jejuPlace)
+                    .score(reviewRegistItem.getScore())
+                    .build();
 
             reviewRepository.save(review);
 
-            jejuPlace.setReviewScoreSum(jejuPlace.getReviewScoreSum()+reviewRegistItem.getScore());
-            jejuPlace.setReviewCount(jejuPlace.getReviewCount()+1);
+            JejuPlace newJejuPlace = JejuPlace.of(jejuPlace,
+                    jejuPlace.getReviewScoreSum()+reviewRegistItem.getScore(),
+                    jejuPlace.getReviewCount()+1);
 
-            jejuPlaceRepository.save(jejuPlace);
+            jejuPlaceRepository.save(newJejuPlace);
         }
     }
 
     @Override
     public ReviewRes getReview(int scheduleId) {
         Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
+        if(!oScheduleItemList.isPresent()) return null;
+
         List<ReviewItem> reviewItemList = new ArrayList<>();
-        int size = oScheduleItemList.get().size();
+        for(ScheduleItem scheduleItem : oScheduleItemList.get()) {
+            boolean flag = false;
 
-        for(int i = 0; i < size; i++) {
-            ScheduleItem scheduleItem = oScheduleItemList.get().get(i);
-            boolean flag = true;
-
-            for(int j = 0; j < reviewItemList.size(); j++) {
-                if(reviewItemList.get(j).getJejuPlaceName().equals(scheduleItem.getJejuPlace().getName())) {
-                    flag = false;
+            for(ReviewItem reviewItem : reviewItemList) {
+                if(reviewItem.getJejuPlaceName().equals(scheduleItem.getJejuPlace().getName())) {
+                    flag = true;
                     break;
                 }
             }
 
-            if(!flag) continue;
+            if(flag) continue;
 
-            ReviewItem reviewItem = new ReviewItem();
-            reviewItem.setJejuPlaceImgUrl(scheduleItem.getJejuPlace().getImgUrl());
-            reviewItem.setJejuPlaceName(scheduleItem.getJejuPlace().getName());
+            int score = 0;
+            boolean visited = false;
 
-            Optional<Review> review = reviewRepository.findByScheduleItemId(scheduleItem.getId());
-            if(!review.isEmpty()) {
-                reviewItem.setScore(review.get().getScore());
-                reviewItem.setVisit(true);
-            } else {
-                reviewItem.setScore(0);
-                reviewItem.setVisit(false);
+            Optional<Review> oReview = reviewRepository.findByScheduleItemId(scheduleItem.getId());
+            if(oReview.isPresent()) {
+                score = oReview.get().getScore();
+                visited = true;
             }
+
+            ReviewItem reviewItem = ReviewItem.builder()
+                    .jejuPlaceImgUrl(scheduleItem.getJejuPlace().getImgUrl())
+                    .jejuPlaceName(scheduleItem.getJejuPlace().getName())
+                    .score(score)
+                    .isVisit(visited)
+                    .build();
 
             reviewItemList.add(reviewItem);
         }
 
-        ReviewRes reviewRes = new ReviewRes(getMyPageCommonInfo(scheduleId), reviewItemList);
+        ReviewRes reviewRes = ReviewRes.builder()
+                .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
+                .reviewItemList(reviewItemList)
+                .build();
+
         return reviewRes;
     }
 
