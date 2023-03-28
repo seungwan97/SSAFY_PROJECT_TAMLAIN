@@ -3,13 +3,13 @@ package com.ssafy.api.service;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.SearchPlaceRes;
 import com.ssafy.db.entity.JejuPlace;
-import com.ssafy.db.entity.ScheduleItem;
 import com.ssafy.db.repository.JejuPlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,15 +23,20 @@ public class ScheduleServiceImpl implements ScheduleService{
     @Override
     public List<SearchPlaceRes> getserarchPlace(String keyword) {
         Optional<List<JejuPlace>> oJejuPlacesList = jejuPlaceRepository.findByNameContaining(keyword);
+        List<JejuPlace> jejuPlaceList = oJejuPlacesList.orElseThrow(() -> new IllegalArgumentException("검색 결과가 없습니다."));
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
-        int size = oJejuPlacesList.get().size();
 
-        for(int i = 0; i < size; i++) {
+        for(JejuPlace jejuPlace : jejuPlaceList) {
+            LinkedHashMap<String, Double> map = new LinkedHashMap<>();
+            map.put("La", jejuPlace.getLatitude());
+            map.put("Ma", jejuPlace.getLongitude());
+
             SearchPlaceRes serachPlaceRes = new SearchPlaceRes(
-                    oJejuPlacesList.get().get(i).getImgUrl(),
-                    oJejuPlacesList.get().get(i).getName(),
-                    oJejuPlacesList.get().get(i).getRoadAddress());
-
+                    serachPlaceResList.size()+1,
+                    jejuPlace.getImgUrl(),
+                    jejuPlace.getName(),
+                    jejuPlace.getRoadAddress(),
+                    map);
             serachPlaceResList.add(serachPlaceRes);
         }
 
