@@ -1,7 +1,9 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.JejuPlaceReq;
 import com.ssafy.api.request.ScheduleRegistItem;
 import com.ssafy.api.request.ScheduleRegistReq;
+import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
@@ -77,5 +79,32 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleItemRepository.save(scheduleItem);
         }
+    }
+
+    @Override
+    public List<JejuPlaceRes> getRecommendJejuPlace(ScheduleRegistReq scheduleRegistReq) {
+        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
+        List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
+
+        for(JejuPlace jejuPlace : jejuPlaceList) {
+            JejuPlaceReq.builder()
+                    .jejuPlaceId(jejuPlace.getId())
+                    .name(jejuPlace.getName())
+                    .category(jejuPlace.getCategory().getCategoryName())
+                    .categoryDetail(jejuPlace.getCategory().getCategoryDetailName())
+                    .latitude(jejuPlace.getLatitude())
+                    .longitude(jejuPlace.getLongitude())
+                    .roadAddress(jejuPlace.getRoadAddress())
+                    .placeUrl(jejuPlace.getPlaceUrl())
+                    .imgUrl(jejuPlace.getImgUrl())
+                    .reviewScoreSum(jejuPlace.getReviewScoreSum())
+                    .reviewCount(jejuPlace.getReviewCount())
+                    .tag(jejuPlace.getTag())
+                    .build();
+        }
+
+        // RestTemplate
+
+        return null;
     }
 }

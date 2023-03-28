@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleRegistReq;
+import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
 import com.ssafy.api.service.ScheduleService;
 import io.swagger.annotations.Api;
@@ -32,4 +33,11 @@ public class ScheduleController {
         return ResponseEntity.status(200).body("일정 등록");
     }
 
+    @ApiOperation(value = "추천 불러오기", notes = "설문 조사를 통한 추천 장소 불러오기")
+    @GetMapping("/recommend/survey")
+    public ResponseEntity<?> getRecommendJejuPlace(@RequestBody ScheduleRegistReq scheduleRegistReq) {
+        List<JejuPlaceRes> jejuPlaceResList = scheduleService.getRecommendJejuPlace(scheduleRegistReq);
+        return ResponseEntity.status(200).body(jejuPlaceResList);
+    }
+    
 }
