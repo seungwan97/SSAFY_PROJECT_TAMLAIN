@@ -29,7 +29,7 @@ public class ScheduleController {
     @PostMapping()
     public ResponseEntity<?> registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
         scheduleService.registSchedule(scheduleRegistReq);
-        return ResponseEntity.status(201).body("일정 등록");
+        return ResponseEntity.status(200).body("일정 등록");
     }
 
 }
