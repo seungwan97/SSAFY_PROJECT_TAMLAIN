@@ -1,11 +1,11 @@
 package com.ssafy.api.response;
 
-import com.ssafy.api.request.ReviewRegistItem;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 public class ReviewRes {
     private MypageCommonInfo mypageCommonInfo;
     private List<ReviewItem> reviewItemList;

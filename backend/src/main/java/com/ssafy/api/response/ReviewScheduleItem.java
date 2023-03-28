@@ -1,8 +1,9 @@
 package com.ssafy.api.response;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 
+@Getter
 public class ReviewScheduleItem {
     private String jejuPlaceImgUrl;
     private String jejuPlaceName;
