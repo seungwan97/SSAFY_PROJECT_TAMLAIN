@@ -17,14 +17,6 @@ public class SurveyRegistReq {
     private LocalDate startDate;
     @ApiModelProperty(value = "여행 마지막 일자")
     private LocalDate endDate;
-    @ApiModelProperty(value = "성별")
-    private char gender;
-    @ApiModelProperty(value = "연령대")
-    private int ageRange;
-    @ApiModelProperty(value = "여행 구성원")
-    private String travelMember;
-    @ApiModelProperty(value = "차량 여부")
-    private boolean isCar;
     @ApiModelProperty(value = "여행 테마")
     private String travelTheme;
     @ApiModelProperty(value = "사용자가 선택한 세부 카테고리 목록")

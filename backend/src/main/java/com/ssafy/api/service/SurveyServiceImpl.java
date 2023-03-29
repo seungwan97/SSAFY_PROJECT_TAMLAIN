@@ -14,7 +14,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SurveyServiceImpl implements SurveyService {
     private final UserRepository userRepository;
-    private final TravelMemberRepository travelMemberRepository;
     private final TravelThemeRepository travelThemeRepository;
     private final SurveyRepository surveyRepository;
     private final CategoryRepository categoryRepository;
@@ -38,9 +37,6 @@ public class SurveyServiceImpl implements SurveyService {
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
 
-        Optional<TravelMember> oTravelMember = travelMemberRepository.findByType(surveyRegistReq.getTravelMember());
-        TravelMember travelMember = oTravelMember.orElseThrow(() -> new IllegalArgumentException("travelMember doesn't exist"));
-
         Optional<TravelTheme> oTravelTheme = travelThemeRepository.findByName(surveyRegistReq.getTravelTheme());
         TravelTheme travelTheme = oTravelTheme.orElseThrow(() -> new IllegalArgumentException("travelTheme doesn't exist"));
 
@@ -56,10 +52,6 @@ public class SurveyServiceImpl implements SurveyService {
                 .user(user)
                 .startDate(surveyRegistReq.getStartDate())
                 .endDate(surveyRegistReq.getEndDate())
-                .gender(surveyRegistReq.getGender())
-                .ageRange(surveyRegistReq.getAgeRange())
-                .travelMemberCode(travelMember.getId())
-                .isCar(surveyRegistReq.isCar())
                 .travelThemeCode(travelTheme.getId())
                 .season(season)
                 .build();
