@@ -3,7 +3,6 @@ import styled from "styled-components";
 export const Frame = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
 `;
 
 export const FrameContainer = styled.div`
@@ -13,7 +12,7 @@ export const FrameContainer = styled.div`
   z-index: 4;
   margin-top: 210px;
   display: table-cell;
-  text-align: end;
+  // text-align: end;
   vertical-align: middle;
   background-color: #fff;
   border-top-left-radius: 30px;

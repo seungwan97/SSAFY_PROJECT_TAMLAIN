@@ -20,17 +20,27 @@ import SurveySport from "./components/Survey/SurveySport";
 import SurveyExhibition from "./components/Survey/SurveyExhibition";
 import SurveyRest from "./components/Survey/SurveyRest";
 
+import ScheduleMain from "./components/Schedule/ScheduleMain";
+
+import MyPageMain from "./components/MyPage/MyPageMain";
+
+import KakaoMap from "./components/Maptest/KakaoMap";
+
 const App = () => {
   return (
     <>
       <AnimatePresence>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          {/* -- ----  -- - - - - -  */}
           <Route path="oauth/callback/kakao" element={<OAuthRedirectPage />} />
           <Route path="/login" element={<Login />} />;
-          <Route path="/" element={<Navigate to="/surveyCalendar" />} />
+          <Route path="/" element={<Navigate to="/main" />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/map" element={<KakaoMap />} />
           <Route element={<Navbar />}>
+            {/* 메인페이지 */}
+            <Route path="/main" element={<MainPage />} />
+
             {/**질문페이지 */}
             <Route element={<SurveyMain />}>
               <Route element={<Frame />}>
@@ -51,6 +61,12 @@ const App = () => {
                   element={<SurveyExhibition />}
                 />
                 <Route path="/surveyRest" element={<SurveyRest />} />
+
+                {/* 일정 작성 페이지 */}
+                <Route path="/schedule" element={<ScheduleMain />} />
+
+                {/* 마이 페이지 */}
+                <Route path="/mypage" element={<MyPageMain />} />
               </Route>
             </Route>
           </Route>
