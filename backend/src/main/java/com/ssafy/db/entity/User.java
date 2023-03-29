@@ -53,3 +53,9 @@ public class User extends BaseEntity {
 
         return user;
     }
+
+    public void addUserProfile(UserProfile userProfile){
+        this.userProfile = userProfile;
+        userProfile.setUser(this);
+    }
+}

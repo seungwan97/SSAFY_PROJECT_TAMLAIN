@@ -88,11 +88,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
     }
-@Slf4j
-@RequiredArgsConstructor
-public class ScheduleServiceImpl implements ScheduleService{
-    private final JejuPlaceRepository jejuPlaceRepository;
-
 
     @Override
     public List<SearchPlaceRes> getserarchPlace(String keyword) {

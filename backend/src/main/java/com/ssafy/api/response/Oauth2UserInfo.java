@@ -9,5 +9,4 @@ public interface Oauth2UserInfo {
     public String getEmail();
     public String getNickName();
 
-    public LocalDateTime getCreatedDate();
 }

@@ -92,12 +92,11 @@ public class OauthServiceImpl implements OauthService{
         String providerId = oauth2UserInfo.getProviderId();
         String nickName = oauth2UserInfo.getNickName();
         String email = oauth2UserInfo.getEmail();
-        LocalDateTime createdDate = oauth2UserInfo.getCreatedDate();
 
         User userEntity = userRepository.findByEmail(email);
 
         if (userEntity == null){
-            userEntity = User.createUser(email, nickName, createdDate, provide, providerId);
+            userEntity = User.createUser(email, nickName, provide, providerId);
             userRepository.save(userEntity);
         }else {
 

@@ -31,11 +31,6 @@ public class KakaoUserInfo implements Oauth2UserInfo {
         return (String) getProfile().get("nickname");
     }
 
-    @Override
-    public LocalDateTime getCreatedDate() {
-        return LocalDateTime.now();
-    }
-
     public Map<String, Object> getKakaoAccount(){
         return(Map<String, Object>) attributes.get("kakao_account");
     }

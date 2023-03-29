@@ -1,6 +1,8 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.request.ScheduleRegistReq;
 import com.ssafy.api.response.PlaceDetailRes;
+import com.ssafy.api.response.ScheduleThumbnailRes;
 import com.ssafy.api.response.SearchPlaceRes;
 import com.ssafy.api.service.ScheduleService;
 import io.swagger.annotations.Api;
