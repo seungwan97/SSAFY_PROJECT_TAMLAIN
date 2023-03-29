@@ -128,7 +128,34 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<JejuPlaceRes> getRecommendJejuPlace(ScheduleRegistReq scheduleRegistReq) {
-
+//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
+//        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+//
+//        for(JejuPlace jejuPlace : jejuPlaceList) {
+//            FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
+//                    .jejuPlaceId(jejuPlace.getId())
+//                    .name(jejuPlace.getName())
+//                    .category(jejuPlace.getCategory().getCategoryName())
+//                    .categoryDetail(jejuPlace.getCategory().getCategoryDetailName())
+//                    .latitude(jejuPlace.getLatitude())
+//                    .longitude(jejuPlace.getLongitude())
+//                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+//                    .build();
+//
+//            flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
+//        }
+//
+//        FlaskRecommendReq recommendReq = FlaskRecommendReq.builder()
+//                .scheduleRegistReq(scheduleRegistReq)
+//                .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
+//                .build();
+//
+//        Unirest.get("http://127.0.0.1:5000")
+//
+////        List<Integer> jejuRecommendList = Unirest.get("http://127.0.0.1:5000/test")
+////                .asObject(new GenericType<List<Integer>>() {})
+////                .getBody();
+//
         return null;
     }
 

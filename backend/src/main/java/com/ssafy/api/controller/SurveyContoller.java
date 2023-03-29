@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "설문 조사 API", tags = {"Survey"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/survey")
+@RequestMapping("/survey")
 public class SurveyContoller {
     private final SurveyService surveyService;
     @ApiOperation(value = "설문 조사 등록", notes = "사용자의 여행 스타일 설문하기")
