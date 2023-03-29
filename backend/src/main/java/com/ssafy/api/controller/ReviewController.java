@@ -27,7 +27,7 @@ public class ReviewController {
     }
 
     @ApiOperation(value = "별점 등록", notes = "각 장소마다 별점 등록하기")
-    @PostMapping()
+    @PostMapping("/regist")
     public ResponseEntity<?> registReview(@RequestBody ReviewRegistReq reviewRegistReq) {
         reviewService.registReview(reviewRegistReq);
         return ResponseEntity.status(201).body("별점 등록 성공");

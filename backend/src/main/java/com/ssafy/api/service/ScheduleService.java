@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.SearchPlaceRes;
 import com.ssafy.api.request.ScheduleRegistReq;
@@ -13,5 +14,5 @@ public interface ScheduleService {
     public PlaceDetailRes getPlaceDetail(int jejuPlaceId);
     List<ScheduleThumbnailRes> getScheduleThumbnail();
     void registSchedule(ScheduleRegistReq scheduleRegistReq);
-    List<JejuPlaceRes> getRecommendJejuPlace(ScheduleRegistReq scheduleRegistReq);
+    List<JejuPlaceRes> getRecommendJejuPlace(SurveyRegistReq surveyRegistReq);
 }

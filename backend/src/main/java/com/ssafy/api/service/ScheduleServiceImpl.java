@@ -1,15 +1,14 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.request.FlaskJejuPlaceItem;
-import com.ssafy.api.request.FlaskRecommendReq;
-import com.ssafy.api.request.ScheduleRegistItem;
-import com.ssafy.api.request.ScheduleRegistReq;
+import com.ssafy.api.request.*;
 import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
 import com.ssafy.api.response.SearchPlaceRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
+import kong.unirest.GenericType;
+import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -127,35 +126,48 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public List<JejuPlaceRes> getRecommendJejuPlace(ScheduleRegistReq scheduleRegistReq) {
-//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-//        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+    public List<JejuPlaceRes> getRecommendJejuPlace(SurveyRegistReq surveyRegistReq) {
+        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
+        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+
+        for(JejuPlace jejuPlace : jejuPlaceList) {
+            FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
+                    .jejuPlaceId(jejuPlace.getId())
+                    .name(jejuPlace.getName())
+                    .category(jejuPlace.getCategory().getCategoryName())
+                    .categoryDetail(jejuPlace.getCategory().getCategoryDetailName())
+                    .latitude(jejuPlace.getLatitude())
+                    .longitude(jejuPlace.getLongitude())
+                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                    .build();
+
+            flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
+        }
+
+        FlaskRecommendReq recommendReq = FlaskRecommendReq.builder()
+                .surveyRegistReq(surveyRegistReq)
+                .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
+                .build();
+
+////        Unirest.config().defaultBaseUrl("http://127.0.0.1:5000");
+////        HttpResponse<String> result = Unirest.get("/test").asString();
 //
-//        for(JejuPlace jejuPlace : jejuPlaceList) {
-//            FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
-//                    .jejuPlaceId(jejuPlace.getId())
-//                    .name(jejuPlace.getName())
-//                    .category(jejuPlace.getCategory().getCategoryName())
-//                    .categoryDetail(jejuPlace.getCategory().getCategoryDetailName())
-//                    .latitude(jejuPlace.getLatitude())
-//                    .longitude(jejuPlace.getLongitude())
-//                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
-//                    .build();
+////        HttpResponse<String> result = Unirest.get("http://127.0.0.1:5000/test").asObject(recommendReq);
+//        List<Integer> list = Unirest.get("http://127.0.0.1:5000/getRecommend").header("survey", recommendReq.toString()).asObject(new GenericType<List<Integer>>() {}).getBody();
+//        System.out.println(list.isEmpty());
+////        System.out.println(list.size());
+////        for(Integer i : list) {
+////            System.out.println("i: " + i);
+////        }
+////        System.out.println("header: " + result.getHeaders());
+////        System.out.println("body: " + result.getBody());
+////        System.out.println("status: " + result.getStatus());
 //
-//            flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
-//        }
-//
-//        FlaskRecommendReq recommendReq = FlaskRecommendReq.builder()
-//                .scheduleRegistReq(scheduleRegistReq)
-//                .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
-//                .build();
-//
-//        Unirest.get("http://127.0.0.1:5000")
-//
+////        String list = result.getBody();
 ////        List<Integer> jejuRecommendList = Unirest.get("http://127.0.0.1:5000/test")
 ////                .asObject(new GenericType<List<Integer>>() {})
 ////                .getBody();
-//
+
         return null;
     }
 
