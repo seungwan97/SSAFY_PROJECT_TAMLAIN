@@ -46,7 +46,7 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "일정 등록", notes = "사용자가 만든 일정 등록하기")
-    @PostMapping()
+    @PostMapping("/regist")
     public ResponseEntity<?> registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
         scheduleService.registSchedule(scheduleRegistReq);
         return ResponseEntity.status(200).body("일정 등록");
