@@ -20,15 +20,19 @@ import SurveySport from "./components/Survey/SurveySport";
 import SurveyExhibition from "./components/Survey/SurveyExhibition";
 import SurveyRest from "./components/Survey/SurveyRest";
 
+import ScheduleMain from "./components/Schedule/ScheduleMain";
+import ScheduleMap from "./components/Schedule/ScheduleMap";
+import ScheduleSearch from "./components/Schedule/Search/ScheduleSearch";
+
 const App = () => {
   return (
     <>
       <AnimatePresence>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          {/* <Route path="/" element={<MainPage />} /> */}
           <Route path="oauth/callback/kakao" element={<OAuthRedirectPage />} />
           <Route path="/login" element={<Login />} />;
-          <Route path="/" element={<Navigate to="/surveyCalendar" />} />
+          <Route path="/" element={<Navigate to="/scheduleMap" />} />
           <Route path="/loading" element={<Loading />} />
           <Route element={<Navbar />}>
             {/**질문페이지 */}
@@ -51,6 +55,13 @@ const App = () => {
                   element={<SurveyExhibition />}
                 />
                 <Route path="/surveyRest" element={<SurveyRest />} />
+              </Route>
+            </Route>
+            {/**일정페이지 */}
+            <Route path="/scheduleMain/" element={<ScheduleMain />}>
+              <Route element={<Frame />}>
+                <Route path=":id" element={<ScheduleMap />}></Route>
+                <Route path="search/:searchId" element={<ScheduleSearch />} />
               </Route>
             </Route>
           </Route>
