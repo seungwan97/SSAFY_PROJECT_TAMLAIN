@@ -12,4 +12,5 @@ public interface JejuPlaceRepository extends JpaRepository<JejuPlace, Integer> {
     Optional<JejuPlace> findById(int id);
     Optional<List<JejuPlace>> findByNameContaining(String name);
 
+    List<JejuPlace> findAll();
 }

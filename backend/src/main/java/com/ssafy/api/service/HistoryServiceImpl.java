@@ -1,10 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.ScheduleModifyReq;
-import com.ssafy.api.response.MypageCommonInfo;
-import com.ssafy.api.response.ScheduleDetailItem;
-import com.ssafy.api.response.ScheduleDetailRes;
-import com.ssafy.api.response.ScheduleHistoryRes;
+import com.ssafy.api.response.*;
 import com.ssafy.db.entity.JejuPlace;
 import com.ssafy.db.entity.Schedule;
 import com.ssafy.db.entity.ScheduleItem;
@@ -106,13 +103,19 @@ public class HistoryServiceImpl implements HistoryService {
                 scheduleDetailItemList = new ArrayList<>();
             }
 
+            MapInfo mapInfo = MapInfo.builder()
+                    .title(jejuPlace.getName())
+                    .latlng(LatLng.builder()
+                            .la(jejuPlace.getLatitude())
+                            .ma(jejuPlace.getLongitude())
+                            .build())
+                    .build();
+
             ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
                     .scheduleItemId(scheduleItem.getId())
                     .day(currentDay)
                     .jejuPlaceId(jejuPlace.getId())
-                    .jejuPlaceName(jejuPlace.getName())
-                    .latitude(jejuPlace.getLatitude())
-                    .longitude(jejuPlace.getLongitude())
+                    .mapInfo(mapInfo)
                     .roadAddress(jejuPlace.getRoadAddress())
                     .placeUrl(jejuPlace.getPlaceUrl())
                     .imageUrl(jejuPlace.getImgUrl())
