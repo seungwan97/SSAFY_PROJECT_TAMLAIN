@@ -8,7 +8,6 @@ server:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
-    password: 0837333
 
 spring:
   datasource:

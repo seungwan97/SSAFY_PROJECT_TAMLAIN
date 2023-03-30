@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.SearchPlaceRes;

@@ -1,5 +1,8 @@
 package com.ssafy.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.api.request.*;
 import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.PlaceDetailRes;
@@ -9,6 +12,7 @@ import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import kong.unirest.GenericType;
 import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -149,24 +153,10 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
                 .build();
 
-////        Unirest.config().defaultBaseUrl("http://127.0.0.1:5000");
-////        HttpResponse<String> result = Unirest.get("/test").asString();
-//
-////        HttpResponse<String> result = Unirest.get("http://127.0.0.1:5000/test").asObject(recommendReq);
-//        List<Integer> list = Unirest.get("http://127.0.0.1:5000/getRecommend").header("survey", recommendReq.toString()).asObject(new GenericType<List<Integer>>() {}).getBody();
-//        System.out.println(list.isEmpty());
-////        System.out.println(list.size());
-////        for(Integer i : list) {
-////            System.out.println("i: " + i);
-////        }
-////        System.out.println("header: " + result.getHeaders());
-////        System.out.println("body: " + result.getBody());
-////        System.out.println("status: " + result.getStatus());
-//
-////        String list = result.getBody();
-////        List<Integer> jejuRecommendList = Unirest.get("http://127.0.0.1:5000/test")
-////                .asObject(new GenericType<List<Integer>>() {})
-////                .getBody();
+        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+                .header("Content-Type", "application/json")
+                .body(recommendReq)
+                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
 
         return null;
     }
