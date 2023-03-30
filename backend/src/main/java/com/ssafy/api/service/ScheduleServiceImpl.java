@@ -111,7 +111,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(scheduleRegistItem.getJejuPlaceId());
             JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
-            scheduleRegistItem.getJejuPlaceId();
             ScheduleItem scheduleItem = ScheduleItem.builder()
                     .schedule(schedule)
                     .jejuPlace(jejuPlace)
@@ -127,8 +126,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
+//        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
         List<Integer> categoryList = new ArrayList<>();
@@ -145,8 +144,19 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .surveyFavorCategoryList(categoryList)
                 .build();
 
+//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAllByCategoryId(categoryList);
+        List<JejuPlace> jejuPlaceList = new ArrayList<>();
+        for(Integer id : categoryList) {
+            List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
+            for(JejuPlace jejuPlace : list) {
+                jejuPlaceList.add(jejuPlace);
+            }
+        }
+        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+
         for(JejuPlace jejuPlace : jejuPlaceList) {
-            
+            System.out.println("id: " + jejuPlace.getId());
+
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
                     .name(jejuPlace.getName())
@@ -190,7 +200,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .roadAddress(jejuPlace.getRoadAddress())
                         .placeUrl(jejuPlace.getPlaceUrl())
                         .imgUrl(jejuPlace.getImgUrl())
-                        .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                        .reviewScore(Math.round(((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))*10)/10.0)
                         .tag("#" + jejuPlace.getTag().replace("_", " #"))
                         .build();
 
