@@ -4,6 +4,8 @@ import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
 
+/*global kakao*/
+
 const { kakao } = window;
 const ScheduleMap = () => {
   var idx = window.location.href.substring(

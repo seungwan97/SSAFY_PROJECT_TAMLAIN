@@ -23,10 +23,9 @@ export const Filter = styled.div`
 `;
 
 // 뒤로가기 버튼 ***
-export const Img = styled.image`
-  position: absolute;
-  width: 5px;
-  height: 5px;
+export const goBack = styled(Link)`
+  font-size: 8px;
+  margin: 10px 10px;
 `;
 
 // **********
