@@ -3,7 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
-import ModalRegist from "../../UI/Modal/ModalRegist";
+
+/*global kakao*/
 
 const { kakao } = window;
 const ScheduleMap = () => {
