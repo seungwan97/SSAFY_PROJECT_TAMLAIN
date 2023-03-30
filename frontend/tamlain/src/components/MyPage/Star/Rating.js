@@ -74,10 +74,14 @@ function Rating() {
             <div style={{ float: "left" }}>
               <img
                 src={el.image}
-                style={{ width: "50px", height: "50px", marginRight: "30px" }}
+                style={{ width: "100px", height: "100px", marginRight: "30px" }}
               />
             </div>
-            <div style={{ float: "left", marginRight: "30px" }}>{el.name}</div>
+            <div
+              style={{ float: "left", marginRight: "30px", fontSize: "30px" }}
+            >
+              {el.name}
+            </div>
             <Wrap>
               <Stars>
                 {ARRAY.map((el2, idx2) => {
