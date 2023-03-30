@@ -22,16 +22,15 @@ const ScheduleMain = () => {
   const [day, setDay] = useState(dayArr);
 
   //  exit 모달
-  const [modal, setModal] = useState(false);
+  const [exitModalOpen, setExitModalOpen] = useState(false);
   const ModalHandler = () => {
-    setModal((modal) => !modal);
+    setExitModalOpen(true);
   };
 
   // regist 모달
-  const [showModal, setShowModal] = useState(false);
-
+  const [registModalOpen, setRegistModalOpen] = useState(false);
   const RegistModalHandler = () => {
-    setShowModal((showModal) => !showModal);
+    setRegistModalOpen(true);
   };
 
   useEffect(() => {
@@ -44,11 +43,6 @@ const ScheduleMain = () => {
     window.location.href = `http://localhost:3000/scheduleMain/${num}`;
   };
 
-  // useEffect({
-  //   if(modal)
-
-  // }, [modal,showModal]);
-  // console.log(modal);
   return (
     <div>
       <S.BackGround>
@@ -61,10 +55,11 @@ const ScheduleMain = () => {
           alt="뒤로가기"
           onClick={ModalHandler}
         />
-        {modal && (
+        {exitModalOpen && (
           <Modal
             name="정말 일정 등록을 그만하시겠습니까?"
             name2="(작성중인 일정은 저장되지 않습니다.)"
+            setExitModalOpen={setExitModalOpen}
           ></Modal>
         )}
       </div>
@@ -84,7 +79,9 @@ const ScheduleMain = () => {
         </div>
       ))}
       <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
-      {showModal && <ModalRegist></ModalRegist>}
+      {registModalOpen && (
+        <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
+      )}
       <Outlet />
     </div>
   );
