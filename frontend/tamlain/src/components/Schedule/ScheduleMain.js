@@ -43,6 +43,14 @@ const ScheduleMain = () => {
     window.location.href = `http://localhost:3000/scheduleMain/${num}`;
   };
 
+<<<<<<< HEAD
+=======
+  // useEffect({
+  //   if(modal)
+
+  // }, [modal,showModal]);
+  // console.log(modal);
+>>>>>>> 3d217fdb8fd40d9afa0b0b54eb9c9429fc0a390d
   return (
     <div>
       <S.BackGround>
