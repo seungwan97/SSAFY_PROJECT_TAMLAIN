@@ -7,18 +7,20 @@ import lombok.Getter;
 public class FlaskJejuPlaceItem {
     private int jejuPlaceId;
     private String name;
-    private String category;
-    private String categoryDetail;
+    private int categoryId;
+    private String categoryName;
+    private String categoryDetailName;
     private Double latitude;
     private Double longitude;
     private Double reviewScore;
 
     @Builder
-    public FlaskJejuPlaceItem(int jejuPlaceId, String name, String category, String categoryDetail, Double latitude, Double longitude, Double reviewScore) {
+    public FlaskJejuPlaceItem(int jejuPlaceId, String name, int categoryId, String categoryName, String categoryDetailName, Double latitude, Double longitude, Double reviewScore) {
         this.jejuPlaceId = jejuPlaceId;
         this.name = name;
-        this.category = category;
-        this.categoryDetail = categoryDetail;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryDetailName = categoryDetailName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.reviewScore = reviewScore;

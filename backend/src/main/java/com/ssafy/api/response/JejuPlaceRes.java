@@ -7,7 +7,7 @@ import lombok.Getter;
 public class JejuPlaceRes {
     private int jejuPlaceId;
     private String name;
-    private String category;
+    private int categoryId;
     private MapInfo mapInfo;
     private String roadAddress;
     private String placeUrl;
@@ -16,10 +16,10 @@ public class JejuPlaceRes {
     private String tag;
 
     @Builder
-    public JejuPlaceRes(int jejuPlaceId, String name, String category, MapInfo mapInfo, String roadAddress, String placeUrl, String imgUrl, Double reviewScore, String tag) {
+    public JejuPlaceRes(int jejuPlaceId, String name, int categoryId, MapInfo mapInfo, String roadAddress, String placeUrl, String imgUrl, Double reviewScore, String tag) {
         this.jejuPlaceId = jejuPlaceId;
         this.name = name;
-        this.category = category;
+        this.categoryId = categoryId;
         this.mapInfo = mapInfo;
         this.roadAddress = roadAddress;
         this.placeUrl = placeUrl;

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Api(value = "일점 API", tags = {"Schedule"})
@@ -55,10 +56,10 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "추천 불러오기", notes = "설문 조사를 통한 추천 장소 불러오기")
-    @PostMapping("/recommend/survey")
-    public ResponseEntity<?> getRecommendJejuPlace(@RequestBody SurveyRegistReq surveyRegistReq) throws JsonProcessingException {
-        List<JejuPlaceRes> jejuPlaceResList = scheduleService.getRecommendJejuPlace(surveyRegistReq);
-        return ResponseEntity.status(200).body(jejuPlaceResList);
+    @GetMapping("/recommend/survey/{surveyId}")
+    public ResponseEntity<?> getRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
+        LinkedHashMap<String, List<JejuPlaceRes>> jejuPlaceResMap = scheduleService.getRecommendJejuPlace(surveyId);
+        return ResponseEntity.status(200).body(jejuPlaceResMap);
     }
 
 }

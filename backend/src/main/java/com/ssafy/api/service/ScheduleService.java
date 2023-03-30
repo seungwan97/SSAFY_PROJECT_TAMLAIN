@@ -1,6 +1,5 @@
 package com.ssafy.api.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.SearchPlaceRes;
@@ -8,6 +7,7 @@ import com.ssafy.api.request.ScheduleRegistReq;
 import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface ScheduleService {
@@ -15,5 +15,5 @@ public interface ScheduleService {
     public PlaceDetailRes getPlaceDetail(int jejuPlaceId);
     List<ScheduleThumbnailRes> getScheduleThumbnail();
     void registSchedule(ScheduleRegistReq scheduleRegistReq);
-    List<JejuPlaceRes> getRecommendJejuPlace(SurveyRegistReq surveyRegistReq);
+    LinkedHashMap<String, List<JejuPlaceRes>> getRecommendJejuPlace(int surveyId);
 }
