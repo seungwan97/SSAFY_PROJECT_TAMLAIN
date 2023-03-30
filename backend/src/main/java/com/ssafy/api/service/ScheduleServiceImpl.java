@@ -146,7 +146,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .build();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
-
+            
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
                     .name(jejuPlace.getName())
