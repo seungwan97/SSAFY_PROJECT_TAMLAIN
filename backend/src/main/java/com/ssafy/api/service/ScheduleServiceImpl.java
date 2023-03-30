@@ -220,6 +220,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 default:
                     break;
             }
+
+            resultMap.put(categoryDescription, jejuPlaceResList);
         }
 
         return resultMap;
