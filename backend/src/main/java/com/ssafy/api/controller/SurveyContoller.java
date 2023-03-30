@@ -22,7 +22,7 @@ public class SurveyContoller {
     @PostMapping("/regist")
     public ResponseEntity<?> registSurvey(@RequestBody SurveyRegistReq surveyRegistReq) {
         int[] result = surveyService.registSurvey(surveyRegistReq);
-        if(result[0] == -1) return ResponseEntity.status(202).body(result[1]);
+        if(result[0] != -1) return ResponseEntity.status(202).body(result[1]);
         else return ResponseEntity.status(201).body(result[1]);
     }
 }
