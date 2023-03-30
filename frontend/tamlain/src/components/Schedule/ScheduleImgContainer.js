@@ -17,15 +17,20 @@ const ScheduleImgContainer = (props) => {
     console.log(size);
   }, [size]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   console.log(props.index);
+  //   getPlaceDetail(token, props.index).then((res) => {
+  //     console.log(res);
+  //   });
+  // }, [click]);
+
+  const OnClickHandler = () => {
     const token = localStorage.getItem("token");
     console.log(props.index);
     getPlaceDetail(token, props.index).then((res) => {
       console.log(res);
     });
-  }, [click]);
-
-  const OnClickHandler = () => {
     setClick((click) => !click);
   };
   const FlagHandler = () => setFlagToggle((flagToggle) => !flagToggle);
