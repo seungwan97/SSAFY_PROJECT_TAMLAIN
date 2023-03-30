@@ -48,7 +48,7 @@ const ScheduleMain = () => {
   //   if(modal)
 
   // }, [modal,showModal]);
-  console.log(modal);
+  // console.log(modal);
   return (
     <div>
       <S.BackGround>
