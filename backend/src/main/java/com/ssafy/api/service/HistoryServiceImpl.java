@@ -25,12 +25,10 @@ public class HistoryServiceImpl implements HistoryService {
     private final SurveyRepository surveyRepository;
     @Override
     public List<ScheduleHistoryRes> getScheduleHistory(int userId) {
-        Optional<List<Schedule>> oScheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
+        List<Schedule> scheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
         List<ScheduleHistoryRes> scheduleHistoryResList = new ArrayList<>();
 
-        if(!oScheduleList.isPresent()) return null;
-
-        for(Schedule schedule : oScheduleList.get()) {
+        for(Schedule schedule : scheduleList) {
             ScheduleHistoryRes scheduleHistoryRes = ScheduleHistoryRes.builder()
                     .scheduleId(schedule.getId())
                     .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
@@ -86,8 +84,7 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public ScheduleDetailRes getScheduleDetail(int scheduleId) {
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap = new LinkedHashMap<>();
         List<ScheduleDetailItem> scheduleDetailItemList = new ArrayList<>();

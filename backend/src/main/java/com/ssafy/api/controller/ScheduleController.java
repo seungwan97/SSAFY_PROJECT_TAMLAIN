@@ -1,6 +1,8 @@
 package com.ssafy.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.ScheduleRegistReq;
+import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @Api(value = "일점 API", tags = {"Schedule"})
@@ -49,14 +52,14 @@ public class ScheduleController {
     @PostMapping("/regist")
     public ResponseEntity<?> registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
         scheduleService.registSchedule(scheduleRegistReq);
-        return ResponseEntity.status(200).body("일정 등록");
+        return ResponseEntity.status(201).body("일정 등록");
     }
 
     @ApiOperation(value = "추천 불러오기", notes = "설문 조사를 통한 추천 장소 불러오기")
-    @GetMapping("/recommend/survey")
-    public ResponseEntity<?> getRecommendJejuPlace(@RequestBody ScheduleRegistReq scheduleRegistReq) {
-        List<JejuPlaceRes> jejuPlaceResList = scheduleService.getRecommendJejuPlace(scheduleRegistReq);
-        return ResponseEntity.status(200).body(jejuPlaceResList);
+    @GetMapping("/recommend/survey/{surveyId}")
+    public ResponseEntity<?> getRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
+        LinkedHashMap<String, List<JejuPlaceRes>> jejuPlaceResMap = scheduleService.getRecommendJejuPlace(surveyId);
+        return ResponseEntity.status(200).body(jejuPlaceResMap);
     }
 
 }
