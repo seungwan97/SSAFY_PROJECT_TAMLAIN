@@ -25,7 +25,11 @@ import ScheduleMap from "./components/Schedule/ScheduleMap";
 import ScheduleSearch from "./components/Schedule/Search/ScheduleSearch";
 
 import MyPageMain from "./components/MyPage/MyPageMain";
+
 import MyPageHistory from "./components/MyPage/History/MyPageHistory";
+
+import MyPageEmpty from "./components/MyPage/MyPageEmpty";
+import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
 
 const App = () => {
   return (
@@ -74,6 +78,9 @@ const App = () => {
             <Route element={<MyPageMain />}>
               <Route element={<Frame />}>
                 <Route path="history" element={<MyPageHistory />} />
+
+                <Route path="/myPageEmpty" element={<MyPageEmpty />} />
+                <Route path="/myPageStarInfo" element={<MyPageStarInfo />} />
               </Route>
             </Route>
           </Route>
