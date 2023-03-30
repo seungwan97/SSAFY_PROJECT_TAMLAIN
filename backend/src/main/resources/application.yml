@@ -8,12 +8,13 @@ server:
 jasypt:
   encryptor:
     bean: jasyptStringEncryptor
+    password: 0837333
 
 spring:
   datasource:
     # server
-#    url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
-#    username: ENC(F301hhYYYd0rvHquA7NOgA==)
+    #    url: ENC(GRU193kDXTw/UC3u/SOe3iJ1+F5O3kNs0muV3QMonyDEfR9jqPalEgJzKVVnbEv7+jy1XyHdTJdlQGBbRdPWpNnu6kn+H1tn4+QSE00H6OYudzWdJkBJJNGNSd8PPwrjteAqUuWwCg+zXa2wACv4tLLadeLq8FdMys0G2na+R3HCa/iwFUz41uVGxceFD4VXOL+gwV3Qlk6YrriM1VK5LYEPtD3+PyLGoqBeAt47Xx2Bj7pNLY4ZGQ==)
+    #    username: ENC(F301hhYYYd0rvHquA7NOgA==)
     # local
     url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
     username: root
@@ -42,8 +43,8 @@ spring:
         registration:
           kakao:
             client-id: ENC(pspsCp49iwIKXZSfdz59qYd1AWOrsKMbrPKjLEtPp3FjTKLSC5sdLSAS0fOLgi9/)
-#            redirect-uri: http://localhost:8080/oauth/callback/kakao
-#            redirect-uri: http://localhost:3000/oauth/callback/kakao
+            #            redirect-uri: http://localhost:8080/oauth/callback/kakao
+            #            redirect-uri: http://localhost:3000/oauth/callback/kakao
             redirect-uri: ENC(gR5YHZ7AwDZ13S8Sl/pfv+Fa7r9xtdwnzaaFZr3m9ZxNkEv4PkRl5rZQkRwPHBcBZ0cVE6/4ulk=)
             client-authentication-method: POST
             authorization-grant-type: authorization_code

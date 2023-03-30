@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.response.SurveyRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +20,10 @@ public class SurveyServiceImpl implements SurveyService {
     private final CategoryRepository categoryRepository;
     private final SurveyFavorCategoryRepository surveyFavorCategoryRepository;
     @Override
-    public int[] registSurvey(SurveyRegistReq surveyRegistReq) {
+    public SurveyRes registSurvey(SurveyRegistReq surveyRegistReq) {
         LinkedHashMap<Integer, List<String>> map = surveyRegistReq.getSurveyFavorCategoryMap();
         int count = 0, firstPage = 0;
         boolean flag = false;
-        int[] result = new int[2];
 
         for(Integer key : map.keySet()) {
             if(map.get(key).isEmpty()) {
@@ -33,10 +33,7 @@ public class SurveyServiceImpl implements SurveyService {
             }
         }
 
-        if(count > 3) {
-            result[0] = -1; result[1] = firstPage;
-            return result;
-        }
+        if(count > 3) return SurveyRes.builder().result("FAIL").firstPageNum(firstPage).build();
 
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
@@ -79,7 +76,6 @@ public class SurveyServiceImpl implements SurveyService {
             }
         }
 
-        result[0] = 1; result[1] = surveyId;
-        return result;
+        return SurveyRes.builder().result("SUCCESS").surveyId(surveyId).build();
     }
 }
