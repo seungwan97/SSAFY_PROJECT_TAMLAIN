@@ -1,15 +1,11 @@
 package com.ssafy.api.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ssafy.api.request.*;
 import com.ssafy.api.response.*;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import kong.unirest.GenericType;
 import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,8 +29,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public List<SearchPlaceRes> getserarchPlace(String keyword) {
-        Optional<List<JejuPlace>> oJejuPlacesList = jejuPlaceRepository.findByNameContaining(keyword);
-        List<JejuPlace> jejuPlaceList = oJejuPlacesList.orElseThrow(() -> new IllegalArgumentException("검색 결과가 없습니다."));
+        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findByNameContaining(keyword);
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
@@ -202,7 +197,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 jejuPlaceResList.add(jejuPlaceRes);
             }
 
-            String categoryDescription;
+            String categoryDescription = "";
             switch(str) {
                 case "맛집" :
                     categoryDescription = "탐나's RESTAURANT PICK";

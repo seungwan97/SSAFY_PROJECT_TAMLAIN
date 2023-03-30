@@ -29,8 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return null;
 
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         List<ReviewScheduleItem> reviewScheduleItemList = new ArrayList<>();
         List<String> scheduleNameList = new ArrayList<>();
@@ -105,11 +104,10 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewRes getReview(int scheduleId) {
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        if(!oScheduleItemList.isPresent()) return null;
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         List<ReviewItem> reviewItemList = new ArrayList<>();
-        for(ScheduleItem scheduleItem : oScheduleItemList.get()) {
+        for(ScheduleItem scheduleItem : scheduleItemList) {
             boolean flag = false;
 
             for(ReviewItem reviewItem : reviewItemList) {

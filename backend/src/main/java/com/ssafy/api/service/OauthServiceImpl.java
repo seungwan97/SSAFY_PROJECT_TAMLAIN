@@ -37,7 +37,6 @@ public class OauthServiceImpl implements OauthService{
 
     @Transactional
     public LoginRes login(String providerName, String code) {
-
         ClientRegistration provider = inMemoryRepository.findByRegistrationId(providerName);
         OauthTokenRes tokenResponse = getToken(code, provider);
         User user = getUserProfile(providerName,tokenResponse, provider);
