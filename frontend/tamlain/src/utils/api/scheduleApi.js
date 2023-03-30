@@ -2,14 +2,11 @@ import client from "../client";
 
 // 장소 아이디 입력 시 해당 장소의 상세 정보
 export const getPlaceDetail = async (accessToken, jejuPlaceId) => {
-  const response = await client.get(
-    `/schedule/jejuPlaceId?jejuPlaceId=${jejuPlaceId}`,
-    {
-      headers: {
-        "X-AUTH-TOKEN": accessToken,
-      },
-    }
-  );
+  const response = await client.get(`/schedule/${jejuPlaceId}`, {
+    headers: {
+      "X-AUTH-TOKEN": accessToken,
+    },
+  });
 
   return response;
 };

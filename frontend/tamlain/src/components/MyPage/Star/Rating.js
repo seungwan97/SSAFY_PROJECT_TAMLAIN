@@ -71,7 +71,7 @@ function Rating() {
       {DummyData.map((el, idx) => {
         return (
           <div>
-            <div style={{ float: "left" }}>
+            <div style={{ float: "left", display: "flex" }}>
               <img
                 src={el.image}
                 style={{ width: "100px", height: "100px", marginRight: "30px" }}
