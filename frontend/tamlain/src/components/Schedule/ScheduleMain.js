@@ -60,6 +60,7 @@ const ScheduleMain = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
           onClick={ModalHandler}
+          className="backBtn"
         />
         {modal && (
           <Modal
@@ -83,7 +84,9 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
-      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      <S.RegistBtn onClick={RegistModalHandler} className="registBtn">
+        등록하기
+      </S.RegistBtn>
       {showModal && <ModalRegist></ModalRegist>}
       <Outlet />
     </div>
