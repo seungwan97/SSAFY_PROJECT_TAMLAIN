@@ -5,14 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class SurveyRes {
-    private String result;
-    private int surveyId;
-    private int firstPageNum;
+    private boolean success;
+    private int result;
 
     @Builder
-    public SurveyRes(String result, int surveyId, int firstPageNum) {
+    public SurveyRes(boolean success, int result) {
+        this.success = success;
         this.result = result;
-        this.surveyId = surveyId;
-        this.firstPageNum = firstPageNum;
     }
 }

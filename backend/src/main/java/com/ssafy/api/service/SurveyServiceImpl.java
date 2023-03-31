@@ -22,18 +22,18 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SurveyRes registSurvey(SurveyRegistReq surveyRegistReq) {
         LinkedHashMap<Integer, List<String>> map = surveyRegistReq.getSurveyFavorCategoryMap();
-        int count = 0, firstPage = 0;
+        int count = 0, result = 0;
         boolean flag = false;
 
         for(Integer key : map.keySet()) {
             if(map.get(key).isEmpty()) {
                 count++;
-                if(!flag) firstPage = key;
+                if(!flag) result = key;
                 flag = true;
             }
         }
 
-        if(count > 3) return SurveyRes.builder().result("FAIL").firstPageNum(firstPage).build();
+        if(count > 3) return SurveyRes.builder().success(false).result(result).build();
 
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
@@ -76,6 +76,6 @@ public class SurveyServiceImpl implements SurveyService {
             }
         }
 
-        return SurveyRes.builder().result("SUCCESS").surveyId(surveyId).build();
+        return SurveyRes.builder().success(true).result(result).build();
     }
 }

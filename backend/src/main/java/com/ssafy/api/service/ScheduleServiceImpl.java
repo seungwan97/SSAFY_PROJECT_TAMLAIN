@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Period;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service("scheduleService")
 @RequiredArgsConstructor
@@ -126,9 +123,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-//        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
-
         List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
         List<Integer> categoryList = new ArrayList<>();
         for(SurveyFavorCategory surveyFavorCategory : surveyFavorCategoryList) {
@@ -152,6 +146,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 jejuPlaceList.add(jejuPlace);
             }
         }
+
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
