@@ -47,11 +47,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public PlaceDetailRes getPlaceDetail(int jejuPlaceId) {
+    public SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId) {
         Optional<JejuPlace> oJejuPlaces = jejuPlaceRepository.findById(jejuPlaceId);
         JejuPlace jejuPlace = oJejuPlaces.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
-        return PlaceDetailRes.builder()
+        PlaceDetailRes placeDetailRes = PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
                 .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
                 .latitude(jejuPlace.getLatitude())
@@ -59,12 +59,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .jejuPlaceName(jejuPlace.getName())
                 .roadAddress(jejuPlace.getRoadAddress())
                 .build();
+
+        return new SuccessRes<PlaceDetailRes>(true, "상세 정보를 조회합니다.", placeDetailRes);
     }
 
 
 
     @Override
-    public List<ScheduleThumbnailRes> getScheduleThumbnail() {
+    public SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail() {
         List<ScheduleThumbnail> scheduleThumbnailList = scheduleThumbnailRepository.findAll();
         List<ScheduleThumbnailRes> scheduleThumbnailResList = new ArrayList<>();
 
@@ -75,11 +77,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .build();
             scheduleThumbnailResList.add(scheduleThumbnailRes);
         }
-        return scheduleThumbnailResList;
+
+        return new SuccessRes<List<ScheduleThumbnailRes>>(true, "일정 썸네일 이미지를 조회합니다.", scheduleThumbnailResList);
     }
 
     @Override
-    public void registSchedule(ScheduleRegistReq scheduleRegistReq) {
+    public CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq) {
         Optional<User> oUser = userRepository.findById(scheduleRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
 
@@ -116,10 +119,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleItemRepository.save(scheduleItem);
         }
+
+        return new CommonRes(true, "일정 등록을 완료했습니다.");
     }
 
     @Override
-    public LinkedHashMap<String, List<JejuPlaceRes>> getRecommendJejuPlace(int surveyId) {
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId) {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
@@ -229,7 +234,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             resultMap.put(categoryDescription, jejuPlaceResList);
         }
 
-        return resultMap;
+        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
 }
