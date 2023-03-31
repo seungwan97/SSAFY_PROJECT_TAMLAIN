@@ -1,15 +1,12 @@
 package com.ssafy.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.ScheduleRegistReq;
-import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.ScheduleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +25,7 @@ public class ScheduleController {
 
     @ApiOperation(value = "장소 검색", notes = "장소 입력시 검색")
     @GetMapping("/search/{keyword}")
-    public List<SearchPlaceRes> serarchPlace(@PathVariable("keyword") String keyword) {
+    public SuccessRes<List<SearchPlaceRes>> serarchPlace(@PathVariable("keyword") String keyword) {
         return scheduleService.getserarchPlace(keyword);
     }
     @ApiOperation(value = "장소 상세 정보", notes = "장소 아이디 입력시 해당 장소의 상세정보")
@@ -44,7 +41,6 @@ public class ScheduleController {
     }
 
     @ApiOperation(value = "일정 등록", notes = "사용자가 만든 일정 등록하기")
-    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/regist")
     public CommonRes registSchedule(@RequestBody ScheduleRegistReq scheduleRegistReq) {
         return scheduleService.registSchedule(scheduleRegistReq);

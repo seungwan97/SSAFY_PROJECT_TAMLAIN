@@ -9,7 +9,6 @@ import com.ssafy.api.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,14 +27,12 @@ public class HisoryController {
     }
 
     @ApiOperation(value = "일정 삭제", notes = "마이페이지에서 나의 일정 삭제하기")
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/delete/{scheduleId}")
     public CommonRes deleteScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
         return historyService.deleteScheduleHistory(scheduleId);
     }
 
     @ApiOperation(value = "일정명 수정", notes = "일정 내역에서 원하는 일정명 수정하기")
-    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/modify")
     public CommonRes modifyScheduleName(@RequestBody ScheduleModifyReq scheduleModifyReq) {
         return historyService.modifyScheduleName(scheduleModifyReq);
