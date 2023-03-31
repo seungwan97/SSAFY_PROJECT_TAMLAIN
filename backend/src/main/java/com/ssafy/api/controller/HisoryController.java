@@ -22,31 +22,28 @@ public class HisoryController {
 
     @ApiOperation(value = "일정 내역 조회", notes = "마이페이지에서 나의 일정 내역 조회하기")
     @GetMapping("/{userId}")
-    public ResponseEntity<?> getScheduleHistory(@PathVariable("userId") int userId) {
-        List<ScheduleHistoryRes> scheduleHistoryResList = historyService.getScheduleHistory(userId);
-        if(scheduleHistoryResList == null) return ResponseEntity.status(204).body(HttpStatus.NO_CONTENT);
-        return ResponseEntity.status(200).body(scheduleHistoryResList);
+    public List<ScheduleHistoryRes> getScheduleHistory(@PathVariable("userId") int userId) {
+        return historyService.getScheduleHistory(userId);
     }
 
     @ApiOperation(value = "일정 삭제", notes = "마이페이지에서 나의 일정 삭제하기")
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/delete/{scheduleId}")
-    public ResponseEntity<?> deleteScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
+    public void deleteScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
         historyService.deleteScheduleHistory(scheduleId);
-        return ResponseEntity.status(200).body("일정 삭제");
     }
 
     @ApiOperation(value = "일정명 수정", notes = "일정 내역에서 원하는 일정명 수정하기")
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/modify")
-    public ResponseEntity<?> modifyScheduleName(@RequestBody ScheduleModifyReq scheduleModifyReq) {
+    public void modifyScheduleName(@RequestBody ScheduleModifyReq scheduleModifyReq) {
         historyService.modifyScheduleName(scheduleModifyReq);
-        return ResponseEntity.status(200).body("일정명 수정");
     }
 
     @ApiOperation(value = "세부 일정 조회", notes = "세부 일정 내역 조회하기")
     @GetMapping("/scheduleDetail/{scheduleId}")
-    public ResponseEntity<?> getScheduleDetail(@PathVariable("scheduleId") int scheduleId) {
-        ScheduleDetailRes scheduleDetailRes = historyService.getScheduleDetail(scheduleId);
-        return ResponseEntity.status(200).body(scheduleDetailRes);
+    public ScheduleDetailRes getScheduleDetail(@PathVariable("scheduleId") int scheduleId) {
+        return historyService.getScheduleDetail(scheduleId);
     }
 
 }
