@@ -23,14 +23,13 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public ReviewScheduleItemRes getReviewScheduleHistory(int scheduleId) {
+    public Object getReviewScheduleHistory(int scheduleId) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
-        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return null;
+        if(LocalDate.now().isBefore(schedule.getSurvey().getEndDate())) return new CommonRes(false, "여행 마지막 날짜 이후부터 리뷰 등록이 가능합니다.");
 
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         List<ReviewScheduleItem> reviewScheduleItemList = new ArrayList<>();
         List<String> scheduleNameList = new ArrayList<>();
@@ -56,7 +55,8 @@ public class ReviewServiceImpl implements ReviewService {
                 .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
                 .reviewScheduleItemList(reviewScheduleItemList)
                 .build();
-        return reviewScheduleItemRes;
+
+        return new SuccessRes<>(true, "리뷰 작성을 위해 해당 일정 목록을 조회합니다.", reviewScheduleItemRes);
     }
 
     public MypageCommonInfo getMyPageCommonInfo(int scheduleId) {
@@ -75,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void registReview(ReviewRegistReq reviewRegistReq) {
+    public CommonRes registReview(ReviewRegistReq reviewRegistReq) {
         Optional<User> oUser = userRepository.findById(reviewRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
 
@@ -101,15 +101,16 @@ public class ReviewServiceImpl implements ReviewService {
 
             jejuPlaceRepository.save(newJejuPlace);
         }
+
+        return new CommonRes(true, "리뷰 등록을 완료했습니다.");
     }
 
     @Override
-    public ReviewRes getReview(int scheduleId) {
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        if(!oScheduleItemList.isPresent()) return null;
+    public SuccessRes<ReviewRes> getReview(int scheduleId) {
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         List<ReviewItem> reviewItemList = new ArrayList<>();
-        for(ScheduleItem scheduleItem : oScheduleItemList.get()) {
+        for(ScheduleItem scheduleItem : scheduleItemList) {
             boolean flag = false;
 
             for(ReviewItem reviewItem : reviewItemList) {
@@ -145,7 +146,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .reviewItemList(reviewItemList)
                 .build();
 
-        return reviewRes;
+        return new SuccessRes<>(true, "리뷰를 조회합니다.", reviewRes);
     }
 
 }

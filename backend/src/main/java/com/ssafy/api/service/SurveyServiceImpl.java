@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.response.SuccessRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,32 +15,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SurveyServiceImpl implements SurveyService {
     private final UserRepository userRepository;
-    private final TravelMemberRepository travelMemberRepository;
     private final TravelThemeRepository travelThemeRepository;
     private final SurveyRepository surveyRepository;
     private final CategoryRepository categoryRepository;
     private final SurveyFavorCategoryRepository surveyFavorCategoryRepository;
     @Override
-    public int registSurvey(SurveyRegistReq surveyRegistReq) {
+    public SuccessRes<Integer> registSurvey(SurveyRegistReq surveyRegistReq) {
         LinkedHashMap<Integer, List<String>> map = surveyRegistReq.getSurveyFavorCategoryMap();
-        int count = 0, firstPage = 0;
+        int count = 0, result = 0;
         boolean flag = false;
 
         for(Integer key : map.keySet()) {
             if(map.get(key).isEmpty()) {
                 count++;
-                if(!flag) firstPage = key;
+                if(!flag) result = key;
                 flag = true;
             }
         }
 
-        if(count > 3) return firstPage;
+        if(count > 3) return new SuccessRes<Integer>(false, "최소 3개 이상 카테고리를 선택해야 합니다.", result);
 
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
-
-        Optional<TravelMember> oTravelMember = travelMemberRepository.findByType(surveyRegistReq.getTravelMember());
-        TravelMember travelMember = oTravelMember.orElseThrow(() -> new IllegalArgumentException("travelMember doesn't exist"));
 
         Optional<TravelTheme> oTravelTheme = travelThemeRepository.findByName(surveyRegistReq.getTravelTheme());
         TravelTheme travelTheme = oTravelTheme.orElseThrow(() -> new IllegalArgumentException("travelTheme doesn't exist"));
@@ -56,10 +53,6 @@ public class SurveyServiceImpl implements SurveyService {
                 .user(user)
                 .startDate(surveyRegistReq.getStartDate())
                 .endDate(surveyRegistReq.getEndDate())
-                .gender(surveyRegistReq.getGender())
-                .ageRange(surveyRegistReq.getAgeRange())
-                .travelMemberCode(travelMember.getId())
-                .isCar(surveyRegistReq.isCar())
                 .travelThemeCode(travelTheme.getId())
                 .season(season)
                 .build();
@@ -82,6 +75,7 @@ public class SurveyServiceImpl implements SurveyService {
                 surveyFavorCategoryRepository.save(surveyFavorCategory);
             }
         }
-        return -1;
+
+        return new SuccessRes<Integer>(true, "설문 조사 등록을 완료했습니다.", surveyId);
     }
 }

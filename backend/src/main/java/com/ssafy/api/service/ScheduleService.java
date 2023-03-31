@@ -1,18 +1,16 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.response.PlaceDetailRes;
-import com.ssafy.api.response.SearchPlaceRes;
+import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.response.*;
 import com.ssafy.api.request.ScheduleRegistReq;
-import com.ssafy.api.response.JejuPlaceRes;
-import com.ssafy.api.response.ScheduleThumbnailRes;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface ScheduleService {
-    public List<SearchPlaceRes> getserarchPlace(String keyword);
-    public PlaceDetailRes getPlaceDetail(int jejuPlaceId);
-    List<ScheduleThumbnailRes> getScheduleThumbnail();
-    void registSchedule(ScheduleRegistReq scheduleRegistReq);
-    List<JejuPlaceRes> getRecommendJejuPlace(ScheduleRegistReq scheduleRegistReq);
+    SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword);
+    SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId);
+    SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail();
+    CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq);
+    SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId);
 }

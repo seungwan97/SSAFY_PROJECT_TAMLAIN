@@ -24,13 +24,11 @@ public class HistoryServiceImpl implements HistoryService {
     private final ScheduleItemRepository scheduleItemRepository;
     private final SurveyRepository surveyRepository;
     @Override
-    public List<ScheduleHistoryRes> getScheduleHistory(int userId) {
-        Optional<List<Schedule>> oScheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
+    public SuccessRes<List<ScheduleHistoryRes>> getScheduleHistory(int userId) {
+        List<Schedule> scheduleList = scheduleRepository.findAllByUserIdAndIsDeleteFalse(userId);
         List<ScheduleHistoryRes> scheduleHistoryResList = new ArrayList<>();
 
-        if(!oScheduleList.isPresent()) return null;
-
-        for(Schedule schedule : oScheduleList.get()) {
+        for(Schedule schedule : scheduleList) {
             ScheduleHistoryRes scheduleHistoryRes = ScheduleHistoryRes.builder()
                     .scheduleId(schedule.getId())
                     .thumbnailImageUrl(schedule.getScheduleThumbnail().getThumbnailImageUrl())
@@ -45,11 +43,11 @@ public class HistoryServiceImpl implements HistoryService {
             scheduleHistoryResList.add(scheduleHistoryRes);
         }
 
-        return scheduleHistoryResList;
+        return new SuccessRes<>(true, "사용자의 일정 목록을 조회합니다.", scheduleHistoryResList);
     }
 
     @Override
-    public void deleteScheduleHistory(int scheduleId) {
+    public CommonRes deleteScheduleHistory(int scheduleId) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleId);
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
@@ -59,14 +57,17 @@ public class HistoryServiceImpl implements HistoryService {
 
         scheduleRepository.save(Schedule.of(schedule));
         surveyRepository.save(Survey.of(survey));
+
+        return new CommonRes(true, "일정 삭제를 완료했습니다.");
     }
 
     @Override
-    public void modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+    public CommonRes modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
         scheduleRepository.save(Schedule.of(schedule, scheduleModifyReq.getName()));
+        return new CommonRes(true, "일정명 수정을 완료했습니다.");
     }
 
     public MypageCommonInfo getMyPageCommonInfo(int scheduleId) {
@@ -85,9 +86,8 @@ public class HistoryServiceImpl implements HistoryService {
     }
 
     @Override
-    public ScheduleDetailRes getScheduleDetail(int scheduleId) {
-        Optional<List<ScheduleItem>> oScheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
-        List<ScheduleItem> scheduleItemList = oScheduleItemList.orElseThrow(() -> new IllegalArgumentException("scheduleItem doesn't exist"));
+    public SuccessRes<ScheduleDetailRes> getScheduleDetail(int scheduleId) {
+        List<ScheduleItem> scheduleItemList = scheduleItemRepository.findAllByScheduleId(scheduleId);
 
         LinkedHashMap<Integer, List<ScheduleDetailItem>> scheduleDetailItemMap = new LinkedHashMap<>();
         List<ScheduleDetailItem> scheduleDetailItemList = new ArrayList<>();
@@ -121,7 +121,7 @@ public class HistoryServiceImpl implements HistoryService {
                     .imageUrl(jejuPlace.getImgUrl())
                     .reviewCount(jejuPlace.getReviewCount())
                     .reviewScore(Math.round(reviewScore*10)/10.0)
-                    .tag(jejuPlace.getTag())
+                    .tag("#" + jejuPlace.getTag().replace("_", " #"))
                     .build();
 
             scheduleDetailItemList.add(scheduleDetailItem);
@@ -133,6 +133,7 @@ public class HistoryServiceImpl implements HistoryService {
                 .mypageCommonInfo(getMyPageCommonInfo(scheduleId))
                 .scheduleDetailItemMap(scheduleDetailItemMap)
                 .build();
-        return scheduleDetailRes;
+
+        return new SuccessRes<>(true, "상세 정보를 조회합니다.", scheduleDetailRes);
     }
 }
