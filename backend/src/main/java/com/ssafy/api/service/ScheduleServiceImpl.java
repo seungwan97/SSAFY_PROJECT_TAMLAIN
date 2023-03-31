@@ -78,8 +78,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         return PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
                 .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
-                .latitude(jejuPlace.getLatitude())
-                .longitude(jejuPlace.getLongitude())
+                .la(jejuPlace.getLatitude())
+                .ma(jejuPlace.getLongitude())
                 .jejuPlaceName(jejuPlace.getName())
                 .roadAddress(jejuPlace.getRoadAddress())
                 .build();
