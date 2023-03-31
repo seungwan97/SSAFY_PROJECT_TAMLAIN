@@ -53,7 +53,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         PlaceDetailRes placeDetailRes = PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
-                .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                 .latitude(jejuPlace.getLatitude())
                 .longitude(jejuPlace.getLongitude())
                 .jejuPlaceName(jejuPlace.getName())
@@ -165,7 +165,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
                     .latitude(jejuPlace.getLatitude())
                     .longitude(jejuPlace.getLongitude())
-                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                    .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                     .build();
 
             flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
@@ -200,7 +200,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .roadAddress(jejuPlace.getRoadAddress())
                         .placeUrl(jejuPlace.getPlaceUrl())
                         .imgUrl(jejuPlace.getImgUrl())
-                        .reviewScore(Math.round(((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))*10)/10.0)
+                        .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                         .tag("#" + jejuPlace.getTag().replace("_", " #"))
                         .build();
 

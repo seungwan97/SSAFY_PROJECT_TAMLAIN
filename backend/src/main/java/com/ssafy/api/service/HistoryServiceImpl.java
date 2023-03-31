@@ -96,7 +96,6 @@ public class HistoryServiceImpl implements HistoryService {
         for(ScheduleItem scheduleItem : scheduleItemList) {
             JejuPlace jejuPlace = scheduleItem.getJejuPlace();
             int currentDay = scheduleItem.getDay();
-            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
 
             if(beforeDay != currentDay) {
                 scheduleDetailItemMap.put(beforeDay, scheduleDetailItemList);
@@ -120,7 +119,7 @@ public class HistoryServiceImpl implements HistoryService {
                     .placeUrl(jejuPlace.getPlaceUrl())
                     .imageUrl(jejuPlace.getImgUrl())
                     .reviewCount(jejuPlace.getReviewCount())
-                    .reviewScore(Math.round(reviewScore*10)/10.0)
+                    .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                     .tag("#" + jejuPlace.getTag().replace("_", " #"))
                     .build();
 
