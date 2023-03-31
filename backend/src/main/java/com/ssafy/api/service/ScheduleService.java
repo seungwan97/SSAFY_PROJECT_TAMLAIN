@@ -8,7 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public interface ScheduleService {
-    List<SearchPlaceRes> getserarchPlace(String keyword);
+    SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword);
     SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId);
     SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail();
     CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq);

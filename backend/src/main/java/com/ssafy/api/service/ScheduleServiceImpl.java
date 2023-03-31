@@ -25,7 +25,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final JejuPlaceRepository jejuPlaceRepository;
 
     @Override
-    public List<SearchPlaceRes> getserarchPlace(String keyword) {
+    public SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword) {
         List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findByNameContaining(keyword);
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
 
@@ -43,7 +43,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             serachPlaceResList.add(serachPlaceRes);
         }
 
-        return serachPlaceResList;
+        return new SuccessRes<List<SearchPlaceRes>>(true, "해당 검색어에 포함된 장소들을 조회합니다.", serachPlaceResList);
     }
 
     @Override
