@@ -9,9 +9,9 @@ import Frame from "./UI/Frame/Frame";
 
 import SurveyMain from "./components/Survey/SurveyMain";
 import SurveyCalendar from "./components/Survey/SurveyCalendar";
-import SurveyGenderAndAge from "./components/Survey/SurveyGenderAndAge";
-import SurveyWithWho from "./components/Survey/SurveyWithWho";
-import SurveyCar from "./components/Survey/SurveyCar";
+// import SurveyGenderAndAge from "./components/Survey/SurveyGenderAndAge";
+// import SurveyWithWho from "./components/Survey/SurveyWithWho";
+// import SurveyCar from "./components/Survey/SurveyCar";
 import SurveyTheme from "./components/Survey/SurveyTheme";
 import SurveyFood from "./components/Survey/SurveyFood";
 import SurveyCafe from "./components/Survey/SurveyCafe";
@@ -49,12 +49,12 @@ const App = () => {
             <Route element={<SurveyMain />}>
               <Route element={<Frame />}>
                 <Route path="/surveyCalendar" element={<SurveyCalendar />} />
-                <Route
+                {/* <Route
                   path="/surveyGenderAndAge"
                   element={<SurveyGenderAndAge />}
                 />
                 <Route path="/surveyWithWho" element={<SurveyWithWho />} />
-                <Route path="/surveyCar" element={<SurveyCar />} />
+                <Route path="/surveyCar" element={<SurveyCar />} /> */}
                 <Route path="/surveyTheme" element={<SurveyTheme />} />
                 <Route path="/surveyFood" element={<SurveyFood />} />
                 <Route path="/surveyCafe" element={<SurveyCafe />} />

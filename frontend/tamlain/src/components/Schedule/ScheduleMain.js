@@ -23,7 +23,6 @@ const ScheduleMain = () => {
 
   //  exit 모달
   const [exitModalOpen, setExitModalOpen] = useState(false);
-  const [exitDesign, setExitDesign] = useState(false);
   const ModalHandler = () => {
     setExitModalOpen(true);
     document.body.style = `overflow:hidden`;
@@ -56,6 +55,7 @@ const ScheduleMain = () => {
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
           alt="뒤로가기"
           onClick={ModalHandler}
+          className="backBtn"
         />
         {exitModalOpen && (
           <Modal
@@ -80,7 +80,9 @@ const ScheduleMain = () => {
           </S.DayBtn>
         </div>
       ))}
-      <S.RegistBtn onClick={RegistModalHandler}>등록하기</S.RegistBtn>
+      <S.RegistBtn onClick={RegistModalHandler} className="registBtn">
+        등록하기
+      </S.RegistBtn>
       {registModalOpen && (
         <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
       )}

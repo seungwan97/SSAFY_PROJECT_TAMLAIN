@@ -24,3 +24,26 @@ export const Wrap = styled.div`
   flex-direction: column;
   padding-top: 15px;
 `;
+
+export const Stars = styled.div`
+  display: flex;
+  padding-top: 5px;
+
+  & svg {
+    color: gray;
+    cursor: pointer;
+    text-shadow: 0 0 3px #fc872a;
+  }
+
+  :hover svg {
+    color: #fc872a;
+  }
+
+  & svg:hover ~ svg {
+    color: gray;
+  }
+
+  .yellowStar {
+    color: #fc872a;
+  }
+`;

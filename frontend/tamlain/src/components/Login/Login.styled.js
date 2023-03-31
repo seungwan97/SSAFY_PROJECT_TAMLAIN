@@ -22,17 +22,10 @@ export const Filter = styled.div`
   z-index: 2;
 `;
 
-// 메인로고
-export const Logo = styled.img`
-  position: absolute;
-  width: 70px;
-  height: 30px;
-  object-fit: contain;
-  cursor: pointer;
-  left: 0.9%;
-  top: 0.9%;
-
-  z-index: 12;
+// 뒤로가기 버튼 ***
+export const goBack = styled(Link)`
+  font-size: 8px;
+  margin: 10px 10px;
 `;
 
 // **********
