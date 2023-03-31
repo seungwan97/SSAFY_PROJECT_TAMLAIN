@@ -150,7 +150,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
-            System.out.println("id: " + jejuPlace.getId());
+//            System.out.println("id: " + jejuPlace.getId());
 
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())

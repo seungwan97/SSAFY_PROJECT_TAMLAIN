@@ -1,8 +1,10 @@
 package com.ssafy.api.controller;
 
 import com.ssafy.api.request.ScheduleModifyReq;
+import com.ssafy.api.response.CommonRes;
 import com.ssafy.api.response.ScheduleDetailRes;
 import com.ssafy.api.response.ScheduleHistoryRes;
+import com.ssafy.api.response.SuccessRes;
 import com.ssafy.api.service.HistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +23,9 @@ public class HisoryController {
 
     @ApiOperation(value = "일정 내역 조회", notes = "마이페이지에서 나의 일정 내역 조회하기")
     @GetMapping("/{userId}")
+//    public SuccessRes<List<ScheduleHistoryRes>> getScheduleHistory(@PathVariable("userId") int userId) {
+//        return historyService.getScheduleHistory(userId);
+//    }
     public List<ScheduleHistoryRes> getScheduleHistory(@PathVariable("userId") int userId) {
         return historyService.getScheduleHistory(userId);
     }
@@ -29,6 +34,7 @@ public class HisoryController {
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/delete/{scheduleId}")
     public void deleteScheduleHistory(@PathVariable("scheduleId") int scheduleId) {
+        CommonRes commonRes = new CommonRes(true, "일정 삭제 완료");
         historyService.deleteScheduleHistory(scheduleId);
     }
 
