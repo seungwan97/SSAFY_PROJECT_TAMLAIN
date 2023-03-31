@@ -12,6 +12,7 @@ import java.util.List;
 
 public interface ScheduleService {
     public List<SearchPlaceRes> getserarchPlace(String keyword);
+    List<SearchPlaceRes> getserarchPlace();
     public PlaceDetailRes getPlaceDetail(int jejuPlaceId);
     List<ScheduleThumbnailRes> getScheduleThumbnail();
     void registSchedule(ScheduleRegistReq scheduleRegistReq);

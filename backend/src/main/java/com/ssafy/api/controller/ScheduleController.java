@@ -34,6 +34,14 @@ public class ScheduleController {
         List<SearchPlaceRes> serarchPlaceResList = scheduleService.getserarchPlace(keyword);
         return ResponseEntity.status(200).body(serarchPlaceResList);
     }
+
+    @ApiOperation(value = "장소 전체 검색", notes = "장소 입력시 검색")
+    @GetMapping("/search")
+    public ResponseEntity<?> serarchPlace() {
+        List<SearchPlaceRes> serarchPlaceResList = scheduleService.getserarchPlace();
+        return ResponseEntity.status(200).body(serarchPlaceResList);
+    }
+
     @ApiOperation(value = "장소 상세 정보", notes = "장소 아이디 입력시 해당 장소의 상세정보")
     @GetMapping("/{jejuPlaceId}")
     public ResponseEntity<?> getPlaceDetail(@PathVariable("jejuPlaceId") int jejuPlaceId) {

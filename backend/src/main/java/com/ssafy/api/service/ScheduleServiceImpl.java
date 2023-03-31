@@ -50,6 +50,27 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public List<SearchPlaceRes> getserarchPlace() {
+        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
+        List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
+
+        for(JejuPlace jejuPlace : jejuPlaceList) {
+            LinkedHashMap<String, Double> map = new LinkedHashMap<>();
+            map.put("La", jejuPlace.getLatitude());
+            map.put("Ma", jejuPlace.getLongitude());
+
+            SearchPlaceRes serachPlaceRes = new SearchPlaceRes(
+                    serachPlaceResList.size()+1,
+                    jejuPlace.getImgUrl(),
+                    jejuPlace.getName(),
+                    jejuPlace.getRoadAddress(),
+                    map);
+            serachPlaceResList.add(serachPlaceRes);
+        }
+        return serachPlaceResList;
+    }
+
+    @Override
     public PlaceDetailRes getPlaceDetail(int jejuPlaceId) {
         Optional<JejuPlace> oJejuPlaces = jejuPlaceRepository.findById(jejuPlaceId);
         JejuPlace jejuPlace = oJejuPlaces.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
