@@ -42,9 +42,9 @@ spring:
         registration:
           kakao:
             client-id: ENC(pspsCp49iwIKXZSfdz59qYd1AWOrsKMbrPKjLEtPp3FjTKLSC5sdLSAS0fOLgi9/)
-#            redirect-uri: http://localhost:8080/oauth/callback/kakao
 #            redirect-uri: http://localhost:3000/oauth/callback/kakao
             redirect-uri: ENC(gR5YHZ7AwDZ13S8Sl/pfv+Fa7r9xtdwnzaaFZr3m9ZxNkEv4PkRl5rZQkRwPHBcBZ0cVE6/4ulk=)
+            client-secret: qculCM0Rvku9RC7UlC8NJxxLy6INbAUU
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:

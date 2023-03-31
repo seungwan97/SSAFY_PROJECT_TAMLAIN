@@ -1,8 +1,7 @@
 package com.ssafy.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.ScheduleRegistReq;
-import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.request.ScheduleReloadReq;
 import com.ssafy.api.response.PlaceDetailRes;
 import com.ssafy.api.response.JejuPlaceRes;
 import com.ssafy.api.response.ScheduleThumbnailRes;
@@ -67,6 +66,13 @@ public class ScheduleController {
     @GetMapping("/recommend/survey/{surveyId}")
     public ResponseEntity<?> getRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
         LinkedHashMap<String, List<JejuPlaceRes>> jejuPlaceResMap = scheduleService.getRecommendJejuPlace(surveyId);
+        return ResponseEntity.status(200).body(jejuPlaceResMap);
+    }
+
+    @ApiOperation(value = "재추천", notes = "재추천 추천 장소 불러오기")
+    @PostMapping("/recommend/survey")
+    public ResponseEntity<?> getReloadRecommendJejuPlace(@RequestBody ScheduleReloadReq scheduleReloadReq) {
+        LinkedHashMap<String, List<JejuPlaceRes>> jejuPlaceResMap = scheduleService.getReloadRecommendJejuPlace(scheduleReloadReq);
         return ResponseEntity.status(200).body(jejuPlaceResMap);
     }
 

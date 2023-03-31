@@ -1,5 +1,6 @@
 package com.ssafy.api.request;
 
+import com.ssafy.api.response.ReviewItem;
 import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,12 +13,21 @@ import java.util.List;
 public class FlaskRecommendReq {
     private FlaskSurveyReq flaskSurveyReq;
     private List<FlaskJejuPlaceItem> flaskJejuPlaceItemList;
-    private HashMap<Integer, List<Integer>> scheduleItemMap;
+    private HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap;
+    private List<ReviewItem> reviewItem;
+
+//    @Builder
+//    public FlaskRecommendReq(FlaskSurveyReq flaskSurveyReq, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap) {
+//        this.flaskSurveyReq = flaskSurveyReq;
+//        this.flaskJejuPlaceItemList = flaskJejuPlaceItemList;
+//        this.scheduleItemMap = scheduleItemMap;
+//    }
 
     @Builder
-    public FlaskRecommendReq(FlaskSurveyReq flaskSurveyReq, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, HashMap<Integer, List<Integer>> scheduleItemMap) {
+    public FlaskRecommendReq(FlaskSurveyReq flaskSurveyReq, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList, HashMap<Integer, List<FlaskJejuPlaceItem>> scheduleItemMap, List<ReviewItem> reviewItem) {
         this.flaskSurveyReq = flaskSurveyReq;
         this.flaskJejuPlaceItemList = flaskJejuPlaceItemList;
         this.scheduleItemMap = scheduleItemMap;
+        this.reviewItem = reviewItem;
     }
 }

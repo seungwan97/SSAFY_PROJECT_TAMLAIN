@@ -32,7 +32,6 @@ public class OauthController {
     @ApiOperation(value = "로그인", notes = "로그인")
     @GetMapping("/callback/{provider}")
     public ResponseEntity<LoginRes> login(@PathVariable String provider, @RequestParam String code){
-        System.out.println("여기까지 들어오나 ? ");
         LoginRes loginResponse = oauthService.login(provider, code);
         System.out.println(loginResponse);
         return ResponseEntity.ok().body(loginResponse);
