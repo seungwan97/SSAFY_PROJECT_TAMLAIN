@@ -13,27 +13,27 @@ const ModalRegist = (props) => {
   const urlList = [
     {
       id: 0,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_2.jpg`,
     },
     {
       id: 1,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_0.jpg`,
     },
     {
       id: 2,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_1.jpg`,
     },
     {
       id: 3,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_3.jpg`,
     },
     {
       id: 4,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`,
     },
     {
       id: 5,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_1.jpg`,
     },
     {
       id: 6,
@@ -41,11 +41,11 @@ const ModalRegist = (props) => {
     },
     {
       id: 7,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_3.jpg`,
     },
     {
       id: 8,
-      imgurl: "assets/Background/1.jpg",
+      imgurl: `${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`,
     },
   ];
 
@@ -63,10 +63,11 @@ const ModalRegist = (props) => {
 
   const closeModal = () => {
     props.setRegistModalOpen(false);
+    document.body.style = `overflow:auto`;
   };
 
   return (
-    <Fragment>
+    <S.Contatiner>
       <S.Modal>
         <S.CloseButton onClick={closeModal}>
           <FontAwesomeIcon icon={faXmark} onClick={props.close} />
@@ -95,7 +96,7 @@ const ModalRegist = (props) => {
           <S.ModalButton onClick={props.yes}> 등록하기 </S.ModalButton>
         </S.ModalInfo>
       </S.Modal>
-    </Fragment>
+    </S.Contatiner>
   );
 };
 

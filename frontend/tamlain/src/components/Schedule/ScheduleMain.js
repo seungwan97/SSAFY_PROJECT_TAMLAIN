@@ -23,14 +23,17 @@ const ScheduleMain = () => {
 
   //  exit 모달
   const [exitModalOpen, setExitModalOpen] = useState(false);
+  const [exitDesign, setExitDesign] = useState(false);
   const ModalHandler = () => {
     setExitModalOpen(true);
+    document.body.style = `overflow:hidden`;
   };
 
   // regist 모달
   const [registModalOpen, setRegistModalOpen] = useState(false);
   const RegistModalHandler = () => {
     setRegistModalOpen(true);
+    document.body.style = `overflow:hidden`;
   };
 
   useEffect(() => {
@@ -44,11 +47,10 @@ const ScheduleMain = () => {
   };
 
   return (
-    <div>
+    <S.Container>
       <S.BackGround>
         <S.BackGroundFilter />
       </S.BackGround>
-      {/* {showModal && <ModalRegist></ModalRegist>} */}
       <div>
         <S.BackBtn
           src={`${process.env.PUBLIC_URL}/assets/Icon/back.png`}
@@ -83,7 +85,7 @@ const ScheduleMain = () => {
         <ModalRegist setRegistModalOpen={setRegistModalOpen}></ModalRegist>
       )}
       <Outlet />
-    </div>
+    </S.Container>
   );
 };
 export default ScheduleMain;

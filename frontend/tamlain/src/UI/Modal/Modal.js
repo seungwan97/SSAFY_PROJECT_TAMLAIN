@@ -3,6 +3,7 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as S from "./Modal.styled";
 import { useState } from "react";
+import { useEffect } from "react";
 const Modal = (props) => {
   const value = props.name2;
   const flag = true;
@@ -12,6 +13,7 @@ const Modal = (props) => {
 
   const closeModal = () => {
     props.setExitModalOpen(false);
+    document.body.style = `overflow:auto`;
   };
 
   return (
