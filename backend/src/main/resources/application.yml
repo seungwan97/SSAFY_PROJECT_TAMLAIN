@@ -16,15 +16,15 @@ spring:
     username: ENC(F301hhYYYd0rvHquA7NOgA==)
     # local
 #    url: ENC(oWtD62ypCryb/I8T935WaGVP+9BJ1JRZwwucRLJLB2+bDu3bceFM2E5t7ybpIT0k1meZfv74XSBep5GkTk/R1fpRYlLhTj3UFxzKeJuCYQUt7D717S1RGfeUNODuxmQWS5MZWY4dLhgIclkSvKo9+IoQ8xyE0g/JouqyS8ryqn9MKi7wForZsNxLamyJNDpeYwnT23BamO5PiKqJU9pbQmw2pb3Z6q+z3BXobaIicTM=)
-#    username: ENC(eua8htGfOZ5mvZwFK2he9g==)
+#    username: ENC(AQbYc5mkFpX5qHZRhIxc0w==)
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: ENC(rqkqAtx5oXQkJdp8OtsRZQ==)
+    password: ENC(2Ct99Ez3n1dAOA8dnCYfXA==)
   jpa:
     open-in-view: false
     generate-ddl: true
-    show-sql: true
+    show-sql: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
         enable_lazy_load_no_trans: true

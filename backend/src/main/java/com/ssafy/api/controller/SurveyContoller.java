@@ -21,8 +21,8 @@ public class SurveyContoller {
     @ApiResponses({@ApiResponse(code = 201, message = "성공"), @ApiResponse(code = 202, message = "설문 정보 부족"), @ApiResponse(code = 404, message = "실패")})
     @PostMapping("/regist")
     public ResponseEntity<?> registSurvey(@RequestBody SurveyRegistReq surveyRegistReq) {
-        int result = surveyService.registSurvey(surveyRegistReq);
-        if(result != -1) return ResponseEntity.status(202).body(result);
-        else return ResponseEntity.status(201).body("설문 조사 등록 완료");
+        int[] result = surveyService.registSurvey(surveyRegistReq);
+        if(result[0] != -1) return ResponseEntity.status(202).body(result[1]);
+        else return ResponseEntity.status(201).body(result[1]);
     }
 }
