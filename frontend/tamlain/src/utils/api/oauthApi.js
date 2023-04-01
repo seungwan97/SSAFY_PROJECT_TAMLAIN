@@ -19,9 +19,8 @@ export const logout = async (accessToken) => {
 // access token 갱신
 export const refreshAccessToken = async (
   accessToken,
-  data
 ) => {
-  const response = await client.post(`/oauth/token`, data, {
+  const response = await client.post(`/oauth/token`,{
     headers: {
       "X-AUTH-TOKEN": accessToken,
     },

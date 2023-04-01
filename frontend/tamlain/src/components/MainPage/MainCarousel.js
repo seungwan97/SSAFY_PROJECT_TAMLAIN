@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import MainCarouselItem from "./MainCarouselItem";
 import * as S from "./MainCarousel.styled";
 import { useNavigate } from "react-router-dom";
+import { refreshAccessToken } from "../../utils/api/oauthApi";
 
 const MainCarousel = () => {
   const settings = {
@@ -46,6 +47,7 @@ const MainCarousel = () => {
   const key = localStorage.getItem("token");
 
   const reDirectSchedule = () => {
+    refreshAccessToken(key).then((res) => console.log(res));
     if (key === null) {
       navigate("/login");
     } else {
