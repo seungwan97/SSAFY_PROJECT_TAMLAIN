@@ -54,7 +54,7 @@ const MyPageStarMain = () => {
                 );
               })}
             </S.Stars> */}
-            <Rating />
+            <Rating props={DummyData} />
           </S.Wrap>
         </S.Container>;
       })}
