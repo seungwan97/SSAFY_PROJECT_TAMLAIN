@@ -12,15 +12,11 @@ const SurveySport = () => {
     const checkboxes = document.getElementsByName("sport");
 
     checkboxes.forEach((checkbox) => {
-      console.log(checkbox.checked);
       if (checkbox.checked === false) {
         selectall.checked = false;
         return;
       }
     });
-    if (!selectall.checked) {
-      return;
-    }
   };
 
   const selectAll = (e) => {
@@ -32,13 +28,11 @@ const SurveySport = () => {
   };
 
   const registForm = () => {
-    const selectedEls = document.querySelectorAll(
-      'input[name="sport"]:checked'
-    );
+    const sport = document.querySelectorAll('input[name="sport"]:checked');
     const arr = [];
-    selectedEls.forEach((el) => {
-      arr.push(el.value);
-    });
+    for (let i = 0; i < sport.length; i++) {
+      arr.push(sport[i].value);
+    }
     localStorage.setItem("Sport", JSON.stringify(arr));
   };
 

@@ -12,15 +12,11 @@ const SurveyExhibition = () => {
     const checkboxes = document.getElementsByName("exhibition");
 
     checkboxes.forEach((checkbox) => {
-      console.log(checkbox.checked);
       if (checkbox.checked === false) {
         selectall.checked = false;
         return;
       }
     });
-    if (!selectall.checked) {
-      return;
-    }
   };
 
   const selectAll = (e) => {
@@ -30,7 +26,6 @@ const SurveyExhibition = () => {
       checkbox.checked = e.target.checked;
     });
   };
-
   const registForm = () => {
     const selectedEls = document.querySelectorAll(
       'input[name="exhibition"]:checked'
@@ -87,7 +82,7 @@ const SurveyExhibition = () => {
             value="공연/연극"
             onClick={checkSelectAll}
           />
-          <label htmlFor="radio-1">🍊 공연/연극</label>
+          <label htmlFor="radio-1">🍊 공연장</label>
         </S.FormBtn>
         <S.FormBtn style={{ marginLeft: "55px" }}>
           <input

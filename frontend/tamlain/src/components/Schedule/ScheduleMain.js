@@ -22,7 +22,6 @@ const ScheduleMain = () => {
 
   //  exit 모달
   const [exitModalOpen, setExitModalOpen] = useState(false);
-  const [exitDesign, setExitDesign] = useState(false);
   const ModalHandler = () => {
     setExitModalOpen(true);
     document.body.style = `overflow:hidden`;

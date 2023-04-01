@@ -20,9 +20,6 @@ const SurveyRest = () => {
         return;
       }
     });
-    if (!selectall.checked) {
-      return;
-    }
   };
 
   const selectAll = (e) => {
@@ -193,7 +190,7 @@ const SurveyRest = () => {
             value="올레길"
             onClick={checkSelectAll}
           />
-          <label htmlFor="radio-3">🍊 올레길</label>
+          <label htmlFor="radio-3">🍊 문화유적</label>
         </S.FormBtn>
         <br />
         <br />

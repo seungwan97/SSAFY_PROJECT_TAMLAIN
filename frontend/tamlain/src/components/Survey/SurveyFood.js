@@ -12,15 +12,11 @@ const SurveyFood = () => {
     const checkboxes = document.getElementsByName("food");
 
     checkboxes.forEach((checkbox) => {
-      console.log(checkbox.checked);
       if (checkbox.checked === false) {
         selectall.checked = false;
         return;
       }
     });
-    if (!selectall.checked) {
-      return;
-    }
   };
 
   const selectAll = (e) => {
@@ -30,7 +26,6 @@ const SurveyFood = () => {
       checkbox.checked = e.target.checked;
     });
   };
-
   const registForm = () => {
     const selectedEls = document.querySelectorAll('input[name="food"]:checked');
     const arr = [];
@@ -39,7 +34,6 @@ const SurveyFood = () => {
     });
     localStorage.setItem("Food", JSON.stringify(arr));
   };
-
   return (
     <div>
       <Link to="/surveyTheme">
