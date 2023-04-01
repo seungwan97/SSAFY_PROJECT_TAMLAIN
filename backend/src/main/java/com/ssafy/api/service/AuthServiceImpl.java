@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService{
             throw new AuthenticationException("refresh token이 유효하지 않습니다.");
         }
 
-        Token newAccessToken = jwtTokenProvider.createAccessTok(id);
+        Token newAccessToken = jwtTokenProvider.createAccessToken(id);
 
         return new AccessTokenRes(newAccessToken.getValue());
     }
