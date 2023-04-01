@@ -82,7 +82,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         PlaceDetailRes placeDetailRes = PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
-                .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                 .la(jejuPlace.getLatitude())
                 .ma(jejuPlace.getLongitude())
                 .jejuPlaceName(jejuPlace.getName())
@@ -384,7 +384,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
             for(Integer i : list) {
-                                        Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
+                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
                 Double divide = 0.0;
@@ -395,6 +395,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .name(jejuPlace.getName())
                         .categoryId(jejuPlace.getCategory().getId())
                         .mapInfo(MapInfo.builder()
+                                .jejuPlaceId(jejuPlace.getId())
                                 .title(jejuPlace.getName())
                                 .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
                                 .build())
@@ -435,8 +436,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             resultMap.put(categoryDescription, jejuPlaceResList);
         }
 
-
-        System.out.println();
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
