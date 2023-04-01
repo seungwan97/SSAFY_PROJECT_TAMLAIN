@@ -4,7 +4,11 @@ import * as S from "./Rating.styled";
 
 const ARRAY = [0, 1, 2, 3, 4];
 
+<<<<<<< HEAD
 const Rating = (props) => {
+=======
+const Rating = () => {
+>>>>>>> 55b9ec1cbff4114981f8463814f2c264a2529352
   const [clicked, setClicked] = useState([false, false, false, false, false]);
 
   const handleStarClick = (index, idx) => {

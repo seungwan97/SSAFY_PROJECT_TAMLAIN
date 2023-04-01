@@ -2,6 +2,11 @@ import * as S from "./SurveyTheme.styled";
 import { Link } from "react-router-dom";
 
 const SurveyTheme = () => {
+  const registForm = () => {
+    const theme = document.querySelector('input[name="theme"]:checked').value;
+    localStorage.setItem("Theme", JSON.stringify(theme));
+  };
+
   return (
     <div>
       <Link to="/surveyCalendar">

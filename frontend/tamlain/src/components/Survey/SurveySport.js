@@ -7,7 +7,16 @@ const SurveySport = () => {
 
     if (e.target.checked === false) {
       selectall.checked = false;
+      return;
     }
+    const checkboxes = document.getElementsByName("sport");
+
+    checkboxes.forEach((checkbox) => {
+      if (checkbox.checked === false) {
+        selectall.checked = false;
+        return;
+      }
+    });
   };
 
   const selectAll = (e) => {
@@ -17,6 +26,16 @@ const SurveySport = () => {
       checkbox.checked = e.target.checked;
     });
   };
+
+  const registForm = () => {
+    const sport = document.querySelectorAll('input[name="sport"]:checked');
+    const arr = [];
+    for (let i = 0; i < sport.length; i++) {
+      arr.push(sport[i].value);
+    }
+    localStorage.setItem("Sport", JSON.stringify(arr));
+  };
+
   return (
     <div>
       <Link to="/surveyActivity">
@@ -55,7 +74,7 @@ const SurveySport = () => {
             id="radio-1"
             type="checkbox"
             name="sport"
-            value="golf"
+            value="골프"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 골프</label>
@@ -65,7 +84,7 @@ const SurveySport = () => {
             id="radio-2"
             type="checkbox"
             name="sport"
-            value="bike"
+            value="자전거/싸이클"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 자전거</label>
@@ -75,7 +94,7 @@ const SurveySport = () => {
             id="radio-3"
             type="checkbox"
             name="sport"
-            value="ocean"
+            value="해양"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 해양</label>
