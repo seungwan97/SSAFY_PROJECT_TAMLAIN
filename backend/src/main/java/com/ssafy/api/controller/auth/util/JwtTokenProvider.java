@@ -1,4 +1,4 @@
-package com.ssafy.config;
+package com.ssafy.api.controller.auth.util;
 
 import com.ssafy.db.entity.Token;
 import io.jsonwebtoken.*;

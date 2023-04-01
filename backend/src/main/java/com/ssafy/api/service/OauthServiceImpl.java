@@ -2,7 +2,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.response.LoginRes;
 import com.ssafy.api.response.OauthTokenRes;
-import com.ssafy.config.JwtTokenProvider;
+import com.ssafy.api.controller.auth.util.JwtTokenProvider;
 import com.ssafy.api.response.KakaoUserInfo;
 import com.ssafy.api.response.Oauth2UserInfo;
 import com.ssafy.db.entity.User;
@@ -20,7 +20,6 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
 

@@ -1,5 +1,7 @@
 package com.ssafy.api.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.Builder;
 import lombok.Data;
 
@@ -7,7 +9,9 @@ import lombok.Data;
 public class PlaceDetailRes {
     private String placeUrl;
     private Double reviewScore;
+    @JsonProperty(value = "La")
     private Double La;
+    @JsonProperty(value = "Ma")
     private Double Ma;
     private String jejuPlaceName;
     private String roadAddress;
