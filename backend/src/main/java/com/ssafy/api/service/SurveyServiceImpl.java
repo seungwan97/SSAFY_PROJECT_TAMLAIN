@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.response.SuccessRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -19,24 +20,20 @@ public class SurveyServiceImpl implements SurveyService {
     private final CategoryRepository categoryRepository;
     private final SurveyFavorCategoryRepository surveyFavorCategoryRepository;
     @Override
-    public int[] registSurvey(SurveyRegistReq surveyRegistReq) {
+    public SuccessRes<Integer> registSurvey(SurveyRegistReq surveyRegistReq) {
         LinkedHashMap<Integer, List<String>> map = surveyRegistReq.getSurveyFavorCategoryMap();
-        int count = 0, firstPage = 0;
+        int count = 0, result = 0;
         boolean flag = false;
-        int[] result = new int[2];
 
         for(Integer key : map.keySet()) {
             if(map.get(key).isEmpty()) {
                 count++;
-                if(!flag) firstPage = key;
+                if(!flag) result = key;
                 flag = true;
             }
         }
 
-        if(count > 3) {
-            result[0] = -1; result[1] = firstPage;
-            return result;
-        }
+        if(count > 3) return new SuccessRes<Integer>(false, "최소 3개 이상 카테고리를 선택해야 합니다.", result);
 
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
@@ -79,7 +76,6 @@ public class SurveyServiceImpl implements SurveyService {
             }
         }
 
-        result[0] = 1; result[1] = surveyId;
-        return result;
+        return new SuccessRes<Integer>(true, "설문 조사 등록을 완료했습니다.", surveyId);
     }
 }

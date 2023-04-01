@@ -31,10 +31,8 @@ public class OauthController {
 
     @ApiOperation(value = "로그인", notes = "로그인")
     @GetMapping("/callback/{provider}")
-    public ResponseEntity<LoginRes> login(@PathVariable String provider, @RequestParam String code){
-        LoginRes loginResponse = oauthService.login(provider, code);
-        System.out.println(loginResponse);
-        return ResponseEntity.ok().body(loginResponse);
+    public LoginRes login(@PathVariable String provider, @RequestParam String code){
+        return oauthService.login(provider, code);
     }
 
     /**
@@ -42,10 +40,10 @@ public class OauthController {
      */
     @ApiOperation(value = "토큰", notes = "access token 갱신")
     @PostMapping(value = "/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<AccessTokenRes> refreshAccessToken(HttpServletRequest request,
+    public AccessTokenRes refreshAccessToken(HttpServletRequest request,
                                                              @ModelAttribute RefreshTokenRequest refreshToken) throws AuthenticationException {
         String accessToken = AuthorizationExtractor.extract(request);
-        return ResponseEntity.ok().body(authService.refreshAccessToken(accessToken, refreshToken));
+        return authService.refreshAccessToken(accessToken, refreshToken);
     }
 
     /**

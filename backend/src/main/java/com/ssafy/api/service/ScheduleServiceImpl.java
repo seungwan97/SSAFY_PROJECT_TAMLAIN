@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final RedisTemplate<String, RedisPlace> redisTemplate;
 
     @Override
-    public List<SearchPlaceRes> getserarchPlace(String keyword) {
+    public SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword) {
         List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findByNameContaining(keyword);
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
 
@@ -71,15 +71,16 @@ public class ScheduleServiceImpl implements ScheduleService {
                     map);
             serachPlaceResList.add(serachPlaceRes);
         }
-        return serachPlaceResList;
+
+        return new SuccessRes<List<SearchPlaceRes>>(true, "해당 검색어에 포함된 장소들을 조회합니다.", serachPlaceResList);
     }
 
     @Override
-    public PlaceDetailRes getPlaceDetail(int jejuPlaceId) {
+    public SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId) {
         Optional<JejuPlace> oJejuPlaces = jejuPlaceRepository.findById(jejuPlaceId);
         JejuPlace jejuPlace = oJejuPlaces.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
-        return PlaceDetailRes.builder()
+        PlaceDetailRes placeDetailRes = PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
                 .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
                 .la(jejuPlace.getLatitude())
@@ -87,12 +88,14 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .jejuPlaceName(jejuPlace.getName())
                 .roadAddress(jejuPlace.getRoadAddress())
                 .build();
+
+        return new SuccessRes<PlaceDetailRes>(true, "상세 정보를 조회합니다.", placeDetailRes);
     }
 
 
 
     @Override
-    public List<ScheduleThumbnailRes> getScheduleThumbnail() {
+    public SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail() {
         List<ScheduleThumbnail> scheduleThumbnailList = scheduleThumbnailRepository.findAll();
         List<ScheduleThumbnailRes> scheduleThumbnailResList = new ArrayList<>();
 
@@ -103,11 +106,12 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .build();
             scheduleThumbnailResList.add(scheduleThumbnailRes);
         }
-        return scheduleThumbnailResList;
+
+        return new SuccessRes<List<ScheduleThumbnailRes>>(true, "일정 썸네일 이미지를 조회합니다.", scheduleThumbnailResList);
     }
 
     @Override
-    public void registSchedule(ScheduleRegistReq scheduleRegistReq) {
+    public CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq) {
         Optional<User> oUser = userRepository.findById(scheduleRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
 
@@ -146,17 +150,16 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
 
+        return new CommonRes(true, "일정 등록을 완료했습니다.");
+
         //redis있는 내용 전체 삭제
         redisTemplate.delete(redisTemplate.keys("*"));
     }
 
     @Override
-    public LinkedHashMap<String, List<JejuPlaceRes>> getRecommendJejuPlace(int surveyId) {
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId) {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
-
-        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
         List<Integer> categoryList = new ArrayList<>();
@@ -173,6 +176,30 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .surveyFavorCategoryList(categoryList)
                 .build();
 
+//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAllByCategoryId(categoryList);
+        List<JejuPlace> jejuPlaceList = new ArrayList<>();
+        for(Integer id : categoryList) {
+            List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
+            for(JejuPlace jejuPlace : list) {
+                jejuPlaceList.add(jejuPlace);
+            }
+        }
+
+        List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
+
+        for(JejuPlace jejuPlace : jejuPlaceList) {
+//            System.out.println("id: " + jejuPlace.getId());
+
+            FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
+                    .jejuPlaceId(jejuPlace.getId())
+                    .name(jejuPlace.getName())
+                    .categoryId(jejuPlace.getCategory().getId())
+                    .categoryName(jejuPlace.getCategory().getCategoryName())
+                    .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
+                    .latitude(jejuPlace.getLatitude())
+                    .longitude(jejuPlace.getLongitude())
+                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                    .build();
         getFlaskJejuItem(jejuPlaceList, flaskJejuPlaceItemList);
 
 
@@ -361,7 +388,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
                 Double divide = 0.0;
                 if (jejuPlace.getReviewCount() != 0) {
-                    divide = (double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
+                    divide = Math.round((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()));
                 }
                 JejuPlaceRes jejuPlaceRes = JejuPlaceRes.builder()
                         .name(jejuPlace.getName())
@@ -410,6 +437,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         System.out.println();
         return resultMap;
+        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
 
