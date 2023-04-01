@@ -105,6 +105,7 @@ public class HistoryServiceImpl implements HistoryService {
             }
 
             MapInfo mapInfo = MapInfo.builder()
+                    .jejuPlaceId(jejuPlace.getId())
                     .title(jejuPlace.getName())
                     .latlng(LatLng.builder()
                             .la(jejuPlace.getLatitude())
@@ -115,7 +116,6 @@ public class HistoryServiceImpl implements HistoryService {
             ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
                     .scheduleItemId(scheduleItem.getId())
                     .day(currentDay)
-                    .jejuPlaceId(jejuPlace.getId())
                     .mapInfo(mapInfo)
                     .roadAddress(jejuPlace.getRoadAddress())
                     .placeUrl(jejuPlace.getPlaceUrl())

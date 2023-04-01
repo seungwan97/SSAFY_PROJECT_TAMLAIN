@@ -194,6 +194,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .name(jejuPlace.getName())
                         .categoryId(jejuPlace.getCategory().getId())
                         .mapInfo(MapInfo.builder()
+                                .jejuPlaceId(jejuPlace.getId())
                                 .title(jejuPlace.getName())
                                 .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
                                 .build())
