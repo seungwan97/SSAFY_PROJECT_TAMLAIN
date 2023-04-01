@@ -22,9 +22,21 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public SuccessRes<Integer> registSurvey(SurveyRegistReq surveyRegistReq) {
         LinkedHashMap<Integer, List<String>> map = surveyRegistReq.getSurveyFavorCategoryMap();
-        int count = 0, result = 0;
+        int count = 0, result = 1;
         boolean flag = false;
 
+        // 날짜
+        if(surveyRegistReq.getStartDate() == null || surveyRegistReq.getEndDate() == null) {
+            return new SuccessRes<Integer>(false, "날짜를 입력해주세요.", result);
+        }
+
+        // 여행 테마
+        if(surveyRegistReq.getTravelTheme() == null || surveyRegistReq.getTravelTheme().isBlank()) {
+            result = 2;
+            return new SuccessRes<Integer>(false, "여행 테마를 선택해주세요.", result);
+        }
+
+        // 카테고리
         for(Integer key : map.keySet()) {
             if(map.get(key).isEmpty()) {
                 count++;
@@ -33,7 +45,7 @@ public class SurveyServiceImpl implements SurveyService {
             }
         }
 
-        if(count > 3) return new SuccessRes<Integer>(false, "최소 3개 이상 카테고리를 선택해야 합니다.", result);
+        if(count > 3) return new SuccessRes<Integer>(false, "최소 3개 이상 카테고리를 선택해야 합니다.", result+2);
 
         Optional<User> oUser = userRepository.findById(surveyRegistReq.getUserId());
         User user = oUser.orElseThrow(() -> new IllegalArgumentException("user doesn't exist"));
@@ -62,6 +74,7 @@ public class SurveyServiceImpl implements SurveyService {
         for(Integer key : map.keySet()) {
             for(String scheduleName : map.get(key)) {
                 Optional<Category> oCategory = categoryRepository.findByCategoryDetailName(scheduleName);
+
                 Category category = oCategory.orElseThrow(() -> new IllegalArgumentException("category doesn't exist"));
 
                 Optional<Survey> oSurvey = surveyRepository.findById(surveyId);

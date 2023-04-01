@@ -1,7 +1,6 @@
 package com.ssafy.api.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyDescription;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,10 +8,10 @@ import lombok.Data;
 public class PlaceDetailRes {
     private String placeUrl;
     private Double reviewScore;
-    @JsonProperty(value = "La")
-    private Double La;
-    @JsonProperty(value = "Ma")
-    private Double Ma;
+    @JsonProperty("La")
+    private Double la;
+    @JsonProperty("Ma")
+    private Double ma;
     private String jejuPlaceName;
     private String roadAddress;
 
@@ -20,8 +19,8 @@ public class PlaceDetailRes {
     public PlaceDetailRes(String placeUrl, Double reviewScore, Double la, Double ma, String jejuPlaceName, String roadAddress) {
         this.placeUrl = placeUrl;
         this.reviewScore = reviewScore;
-        this.La = la;
-        this.Ma = ma;
+        this.la = la;
+        this.ma = ma;
         this.jejuPlaceName = jejuPlaceName;
         this.roadAddress = roadAddress;
     }
