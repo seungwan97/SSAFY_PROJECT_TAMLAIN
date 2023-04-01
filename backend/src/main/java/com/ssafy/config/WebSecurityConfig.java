@@ -14,10 +14,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers("/oauth/callback/**").permitAll();
-//        http.csrf().disable();
+//        http.authorizeRequests()
+//                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+//                .antMatchers("/oauth/callback/**").permitAll();
+        http.csrf().disable();
     }
 }
 

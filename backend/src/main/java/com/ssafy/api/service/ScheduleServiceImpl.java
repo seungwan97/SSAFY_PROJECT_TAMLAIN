@@ -44,6 +44,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     jejuPlace.getImgUrl(),
                     jejuPlace.getName(),
                     jejuPlace.getRoadAddress(),
+                    jejuPlace.getId(),
                     map);
             serachPlaceResList.add(serachPlaceRes);
         }
@@ -66,6 +67,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     jejuPlace.getImgUrl(),
                     jejuPlace.getName(),
                     jejuPlace.getRoadAddress(),
+                    jejuPlace.getId(),
                     map);
             serachPlaceResList.add(serachPlaceRes);
         }
@@ -350,6 +352,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
         LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
         List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
+
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
             for(Integer i : list) {

@@ -7,8 +7,8 @@ import lombok.Data;
 public class PlaceDetailRes {
     private String placeUrl;
     private Double reviewScore;
-    private Double la;
-    private Double ma;
+    private Double La;
+    private Double Ma;
     private String jejuPlaceName;
     private String roadAddress;
 
@@ -16,8 +16,8 @@ public class PlaceDetailRes {
     public PlaceDetailRes(String placeUrl, Double reviewScore, Double la, Double ma, String jejuPlaceName, String roadAddress) {
         this.placeUrl = placeUrl;
         this.reviewScore = reviewScore;
-        this.la = la;
-        this.ma = ma;
+        this.La = la;
+        this.Ma = ma;
         this.jejuPlaceName = jejuPlaceName;
         this.roadAddress = roadAddress;
     }
