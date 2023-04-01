@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.request.ScheduleReloadReq;
 import com.ssafy.api.request.SurveyRegistReq;
 import com.ssafy.api.response.*;
 import com.ssafy.api.request.ScheduleRegistReq;
@@ -15,8 +16,8 @@ public interface ScheduleService {
     CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq);
     SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId);
 
-    List<SearchPlaceRes> getserarchPlace();
-    LinkedHashMap<String, List<JejuPlaceRes>> getReloadRecommendJejuPlace( ScheduleReloadReq scheduleReloadReq);
+    SuccessRes<List<SearchPlaceRes>> getserarchPlace();
+    SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq);
 
     void saveJejuPlace(ScheduleReloadReq scheduleReloadReq);
     Map<String, List<Integer>> getJejuPlace(String id);

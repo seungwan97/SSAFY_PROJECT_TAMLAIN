@@ -49,11 +49,11 @@ public class ScheduleServiceImpl implements ScheduleService {
             serachPlaceResList.add(serachPlaceRes);
         }
 
-        return serachPlaceResList;
+        return new SuccessRes<List<SearchPlaceRes>>(true, "해당 검색어에 포함된 장소들을 조회합니다.", serachPlaceResList);
     }
 
     @Override
-    public List<SearchPlaceRes> getserarchPlace() {
+    public SuccessRes<List<SearchPlaceRes>> getserarchPlace() {
         List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
 
@@ -150,10 +150,10 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
 
-        return new CommonRes(true, "일정 등록을 완료했습니다.");
-
         //redis있는 내용 전체 삭제
         redisTemplate.delete(redisTemplate.keys("*"));
+
+        return new CommonRes(true, "일정 등록을 완료했습니다.");
     }
 
     @Override
@@ -200,8 +200,9 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .longitude(jejuPlace.getLongitude())
                     .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
                     .build();
-        getFlaskJejuItem(jejuPlaceList, flaskJejuPlaceItemList);
+        }
 
+        getFlaskJejuItem(jejuPlaceList, flaskJejuPlaceItemList);
 
         List<Review> reviewList = reviewRepository.findAll();
         List<ReviewItem> reviewItems = new ArrayList<>();
@@ -278,11 +279,11 @@ public class ScheduleServiceImpl implements ScheduleService {
             resultMap.put(categoryDescription, jejuPlaceResList);
         }
 
-        return resultMap;
+        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
     @Override
-    public LinkedHashMap<String, List<JejuPlaceRes>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq)  {
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq)  {
         Optional<Survey> oSurvey = surveyRepository.findById(scheduleReloadReq.getSurveyId());
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
@@ -383,12 +384,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
             for(Integer i : list) {
-                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
+                                        Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
                 Double divide = 0.0;
                 if (jejuPlace.getReviewCount() != 0) {
-                    divide = Math.round((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()));
+                    divide = (double) Math.round((jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()));
                 }
                 JejuPlaceRes jejuPlaceRes = JejuPlaceRes.builder()
                         .name(jejuPlace.getName())
@@ -436,7 +437,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
         System.out.println();
-        return resultMap;
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
@@ -459,6 +459,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         return data;
     }
+
     private void getFlaskJejuItem(List<JejuPlace> jejuPlaceList, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList) {
         for(JejuPlace jejuPlace : jejuPlaceList) {
 

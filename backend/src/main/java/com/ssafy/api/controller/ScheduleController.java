@@ -60,9 +60,8 @@ public class ScheduleController {
 
     @ApiOperation(value = "재추천", notes = "재추천 추천 장소 불러오기")
     @PostMapping("/recommend/survey")
-    public ResponseEntity<?> getReloadRecommendJejuPlace(@RequestBody ScheduleReloadReq scheduleReloadReq) {
-        LinkedHashMap<String, List<JejuPlaceRes>> jejuPlaceResMap = scheduleService.getReloadRecommendJejuPlace(scheduleReloadReq);
-        return ResponseEntity.status(200).body(jejuPlaceResMap);
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(@RequestBody ScheduleReloadReq scheduleReloadReq) {
+        return scheduleService.getReloadRecommendJejuPlace(scheduleReloadReq);
     }
 
 }
