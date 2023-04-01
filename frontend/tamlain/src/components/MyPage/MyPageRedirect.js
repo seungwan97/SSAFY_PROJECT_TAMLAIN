@@ -10,7 +10,7 @@ const MyPageRedirect = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getScheduleHistory(key,user_id).then((res) =>
+        getScheduleHistory(key, user_id).then((res) =>
         {if (res.data.length === 0) {
             navigate("/myPageEmpty");
         } else {
@@ -18,7 +18,6 @@ const MyPageRedirect = () => {
         }
     });
     }, []);
-
 };
 
 export default MyPageRedirect;
