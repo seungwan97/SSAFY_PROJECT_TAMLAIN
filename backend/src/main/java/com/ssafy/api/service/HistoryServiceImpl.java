@@ -63,6 +63,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public CommonRes modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+        if(scheduleModifyReq.getName() == null || scheduleModifyReq.getName().isBlank()) return new CommonRes(false, "일정명을 입력해주세요.");
+
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
