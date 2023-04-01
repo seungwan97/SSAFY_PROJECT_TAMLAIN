@@ -10,7 +10,6 @@ const SurveyExhibition = () => {
       return;
     }
     const checkboxes = document.getElementsByName("exhibition");
-    console.log(checkboxes);
 
     checkboxes.forEach((checkbox) => {
       console.log(checkbox.checked);
@@ -85,7 +84,7 @@ const SurveyExhibition = () => {
             id="radio-1"
             type="checkbox"
             name="exhibition"
-            value="show"
+            value="공연/연극"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 공연/연극</label>
@@ -95,7 +94,7 @@ const SurveyExhibition = () => {
             id="radio-2"
             type="checkbox"
             name="exhibition"
-            value="memory"
+            value="기념관"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 기념관</label>
@@ -105,7 +104,7 @@ const SurveyExhibition = () => {
             id="radio-3"
             type="checkbox"
             name="exhibition"
-            value="art"
+            value="미술관"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 미술관</label>
@@ -118,7 +117,7 @@ const SurveyExhibition = () => {
             id="radio-4"
             type="checkbox"
             name="exhibition"
-            value="museum"
+            value="박물관"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-4">🍊 박물관</label>
@@ -128,7 +127,7 @@ const SurveyExhibition = () => {
             id="radio-5"
             type="checkbox"
             name="exhibition"
-            value="exhibition"
+            value="전시관"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-5">🍊 전시관</label>
@@ -138,7 +137,7 @@ const SurveyExhibition = () => {
             id="radio-6"
             type="checkbox"
             name="exhibition"
-            value="culture"
+            value="문화유적"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-6">🍊 문화유적</label>

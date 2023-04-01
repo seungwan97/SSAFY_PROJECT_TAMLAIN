@@ -10,7 +10,6 @@ const SurveyCafe = () => {
       return;
     }
     const checkboxes = document.getElementsByName("cafe");
-    console.log(checkboxes);
 
     checkboxes.forEach((checkbox) => {
       console.log(checkbox.checked);
@@ -80,7 +79,7 @@ const SurveyCafe = () => {
             id="radio-1"
             type="checkbox"
             name="cafe"
-            value="cafe"
+            value="카페"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 카페</label>
@@ -90,7 +89,7 @@ const SurveyCafe = () => {
             id="radio-2"
             type="checkbox"
             name="cafe"
-            value="specialcafe"
+            value="이색카페"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 이색카페</label>
@@ -100,7 +99,7 @@ const SurveyCafe = () => {
             id="radio-3"
             type="checkbox"
             name="cafe"
-            value="dessert"
+            value="디저트"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 디저트</label>

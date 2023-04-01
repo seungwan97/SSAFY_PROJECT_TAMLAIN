@@ -2,6 +2,7 @@ import * as S from "./SurveyRest.styled";
 import { Link } from "react-router-dom";
 import { surveyApi } from "../../utils/api/surveyApi";
 import moment from "moment/moment";
+import client from "../../utils/client";
 
 const SurveyRest = () => {
   const checkSelectAll = (e) => {
@@ -12,10 +13,8 @@ const SurveyRest = () => {
       return;
     }
     const checkboxes = document.getElementsByName("rest");
-    console.log(checkboxes);
 
     checkboxes.forEach((checkbox) => {
-      console.log(checkbox.checked);
       if (checkbox.checked === false) {
         selectall.checked = false;
         return;
@@ -78,37 +77,50 @@ const SurveyRest = () => {
       5: JSON.parse(localStorage.getItem("Exhibition")),
       6: JSON.parse(localStorage.getItem("Rest")),
     };
-    console.log(userId);
-    console.log(startDate);
-    console.log(endDate);
-    console.log(theme);
-    console.log(arr);
 
     const data = {
-      userId: parseInt(userId),
+      userId: 1,
       startDate: startDate,
       endDate: endDate,
       travelTheme: theme,
       surveyFavorCategoryMap: arr,
     };
-    // const data = {
-    //   userId: 1,
-    //   startDate: "2023-03-01",
-    //   endDate: "2023-03-04",
-    //   travelTheme: "history",
-    //   surveyFavorCategoryMap: {
-    //     1: ["양식", "한식"],
-    //     2: ["카페"],
-    //     3: [],
-    //     4: [],
-    //     5: [],
-    //     6: ["공원", "도보"],
-    //   },
-    // };
     console.log(data);
-    console.log(token);
+
     surveyApi(token, data).then((res) => {
       console.log(res);
+      if (res.data.success) {
+        const surveyId = res.data.data;
+        localStorage.setItem("surveyId", JSON.stringify(surveyId));
+      } else {
+        const page = res.data.data;
+        console.log(`${client.defaults.url}/surveyCalendar`);
+        alert(res.data.message);
+        if (page === 1) {
+          window.location.href = `${client.defaults.url}/surveyCalendar`;
+        } else if (page === 2) {
+          window.location.href = `${client.defaults.url}/surveyTheme`;
+        } else if (page === 3) {
+          window.location.href = `${client.defaults.url}/surveyFood`;
+        } else if (page === 4) {
+          window.location.href = `${client.defaults.url}/surveyCafe`;
+        } else if (page === 5) {
+          window.location.href = `${client.defaults.url}/surveyActivity`;
+        } else if (page === 6) {
+          window.location.href = `${client.defaults.url}/surveySport`;
+        } else if (page === 7) {
+          window.location.href = `${client.defaults.url}/surveyExhibition`;
+        } else if (page === 8) {
+          window.location.href = `${client.defaults.url}/surveyRest`;
+        }
+      }
+      localStorage.removeItem("Rest");
+      localStorage.removeItem("Food");
+      localStorage.removeItem("Sport");
+      localStorage.removeItem("Cafe");
+      localStorage.removeItem("Exhibition");
+      localStorage.removeItem("Activity");
+      localStorage.removeItem("Theme");
     });
   };
 
@@ -130,14 +142,12 @@ const SurveyRest = () => {
           style={{ float: "Left", marginLeft: "50px" }}
         />
       </Link>
-      {/* <Link to="/loading"> */}
       <img
         src={`${process.env.PUBLIC_URL}/assets/Icon/gofront.png`}
         alt="다음으로"
         style={{ marginLeft: "190px" }}
         onClick={registSurvey}
       />
-      {/* </Link> */}
       <S.Rest>
         <S.FormAllBtn>
           <input
@@ -160,7 +170,7 @@ const SurveyRest = () => {
             id="radio-1"
             type="checkbox"
             name="rest"
-            value="park"
+            value="공원"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-1">🍊 공원</label>
@@ -170,7 +180,7 @@ const SurveyRest = () => {
             id="radio-2"
             type="checkbox"
             name="rest"
-            value="walk"
+            value="도보"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-2">🍊 도보</label>
@@ -180,7 +190,7 @@ const SurveyRest = () => {
             id="radio-3"
             type="checkbox"
             name="rest"
-            value="site"
+            value="올레길"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-3">🍊 올레길</label>
@@ -193,7 +203,7 @@ const SurveyRest = () => {
             id="radio-4"
             type="checkbox"
             name="rest"
-            value="mountain"
+            value="산"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-4">🍊 산</label>
@@ -203,7 +213,7 @@ const SurveyRest = () => {
             id="radio-5"
             type="checkbox"
             name="rest"
-            value="island"
+            value="섬"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-5">🍊 섬</label>
@@ -213,7 +223,7 @@ const SurveyRest = () => {
             id="radio-6"
             type="checkbox"
             name="rest"
-            value="garden"
+            value="수목원/식물원"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-6">🍊 식물원</label>
@@ -226,7 +236,7 @@ const SurveyRest = () => {
             id="radio-7"
             type="checkbox"
             name="rest"
-            value="oreum"
+            value="오름"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-7">🍊 오름</label>
@@ -236,7 +246,7 @@ const SurveyRest = () => {
             id="radio-8"
             type="checkbox"
             name="rest"
-            value="beach"
+            value="해변"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-8">🍊 해변</label>
@@ -246,7 +256,7 @@ const SurveyRest = () => {
             id="radio-9"
             type="checkbox"
             name="rest"
-            value="onsen"
+            value="온천"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-9">🍊 온천</label>
@@ -259,7 +269,7 @@ const SurveyRest = () => {
             id="radio-10"
             type="checkbox"
             name="rest"
-            value="natural"
+            value="자연생태"
             onClick={checkSelectAll}
           />
           <label htmlFor="radio-10">🍊 자연생태</label>

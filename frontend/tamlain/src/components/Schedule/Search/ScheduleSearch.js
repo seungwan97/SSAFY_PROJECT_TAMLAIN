@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { searchPlace } from "../../../utils/api/scheduleApi";
+import client from "../../../utils/client";
 
 const ScheduleSearch = () => {
   var idx = window.location.href.substring(
@@ -52,7 +53,6 @@ const ScheduleSearch = () => {
     const tmp = JSON.parse(localStorage.getItem(`marker${idx}`));
     for (let i = 0; i < tmp.length; i++) {
       for (let j = 0; j < products.length; j++) {
-        console.log(products[j].title);
         if (tmp[i].title == products[j].title) {
           products.splice(j, 1);
           break;
@@ -60,7 +60,6 @@ const ScheduleSearch = () => {
       }
     }
     setArr(products);
-    console.log(arr);
   }, [mount]);
   const [searchValue, setSearchValue] = useState("");
 
@@ -80,7 +79,7 @@ const ScheduleSearch = () => {
   };
 
   const goBack = () => {
-    window.location.href = `http://localhost:3000/scheduleMain/${idx}`;
+    window.location.href = `${client.defaults.url}/scheduleMain/${idx}`;
   };
 
   return (
