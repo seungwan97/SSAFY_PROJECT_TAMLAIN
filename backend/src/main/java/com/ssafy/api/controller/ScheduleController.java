@@ -1,6 +1,12 @@
 package com.ssafy.api.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.api.request.ScheduleRegistReq;
+import com.ssafy.api.request.ScheduleReloadReq;
+import com.ssafy.api.response.PlaceDetailRes;
+import com.ssafy.api.response.JejuPlaceRes;
+import com.ssafy.api.response.ScheduleThumbnailRes;
+import com.ssafy.api.response.SearchPlaceRes;
 import com.ssafy.api.response.*;
 import com.ssafy.api.service.ScheduleService;
 import io.swagger.annotations.Api;
@@ -50,6 +56,12 @@ public class ScheduleController {
     @GetMapping("/recommend/survey/{surveyId}")
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
         return scheduleService.getRecommendJejuPlace(surveyId);
+    }
+
+    @ApiOperation(value = "재추천", notes = "재추천 추천 장소 불러오기")
+    @PostMapping("/recommend/survey")
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(@RequestBody ScheduleReloadReq scheduleReloadReq) {
+        return scheduleService.getReloadRecommendJejuPlace(scheduleReloadReq);
     }
 
 }

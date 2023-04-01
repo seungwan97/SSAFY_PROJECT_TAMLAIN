@@ -1,0 +1,20 @@
+@import url("https://webfontworld.github.io/gmarket/GmarketSans.css");
+
+body {
+  margin: 0;
+  font-family: "GmarketSans";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #fff;
+  /* 스크롤바 없에기 */
+  -ms-overflow-style: none;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+:root {
+  --font-GmarketSans: "GmarketSans";
+}

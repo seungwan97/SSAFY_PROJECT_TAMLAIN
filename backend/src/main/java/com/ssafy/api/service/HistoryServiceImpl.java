@@ -63,6 +63,8 @@ public class HistoryServiceImpl implements HistoryService {
 
     @Override
     public CommonRes modifyScheduleName(ScheduleModifyReq scheduleModifyReq) {
+        if(scheduleModifyReq.getName() == null || scheduleModifyReq.getName().isBlank()) return new CommonRes(false, "일정명을 입력해주세요.");
+
         Optional<Schedule> oSchedule = scheduleRepository.findById(scheduleModifyReq.getScheduleId());
         Schedule schedule = oSchedule.orElseThrow(() -> new IllegalArgumentException("schedule doesn't exist"));
 
@@ -96,7 +98,6 @@ public class HistoryServiceImpl implements HistoryService {
         for(ScheduleItem scheduleItem : scheduleItemList) {
             JejuPlace jejuPlace = scheduleItem.getJejuPlace();
             int currentDay = scheduleItem.getDay();
-            Double reviewScore = ((double)jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
 
             if(beforeDay != currentDay) {
                 scheduleDetailItemMap.put(beforeDay, scheduleDetailItemList);
@@ -104,6 +105,7 @@ public class HistoryServiceImpl implements HistoryService {
             }
 
             MapInfo mapInfo = MapInfo.builder()
+                    .jejuPlaceId(jejuPlace.getId())
                     .title(jejuPlace.getName())
                     .latlng(LatLng.builder()
                             .la(jejuPlace.getLatitude())
@@ -114,13 +116,12 @@ public class HistoryServiceImpl implements HistoryService {
             ScheduleDetailItem scheduleDetailItem = ScheduleDetailItem.builder()
                     .scheduleItemId(scheduleItem.getId())
                     .day(currentDay)
-                    .jejuPlaceId(jejuPlace.getId())
                     .mapInfo(mapInfo)
                     .roadAddress(jejuPlace.getRoadAddress())
                     .placeUrl(jejuPlace.getPlaceUrl())
                     .imageUrl(jejuPlace.getImgUrl())
                     .reviewCount(jejuPlace.getReviewCount())
-                    .reviewScore(Math.round(reviewScore*10)/10.0)
+                    .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
                     .tag("#" + jejuPlace.getTag().replace("_", " #"))
                     .build();
 
