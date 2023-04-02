@@ -7,7 +7,7 @@ import client from "../../utils/client";
 const SurveyRest = () => {
   const checkSelectAll = (e) => {
     const selectall = document.querySelector('input[name="selectall"]');
-
+    selectall.checked = true;
     if (e.target.checked === false) {
       selectall.checked = false;
       return;
