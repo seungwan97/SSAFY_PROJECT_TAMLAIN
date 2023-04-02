@@ -32,12 +32,11 @@ const Navbar = (props) => {
   //  로그아웃 
   const logoutHandler = () => {
     console.log("로그아웃 버튼 클릭");
-    navigate("/main")
+    navigate("/main");
     logout(key).then((res) => {
       console.log(res);
     });
     window.localStorage.clear();
-    // navigate("/main");
   };
 
   //  마이페이지로 이동 

@@ -7,8 +7,6 @@ import SchduleSearchItem from "./SchduleSearchItem";
 
 import client from "../../../utils/client";
 
-import SchduleSearchItem from "./SchduleSearchItem";
-
 const ScheduleSearch = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
