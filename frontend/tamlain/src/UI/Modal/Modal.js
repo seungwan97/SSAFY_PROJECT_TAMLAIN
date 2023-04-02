@@ -2,7 +2,8 @@ import React, { Fragment } from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as S from "./Modal.styled";
-
+import { useOutlet } from 'react-router-dom';
+  
 const Modal = (props) => {
   const value = props.name2;
   const flag = true;
@@ -10,10 +11,12 @@ const Modal = (props) => {
     flag = false;
   }
 
+  
   const closeModal = () => {
     props.setExitModalOpen(false);
     document.body.style = `overflow:auto`;
   };
+
 
   return (
     <>

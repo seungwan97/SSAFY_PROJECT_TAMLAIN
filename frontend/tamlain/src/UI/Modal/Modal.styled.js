@@ -14,8 +14,9 @@ export const Contatiner = styled.div`
 `;
 
 export const Modal = styled.div`
-  display: block;
   position: fixed;
+
+  display: block;
   z-index: 15;
   width: 300px;
   height: 200px;

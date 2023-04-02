@@ -33,6 +33,7 @@ import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
 import MyPageRedirect from "./components/MyPage/MyPageRedirect";
 import MyPageStarMain from "./components/MyPage/Star/MyPageStarMain";
 
+
 const App = () => {
   return (
     <>
@@ -91,7 +92,6 @@ const App = () => {
               </Route>
             </Route>
             
-
           </Route>
         </Routes>
       </AnimatePresence>

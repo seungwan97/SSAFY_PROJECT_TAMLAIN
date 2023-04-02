@@ -39,16 +39,17 @@ export const TitleDiv = styled.div`
   font-size: 28px;
   position: absolute;
   z-index: 6;
-  top: 37.5%;
+  top: 37%;
   left: 31%;
 `;
 
-export const UnderBar = styled.div`
-  position: absolute;
-  z-index: 6;
-  width: 730px;
-  height: 1px;
-  top: 45%;
-  left: 26.5%;
-  background-color: #d9d9d9;
+export const Hr = styled.hr`
+  position:absolute;
+  z-index:5;
+  width:45%;
+  height:1px;
+  margin-top:23%;
+  margin-left:27.5%;
+  background:#D9D9D9;  
+
 `;

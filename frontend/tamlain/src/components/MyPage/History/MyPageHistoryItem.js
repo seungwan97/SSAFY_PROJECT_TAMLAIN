@@ -8,10 +8,11 @@ const MyPageHistoryItem = (props) => {
   const navigate = useNavigate();
 
   const key = localStorage.getItem("token");
+  const scheduleId = props.idx;
  
-  // 별점 페이지로 이동  / schuldeId 페이지로 이동 
+  // 별점 페이지로 이동  / schuldeId 가지고 페이지로 이동 
   const reDirectStarInfo = () => {
-    navigate(`/myPageStarInfo/${props.idx}`);
+    navigate(`/myPageStarInfo/${scheduleId}`, { state: { scheduleId: props.idx } });
   }
 
   // 삭제 요청 모달 띄우기 
@@ -44,7 +45,7 @@ const MyPageHistoryItem = (props) => {
       
       {exitModalOpen && (
         <ModalDelete
-          idx={props.idx}
+          idx={scheduleId}
           name="정말 삭제 하시겠습니까?"
           setExitModalOpen={setExitModalOpen}
         ></ModalDelete>)} 

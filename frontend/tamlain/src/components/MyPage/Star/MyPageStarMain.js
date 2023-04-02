@@ -1,11 +1,21 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate,useLocation } from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
+import { useEffect } from "react";
+import { getReviewScheduleHistory } from "../../../utils/api/reviewApi";
+
 
 const MyPageStarMain = () => {
 
+  const key = localStorage.getItem("token");
+  const location = useLocation();
+  const scheduleId = location.state.scheduleId;
   // axios 로  데이터 받아와서 상단에 일정 타이틀들 뿌려주고
   //  props로 장소 이미지랑 이름 뿌려주기 
-
+  useEffect(() => {
+    getReviewScheduleHistory(key, scheduleId).then(res => console.log(res));
+    return;
+  }, []);
+  
   const navigate = useNavigate();
 
   const reDirectMyPage = () => {
