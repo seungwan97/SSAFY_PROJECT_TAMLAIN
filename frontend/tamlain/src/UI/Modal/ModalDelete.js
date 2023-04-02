@@ -1,14 +1,12 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as S from "./Modal.styled";
+import * as S from "./ModalDelete.styled";
 
-const Modal = (props) => {
-  const value = props.name2;
-  const flag = true;
-  if (value === null) {
-    flag = false;
-  }
+const ModalDelete = (props) => {
+
+//  axios 요청에 넣어줄 변수
+const scheduleId = props.idx;
 
   const closeModal = () => {
     props.setExitModalOpen(false);
@@ -25,9 +23,7 @@ const Modal = (props) => {
           <S.ModalInfo>
             <span>{props.name}</span>
             <br />
-            {flag && <span>{value}</span>}
-            {flag && <br />}
-
+            
             <S.ModalButton style={{ marginRight: "10px" }} onClick={props.yes}>
               예
             </S.ModalButton>
@@ -41,4 +37,4 @@ const Modal = (props) => {
   );
 };
 
-export default Modal;
+export default ModalDelete;

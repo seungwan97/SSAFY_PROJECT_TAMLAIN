@@ -14,10 +14,11 @@ export const Container = styled.div`
   height:130px;
   margin-top:3%;
   // background-color:red;
-  // align-items: center;
   display : flex;
+  
   `;
 
+  // 버튼 모양 커스텀하기 
 export const RadioBtn = styled.input`
     margin-left:1%;
     width:30px;
@@ -26,6 +27,7 @@ export const RadioBtn = styled.input`
 
 
 export const Img = styled.img`
+  object-fit:cover;
   margin-left : 4%;
   width:120px;
   hegith:100%;
@@ -33,7 +35,10 @@ export const Img = styled.img`
 `;
 
 export const TitleText = styled.div`
-  padding:50px;
+  margin-left:4%;
+  margin-top:6%;
+  text-align:center;
+  width:150px;
   font-size:25px;
   font-weight:bold;
 `;

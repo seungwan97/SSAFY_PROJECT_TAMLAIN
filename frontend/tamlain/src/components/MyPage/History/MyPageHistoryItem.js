@@ -1,7 +1,8 @@
 import * as S from "./MyPageHistoryItem.styled";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { deleteScheduleHistory } from "../../../utils/api/historyApi";
-
+import ModalDelete from "../../../UI/Modal/ModalDelete";
 
 const MyPageHistoryItem = (props) => {
   const navigate = useNavigate();
@@ -13,7 +14,13 @@ const MyPageHistoryItem = (props) => {
     navigate(`/myPageStarInfo/${props.idx}`);
   }
 
-  // 삭제 요청 
+  // 삭제 요청 모달 띄우기 
+  const [exitModalOpen, setExitModalOpen] = useState(false);
+  const ModalHandler = () => {
+    setExitModalOpen(true);
+    document.body.style = `overflow:hidden`;
+  };
+  
   const deleteHandler = () => {
     const idx = props.idx;
     const key = localStorage.getItem("token");
@@ -33,8 +40,16 @@ const MyPageHistoryItem = (props) => {
       {/* 이동하면서  카테고리 id 송신해야함 */}
       <S.StarBtn onClick={reDirectStarInfo}> 별점주기</S.StarBtn>
       {/* 버튼 클릭  시 axios로 수정 요청 보내주고 이 친구 사라지게 하기  */}
-      <S.DeleteBtn src="assets/Icon/trash.png" onClick={deleteHandler}></S.DeleteBtn>
-    </S.Container>
+      <S.DeleteBtn src="assets/Icon/trash.png" onClick={ModalHandler}></S.DeleteBtn>
+      
+      {exitModalOpen && (
+        <ModalDelete
+          idx={props.idx}
+          name="정말 삭제 하시겠습니까?"
+          setExitModalOpen={setExitModalOpen}
+        ></ModalDelete>)} 
+
+  </S.Container>
   );
 };
 

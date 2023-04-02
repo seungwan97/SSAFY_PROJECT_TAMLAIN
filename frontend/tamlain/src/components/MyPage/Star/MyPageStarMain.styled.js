@@ -52,7 +52,7 @@ export const Hr = styled.hr`
   position:absolute;
   z-index:5;
   width:45%;
-  height:3px;
+  height:1px;
   margin-top:26.5%;
   margin-left:27.5%;
   background:#D9D9D9;  

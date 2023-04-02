@@ -1,5 +1,6 @@
 import Rating from "./Rating";
 import * as S from "./MyPageStarInfo.styled";
+import { useState } from "react";
 
 const MyPageStarInfo = () => {
 
@@ -61,10 +62,10 @@ const MyPageStarInfo = () => {
   //     })}
   //   </>
   // );
+  
+  const [starCount, setStarCount] = useState(0);
 
-
-
-
+  
   return (
 <>
     <S.Wrap>
@@ -73,11 +74,11 @@ const MyPageStarInfo = () => {
       <S.Container>
         <S.RadioBtn type="checkbox" value="인덱스번호" ></S.RadioBtn>
         <S.Img src={`${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`}/>
-        <S.TitleText>장소명</S.TitleText>
-        <Rating></Rating>
+          <S.TitleText>장소명</S.TitleText>
+          <div>{starCount}</div>
+          <Rating setStarCount={setStarCount}></Rating>
       </S.Container>
-        
-
+      
        <S.RegistBtn>등록</S.RegistBtn>
     </S.Wrap>
 </>
