@@ -121,8 +121,8 @@ public class HistoryServiceImpl implements HistoryService {
                     .placeUrl(jejuPlace.getPlaceUrl())
                     .imageUrl(jejuPlace.getImgUrl())
                     .reviewCount(jejuPlace.getReviewCount())
-                    .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
-                    .tag("#" + jejuPlace.getTag().replace("_", " #"))
+                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                    .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
                     .build();
 
             scheduleDetailItemList.add(scheduleDetailItem);
