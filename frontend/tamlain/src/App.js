@@ -33,6 +33,7 @@ import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
 import MyPageRedirect from "./components/MyPage/MyPageRedirect";
 import MyPageStarMain from "./components/MyPage/Star/MyPageStarMain";
 
+import MyPageDetail from "./components/MyPage/MyPageDetail";
 
 const App = () => {
   return (
@@ -85,12 +86,15 @@ const App = () => {
                 <Route path="/myPageEmpty" element={<MyPageEmpty />} />
               </Route>
             </Route>
-            {/* 마이페이지 별점 부분  */}
+            {/* 마이페이지 별점 페이지  */}
             <Route path="/myPageStarInfo/" element={<MyPageStarMain />}>           
               <Route element={<Frame />} >
                 <Route path=":scheduleId" element={<MyPageStarInfo />} />  
               </Route>
             </Route>
+            
+            {/* 마이페이지 일정 세부 */}
+            <Route path="/detail/:scheduleId" element={<MyPageDetail/>}/>
             
           </Route>
         </Routes>

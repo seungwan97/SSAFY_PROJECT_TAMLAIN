@@ -12,7 +12,7 @@ const MyPageHistoryItem = (props) => {
  
   // 별점 페이지로 이동  / schuldeId 가지고 페이지로 이동 
   const reDirectStarInfo = () => {
-    navigate(`/myPageStarInfo/${scheduleId}`, { state: { scheduleId: props.idx } });
+    navigate(`/myPageStarInfo/${scheduleId}`, { state:scheduleId });
   }
 
   // 삭제 요청 모달 띄우기 
@@ -22,19 +22,23 @@ const MyPageHistoryItem = (props) => {
     document.body.style = `overflow:hidden`;
   };
   
-  const deleteHandler = () => {
-    const idx = props.idx;
-    const key = localStorage.getItem("token");
-    console.log(idx);
-    console.log(key);
-    deleteScheduleHistory(key,idx).then((res) => console.log(res));
+  // const deleteHandler = () => {
+  //   const idx = props.idx;
+  //   const key = localStorage.getItem("token");
+  //   console.log(idx);
+  //   console.log(key);
+  //   deleteScheduleHistory(key,idx).then((res) => console.log(res));
+  // }
+
+  const redirectDetail = () => {
+    navigate(`/detail/${scheduleId}`, { state:scheduleId }  );
   }
 
   return (
     <S.Container>
-      <S.Img src={props.img}></S.Img>
+      <S.Img src={props.img} onClick={redirectDetail}></S.Img>
       <S.TextContainer>
-        <S.TextOne>{props.title}</S.TextOne>
+        <S.TextOne onClick={redirectDetail}>{props.title}</S.TextOne>
         <S.TextTwo>{props.date}</S.TextTwo>
         <S.TextThree>{props.period}</S.TextThree>
       </S.TextContainer>

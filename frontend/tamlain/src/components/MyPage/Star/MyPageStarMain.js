@@ -8,7 +8,8 @@ const MyPageStarMain = () => {
 
   const key = localStorage.getItem("token");
   const location = useLocation();
-  const scheduleId = location.state.scheduleId;
+  const scheduleId = location.state;
+  console.log(scheduleId);
   // axios 로  데이터 받아와서 상단에 일정 타이틀들 뿌려주고
   //  props로 장소 이미지랑 이름 뿌려주기 
   useEffect(() => {

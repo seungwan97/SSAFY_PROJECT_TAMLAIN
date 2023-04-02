@@ -37,13 +37,13 @@ export const ModalInfo = styled.div`
 
 export const ModalButton = styled.button`
   width: 70px;
-  height: 35px;
+  height: 50px;
   border: none;
   border-radius: 15px;
   background-color: #c9c9c9;
   color: #3a3a3a;
   font-weight: bold;
-  margin-top: 30px;
+  margin-top: 40px;
   box-shadow: 0 6px 10px -2px gray;
   cursor: pointer;
 `;
