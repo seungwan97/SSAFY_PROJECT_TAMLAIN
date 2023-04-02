@@ -21,3 +21,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 }
 
+
+//@RequiredArgsConstructor
+//@EnableWebSecurity
+//public class WebSecurityConfig {
+//
+//    @Bean
+//    protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
+//
+////        http.authorizeRequests()
+////                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+////                .antMatchers("/oauth/callback/**").permitAll();
+//        http.csrf().disable()
+//                .cors().configurationSource(corsConfigurationSource())
+//                .and()
+//                .exceptionHandling()
+//                .and()
+//                .sessionManagement()
+//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .formLogin().disable()
+//                .httpBasic().disable()
+//                .authorizeRequests()
+//                .anyRequest().permitAll();
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//
+//        configuration.addAllowedOriginPattern("*");
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
+//        configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
+//}

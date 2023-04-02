@@ -30,7 +30,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final RedisTemplate<String, RedisPlace> redisTemplate;
 
     @Override
-    public SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword) {
+    public SuccessRes<List<SearchPlaceRes>> getsearchPlace(String keyword) {
         List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findByNameContaining(keyword);
         List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
 
@@ -53,26 +53,30 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public SuccessRes<List<SearchPlaceRes>> getserarchPlace() {
+    public SuccessRes<List<JejuPlaceRes>> getAllPlace() {
         List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
-        List<SearchPlaceRes> serachPlaceResList = new ArrayList<>();
+        List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
-            LinkedHashMap<String, Double> map = new LinkedHashMap<>();
-            map.put("La", jejuPlace.getLatitude());
-            map.put("Ma", jejuPlace.getLongitude());
+            JejuPlaceRes jejuPlaceRes = JejuPlaceRes.builder()
+                    .name(jejuPlace.getName())
+                    .categoryId(jejuPlace.getCategory().getId())
+                    .mapInfo(MapInfo.builder()
+                            .jejuPlaceId(jejuPlace.getId())
+                            .title(jejuPlace.getName())
+                            .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
+                            .build())
+                    .roadAddress(jejuPlace.getRoadAddress())
+                    .placeUrl(jejuPlace.getPlaceUrl())
+                    .imgUrl(jejuPlace.getImgUrl())
+                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                    .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
+                    .build();
 
-            SearchPlaceRes serachPlaceRes = new SearchPlaceRes(
-                    serachPlaceResList.size()+1,
-                    jejuPlace.getImgUrl(),
-                    jejuPlace.getName(),
-                    jejuPlace.getRoadAddress(),
-                    jejuPlace.getId(),
-                    map);
-            serachPlaceResList.add(serachPlaceRes);
+            jejuPlaceResList.add(jejuPlaceRes);
         }
 
-        return new SuccessRes<List<SearchPlaceRes>>(true, "해당 검색어에 포함된 장소들을 조회합니다.", serachPlaceResList);
+        return new SuccessRes<List<JejuPlaceRes>>(true, "검색을 위한 전체 장소를 조회합니다.", jejuPlaceResList);
     }
 
     @Override
@@ -82,10 +86,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         PlaceDetailRes placeDetailRes = PlaceDetailRes.builder()
                 .placeUrl(jejuPlace.getPlaceUrl())
-                .reviewScore(Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0)
-                .la(jejuPlace.getLatitude())
-                .ma(jejuPlace.getLongitude())
-                .jejuPlaceName(jejuPlace.getName())
+                .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                .mapInfo(MapInfo.builder()
+                        .jejuPlaceId(jejuPlace.getId())
+                        .title(jejuPlace.getName())
+                        .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
+                        .build())
                 .roadAddress(jejuPlace.getRoadAddress())
                 .build();
 
@@ -198,7 +204,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
                     .latitude(jejuPlace.getLatitude())
                     .longitude(jejuPlace.getLongitude())
-                    .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
+                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
                     .build();
         }
 
@@ -239,14 +245,15 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .name(jejuPlace.getName())
                         .categoryId(jejuPlace.getCategory().getId())
                         .mapInfo(MapInfo.builder()
+                                .jejuPlaceId(jejuPlace.getId())
                                 .title(jejuPlace.getName())
                                 .latlng(LatLng.builder().la(jejuPlace.getLatitude()).ma(jejuPlace.getLongitude()).build())
                                 .build())
                         .roadAddress(jejuPlace.getRoadAddress())
                         .placeUrl(jejuPlace.getPlaceUrl())
                         .imgUrl(jejuPlace.getImgUrl())
-                        .reviewScore((double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()))
-                        .tag("#" + jejuPlace.getTag().replace("_", " #"))
+                        .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                        .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
                         .build();
 
                 jejuPlaceResList.add(jejuPlaceRes);
@@ -387,10 +394,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                 Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(i);
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
 
-                Double divide = 0.0;
-                if (jejuPlace.getReviewCount() != 0) {
-                    divide = (double) Math.round((jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount()));
-                }
                 JejuPlaceRes jejuPlaceRes = JejuPlaceRes.builder()
                         .name(jejuPlace.getName())
                         .categoryId(jejuPlace.getCategory().getId())
@@ -402,8 +405,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                         .roadAddress(jejuPlace.getRoadAddress())
                         .placeUrl(jejuPlace.getPlaceUrl())
                         .imgUrl(jejuPlace.getImgUrl())
-                        .reviewScore(divide)
-                        .tag("#" + jejuPlace.getTag().replace("_", " #"))
+                        .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                        .tag((jejuPlace.getTag() == null || jejuPlace.getTag().isBlank()) ? "" : "#" + jejuPlace.getTag().replace("_", " #"))
                         .build();
 
                 jejuPlaceResList.add(jejuPlaceRes);
@@ -439,7 +442,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
     }
 
-
     @Override
     public void saveJejuPlace(ScheduleReloadReq scheduleReloadReq) {
         for(Map.Entry<String, List<Integer>> entry : scheduleReloadReq.getPlaceDeleteId().entrySet()){
@@ -461,11 +463,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private void getFlaskJejuItem(List<JejuPlace> jejuPlaceList, List<FlaskJejuPlaceItem> flaskJejuPlaceItemList) {
         for(JejuPlace jejuPlace : jejuPlaceList) {
-
-            Double divide = 0.0;
-            if (jejuPlace.getReviewCount() != 0) {
-                divide = (double) (jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount());
-            }
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
                     .name(jejuPlace.getName())
@@ -474,7 +471,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
                     .latitude(jejuPlace.getLatitude())
                     .longitude(jejuPlace.getLongitude())
-                    .reviewScore(divide)
+                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
                     .build();
 
             flaskJejuPlaceItemList.add(flaskJejuPlaceItem);

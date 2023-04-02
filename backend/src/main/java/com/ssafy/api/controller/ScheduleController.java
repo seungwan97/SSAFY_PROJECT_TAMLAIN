@@ -31,9 +31,16 @@ public class ScheduleController {
 
     @ApiOperation(value = "장소 검색", notes = "장소 입력시 검색")
     @GetMapping("/search/{keyword}")
-    public SuccessRes<List<SearchPlaceRes>> serarchPlace(@PathVariable("keyword") String keyword) {
-        return scheduleService.getserarchPlace(keyword);
+    public SuccessRes<List<SearchPlaceRes>> getsearchPlace(@PathVariable("keyword") String keyword) {
+        return scheduleService.getsearchPlace(keyword);
     }
+
+    @ApiOperation(value = "장소 검색 데이터", notes = "장소 검색을 위해 장소 전체 보내주기")
+    @GetMapping("/search")
+    public SuccessRes<List<JejuPlaceRes>> getAllPlace() {
+        return scheduleService.getAllPlace();
+    }
+
     @ApiOperation(value = "장소 상세 정보", notes = "장소 아이디 입력시 해당 장소의 상세정보")
     @GetMapping("/{jejuPlaceId}")
     public SuccessRes<PlaceDetailRes> getPlaceDetail(@PathVariable("jejuPlaceId") int jejuPlaceId) {

@@ -10,15 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface ScheduleService {
-    SuccessRes<List<SearchPlaceRes>> getserarchPlace(String keyword);
+    SuccessRes<List<SearchPlaceRes>> getsearchPlace(String keyword);
+    SuccessRes<List<JejuPlaceRes>> getAllPlace();
     SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId);
     SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail();
     CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq);
     SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId);
-
-    SuccessRes<List<SearchPlaceRes>> getserarchPlace();
     SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq);
-
     void saveJejuPlace(ScheduleReloadReq scheduleReloadReq);
     Map<String, List<Integer>> getJejuPlace(String id);
 }
