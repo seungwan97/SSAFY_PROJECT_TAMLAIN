@@ -4,7 +4,7 @@ import * as S from "./Rating.styled";
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-const Rating = () => {
+const Rating = (props) => {
   const [clicked, setClicked] = useState([false, false, false, false, false]);
 
   const handleStarClick = (index, idx) => {
@@ -15,7 +15,7 @@ const Rating = () => {
 
     setClicked(clickStates);
   };
-
+ 
   useEffect(() => {
     // sendReview();
   }, [clicked]); //컨디마 컨디업
@@ -36,7 +36,7 @@ const Rating = () => {
 
   return (
     <>
-      {/* <S.Stars>
+      <S.Stars>
         {ARRAY.map((el2, idx2) => {
           return (
             <FaStar
@@ -47,7 +47,7 @@ const Rating = () => {
             />
           );
         })}
-      </S.Stars> */}
+      </S.Stars>
     </>
   );
 };

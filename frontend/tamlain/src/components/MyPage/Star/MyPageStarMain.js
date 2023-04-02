@@ -1,6 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import * as S from "./MyPageStarMain.styled";
-import MyPageStarInfo from "./MyPageStarInfo";
 
 const MyPageStarMain = () => {
 

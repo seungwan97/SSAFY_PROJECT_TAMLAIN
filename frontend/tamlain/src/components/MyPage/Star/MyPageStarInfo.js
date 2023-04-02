@@ -1,6 +1,5 @@
 import Rating from "./Rating";
 import * as S from "./MyPageStarInfo.styled";
-import { Outlet } from "react-router-dom";
 
 const MyPageStarInfo = () => {
 
@@ -72,9 +71,14 @@ const MyPageStarInfo = () => {
       미방문
       
       <S.Container>
-        <div>4</div>
-        </S.Container>
-      <S.RegistBtn>등록</S.RegistBtn>
+        <S.RadioBtn type="checkbox" value="인덱스번호" ></S.RadioBtn>
+        <S.Img src={`${process.env.PUBLIC_URL}/assets/Background/mainCarousel_4.jpg`}/>
+        <S.TitleText>장소명</S.TitleText>
+        <Rating></Rating>
+      </S.Container>
+        
+
+       <S.RegistBtn>등록</S.RegistBtn>
     </S.Wrap>
 </>
       );

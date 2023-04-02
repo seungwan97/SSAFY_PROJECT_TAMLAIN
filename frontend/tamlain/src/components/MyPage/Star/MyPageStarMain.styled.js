@@ -76,6 +76,7 @@ export const TextContainer = styled.div`
 export const TextOne = styled.div`
   width: 80%;
   text-align: left;
+  font-weight:bold;
   font-size: 20px;
   margin-top: 12%;
   margin-left: 30px;
