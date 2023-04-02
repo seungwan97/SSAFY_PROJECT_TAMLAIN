@@ -76,21 +76,21 @@ const MyPageHistory = () => {
   // const resetList = null;
   useEffect(() => {
     getScheduleHistory(key, user_id).then((res) => {
-      let size = res.data.length;
+      let size = res.data.data.length;
       const tmp = [{}];
       for (var idx = 0; idx < size; idx++) {
         tmp[idx] = {
-          scheduleId: res.data[idx].scheduleId,
-          thumbnailImageUrl: res.data[idx].thumbnailImageUrl,
-          nickNameL: res.data[idx].nickName,
-          name: res.data[idx].name,
-          startDate: (res.data[idx].startDate).replaceAll('-','.'),
-          endDate:(res.data[idx].endDate).replaceAll('-','.'),
-          period: (res.data[idx].period-1)+"박 "+res.data[idx].period+"일",
-          review: res.data[idx].review,
+          scheduleId: res.data.data[idx].scheduleId,
+          thumbnailImageUrl: res.data.data[idx].thumbnailImageUrl,
+          nickNameL: res.data.data[idx].nickName,
+          name: res.data.data[idx].name,
+          startDate: (res.data.data[idx].startDate).replaceAll('-','.'),
+          endDate:(res.data.data[idx].endDate).replaceAll('-','.'),
+          period: (res.data.data[idx].period-1)+"박 "+res.data.data[idx].period+"일",
+          review: res.data.data[idx].review,
         }
       }
-      // console.log(res.data);
+      // console.log(res.data.data[0].scheduleId);
       // setScheduleList([...resetList, ...res.data]);
       // console.log(tmp); 
       setScheduleList(tmp);
@@ -98,8 +98,6 @@ const MyPageHistory = () => {
       console.error(e);
     })
   }, []);
-  console.log(scheduleList);
-  
   
 
   return (

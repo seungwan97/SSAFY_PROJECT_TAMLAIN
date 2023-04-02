@@ -19,7 +19,6 @@ const MyPageMain = () => {
           />
         </Link>
       </div>
-      {/* <hr style={{ position: "absolute" }} /> */}
       <Outlet />
     </div>
   );

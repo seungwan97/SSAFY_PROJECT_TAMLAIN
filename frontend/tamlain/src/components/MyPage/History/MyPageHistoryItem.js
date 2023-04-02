@@ -7,11 +7,10 @@ const MyPageHistoryItem = (props) => {
   const navigate = useNavigate();
 
   const key = localStorage.getItem("token");
-  // const id =
-
-  // 별점 페이지로 이동 
+ 
+  // 별점 페이지로 이동  / schuldeId 페이지로 이동 
   const reDirectStarInfo = () => {
-    navigate('/myPageStarInfo');
+    navigate(`/myPageStarInfo/${props.idx}`);
   }
 
   // 삭제 요청 
@@ -19,6 +18,7 @@ const MyPageHistoryItem = (props) => {
     const idx = props.idx;
     const key = localStorage.getItem("token");
     console.log(idx);
+    console.log(key);
     deleteScheduleHistory(key,idx).then((res) => console.log(res));
   }
 
@@ -30,9 +30,8 @@ const MyPageHistoryItem = (props) => {
         <S.TextTwo>{props.date}</S.TextTwo>
         <S.TextThree>{props.period}</S.TextThree>
       </S.TextContainer>
-      {/* 이동하면서  카테고리 id 송신해야함 link로 데이터 넘겨주기 
-      또는 navigate로 데이터 넘겨주기 */}
-        <S.StarBtn onClick={reDirectStarInfo}> 별점주기</S.StarBtn>
+      {/* 이동하면서  카테고리 id 송신해야함 */}
+      <S.StarBtn onClick={reDirectStarInfo}> 별점주기</S.StarBtn>
       {/* 버튼 클릭  시 axios로 수정 요청 보내주고 이 친구 사라지게 하기  */}
       <S.DeleteBtn src="assets/Icon/trash.png" onClick={deleteHandler}></S.DeleteBtn>
     </S.Container>

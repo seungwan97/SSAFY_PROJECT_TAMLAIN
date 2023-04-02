@@ -36,7 +36,7 @@ const Rating = () => {
 
   return (
     <>
-      <S.Stars>
+      {/* <S.Stars>
         {ARRAY.map((el2, idx2) => {
           return (
             <FaStar
@@ -47,7 +47,7 @@ const Rating = () => {
             />
           );
         })}
-      </S.Stars>
+      </S.Stars> */}
     </>
   );
 };

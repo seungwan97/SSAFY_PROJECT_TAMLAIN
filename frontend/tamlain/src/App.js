@@ -31,6 +31,7 @@ import MyPageHistory from "./components/MyPage/History/MyPageHistory";
 import MyPageEmpty from "./components/MyPage/MyPageEmpty";
 import MyPageStarInfo from "./components/MyPage/Star/MyPageStarInfo";
 import MyPageRedirect from "./components/MyPage/MyPageRedirect";
+import MyPageStarMain from "./components/MyPage/Star/MyPageStarMain";
 
 const App = () => {
   return (
@@ -81,9 +82,16 @@ const App = () => {
                 <Route path="/redirectMyPage" element={<MyPageRedirect/>}/> 
                 <Route path="history" element={<MyPageHistory />} />
                 <Route path="/myPageEmpty" element={<MyPageEmpty />} />
-                <Route path="/myPageStarInfo" element={<MyPageStarInfo />} />
               </Route>
             </Route>
+            {/* 마이페이지 별점 부분  */}
+            <Route path="/myPageStarInfo/" element={<MyPageStarMain />}>           
+              <Route element={<Frame />} >
+                <Route path=":scheduleId" element={<MyPageStarInfo />} />  
+              </Route>
+            </Route>
+            
+
           </Route>
         </Routes>
       </AnimatePresence>

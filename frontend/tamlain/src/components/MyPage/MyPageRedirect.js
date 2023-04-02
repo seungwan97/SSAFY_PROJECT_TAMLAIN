@@ -10,8 +10,9 @@ const MyPageRedirect = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        getScheduleHistory(key, user_id).then((res) =>
-        {if (res.data.length === 0) {
+        getScheduleHistory(key, user_id).then((res) =>     
+        {
+            if (res.data.data.length === 0) {
             navigate("/myPageEmpty");
         } else {
             navigate("/history");
