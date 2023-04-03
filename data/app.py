@@ -80,17 +80,19 @@ def getReRecommend():
 
         encoded_transactions_df = pd.DataFrame(encoded_transactions, columns=my_transactionencoder.columns_)
 
-        min_support = 1 / len(courseList)  # 아이템 조합의 최소 지지도 설정 (최소 5번 출현한 장소)
+        min_support = 5 / len(courseList)  # 아이템 조합의 최소 지지도 설정 (최소 5번 출현한 장소)
         frequent_itemsets = fpgrowth(encoded_transactions_df, min_support=min_support, use_colnames=True, max_len=2)
-        confidence = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1)
-        confidence = pd.merge(confidence, place[["jejuPlaceId", "categoryName", "categoryId"]], left_on='consequents',
-                              right_on='jejuPlaceId')
-        confidence.sort_values(['confidence'], ascending=False).reset_index(drop=True)
-        selected_antecedents = [frozenset({i}) for i in selected_place]
-        confidence = confidence[confidence['antecedents'].isin(selected_antecedents)].sort_values(by='confidence', ascending=False)
+        rules = association_rules(frequent_itemsets, metric="confidence", min_threshold=0.1) # 최소 신뢰도 0.1
 
-    for i in range(len(selected_place)):
-        break
+        max_confidence = rules["confidence"].max()
+        min_confidence = rules["confidence"].min()
+        rules["confidence_score"] = rules.apply(lambda x: (x["confidence"]-min_confidence)/(max_confidence-min_confidence)*5)
+        rules = pd.merge(rules, place[["jejuPlaceId", "categoryName", "categoryId"]], left_on='consequents',
+                              right_on='jejuPlaceId')
+        rules.sort_values(['confidence'], ascending=False).reset_index(drop=True)
+        selected_antecedents = [frozenset({i}) for i in selected_place]
+        confidence = rules[rules['antecedents'].isin(selected_antecedents)].sort_values(by='confidence', ascending=False)
+
     print(confidence.info())
 
     place['reviewScore'] = place.apply(
@@ -102,26 +104,30 @@ def getReRecommend():
     category = place["categoryName"].unique().tolist()
     grouped_place_cbf = place.groupby('categoryName')['jejuPlaceId'].apply(list)
 
-    ratings["itemId"] = ratings.apply(lambda x: '{}_{}_{}'.format(x.season, x.travelThemeCode, x.jejuPlaceId), axis=1)
+    # ratings["itemId"] = ratings.apply(lambda x: '{}_{}_{}'.format(x.season, x.travelThemeCode, x.jejuPlaceId), axis=1)
+    # ratings.drop_duplicates(['userId', 'itemId'], keep='last')  # 같은 계절&테마로 방문한 장소의 리뷰 처리
+    ratings.drop_duplicates(['userId', 'jejuPlaceId'], keep='last')
 
-    ratings.drop_duplicates(['userId', 'itemId'], keep='last')  # 같은 계절&테마로 방문한 장소의 리뷰 처리
     min_visit_ratings = 5
     ratings = ratings.value_counts() >= min_visit_ratings # 최소 5개의 리뷰를 작성한 사용자를 대상으로 협업 필터링 진행
     ratings = pd.merge(ratings, place[["jejuPlaceId", "categoryId", "categoryName"]], left_on='jejuPlaceId',
                        right_on='jejuPlaceId', how='left')
     reader = Reader(rating_scale=(0, 5))
     print(ratings)
-    data_folds = DatasetAutoFolds(df=ratings[["userId", "itemId", "score"]], reader=reader)
+    # data_folds = DatasetAutoFolds(df=ratings[["userId", "itemId", "score"]], reader=reader)
+    data_folds = DatasetAutoFolds(df=ratings[["userId", "jejuPlaceId", "score"]], reader=reader)
     trainset = data_folds.build_full_trainset()
     sim_options = {'name': 'cosine', 'user_based': True}
     algo = KNNBaseline(sim_options=sim_options)
     algo.fit(trainset)
-    item_list = ratings[ratings["categoryId"].isin(selected_category)]["itemId"].unique().tolist()
+    # item_list = ratings[ratings["categoryId"].isin(selected_category)]["itemId"].unique().tolist()
+    item_list = ratings[ratings["categoryId"].isin(selected_category)]["jejuPlaceId"].unique().tolist()
     predictions = [algo.predict(user_id, item_id) for item_id in item_list]
     rating_prediction = pd.DataFrame()
-    rating_prediction["itemId"] = item_list
-    rating_prediction["score"] = predictions
-    rating_prediction = place.sort_values('score', ascending=False)
+    # rating_prediction["itemId"] = item_list
+    rating_prediction["jejuPlaceId"] = item_list
+    rating_prediction["prediction"] = predictions
+    rating_prediction = place.sort_values('prediction', ascending=False)
     grouped_place_cf = rating_prediction.groupby('categoryName')['jejuPlaceId'].apply(list)
 
     result = {}
