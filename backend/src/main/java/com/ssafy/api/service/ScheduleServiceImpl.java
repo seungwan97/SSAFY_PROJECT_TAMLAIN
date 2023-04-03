@@ -229,6 +229,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .travelThemeCode(review.getScheduleItem().getSchedule().getSurvey().getTravelThemeCode())
                     .jejuPlaceId(review.getJejuPlace().getId())
                     .score(review.getScore())
+                    .scheduleId(review.getScheduleItem().getSchedule().getId())
+                    .day(review.getScheduleItem().getDay())
                     .build();
 
             flaskReviewItemList.add(flaskReviewItem);
@@ -308,6 +310,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 첫 추천 장소를 받습니다.", resultMap);
     }
+
+
 
     @Override
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq)  {

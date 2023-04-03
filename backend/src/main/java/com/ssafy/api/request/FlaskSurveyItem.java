@@ -7,7 +7,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-@ApiModel(description = "Flask에서 사용자의 설문 조사 정보를 포함한 Request")
+@ApiModel(description = "Flask Request를 위한 설문 정보")
 @Getter
 public class FlaskSurveyItem {
     @ApiModelProperty(value = "사용자 id")
