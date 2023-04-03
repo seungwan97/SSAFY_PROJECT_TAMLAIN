@@ -46,8 +46,8 @@ spring:
           kakao:
             client-id: ENC(MIphkkA0IKWDEyl7CnbwR7It5pgFcV6xPtiXmKKX4V9RVKqs5U17XA+63e7Ql2AI)
             #            redirect-uri: http://localhost:8080/oauth/callback/kakao
-            redirect-uri: http://localhost:3000/oauth/callback/kakao
-#            redirect-uri: ENC(BWxUAeZaUXpUs+ZZxOzlNkJGfvFOdCZsHfCdRFM+rbS6rFw9K7PZ2yXN+RRMQz2GOF8JFZYD0ek=)
+#            redirect-uri: http://localhost:3000/oauth/callback/kakao
+            redirect-uri: ENC(BWxUAeZaUXpUs+ZZxOzlNkJGfvFOdCZsHfCdRFM+rbS6rFw9K7PZ2yXN+RRMQz2GOF8JFZYD0ek=)
             client-authentication-method: POST
             authorization-grant-type: authorization_code
             scope:
@@ -69,8 +69,6 @@ jwt:
   token:
     secret-key: ENC(pDBdQXPGdYSFejryUIJuDCnmD0hnyzEwjbUPyYShvqJHD+azAZ9B7TUjFWi6YtbqhA9cvRn63LNRJ3WTr64NiuSyBsLVgRv2IqzJF9DQHeJVOALhraQqFGsnXGsLRlMeO+FOSXNUTTtFvXTG6+xHTCDYXCKqmf+wcJ1uZ7rd3o25le7bFQoaYQ7WwGwmfcp8)
   access-token:
-#    expire-length: 1800000
-    expire-length: 120
+    expire-length: 1800000
   refresh-token:
-    expire-length: 240
-#    expire-length: 1209600000
+    expire-length: 1209600000
