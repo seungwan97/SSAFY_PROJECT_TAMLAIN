@@ -83,7 +83,6 @@ const SurveyRest = () => {
       surveyFavorCategoryMap: arr,
     };
     console.log(data);
-
     surveyApi(token, data).then((res) => {
       console.log(res);
       if (res.data.success) {
