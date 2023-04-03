@@ -61,12 +61,12 @@ public class ScheduleController {
 
     @ApiOperation(value = "추천 불러오기", notes = "설문 조사를 통한 추천 장소 불러오기")
     @GetMapping("/recommend/survey/{surveyId}")
-    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
-        return scheduleService.getRecommendJejuPlace(surveyId);
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getFirstRecommendJejuPlace(@PathVariable("surveyId") int surveyId) {
+        return scheduleService.getFirstRecommendJejuPlace(surveyId);
     }
 
     @ApiOperation(value = "재추천", notes = "재추천 추천 장소 불러오기")
-    @PostMapping("/recommend/survey")
+    @PostMapping("/recommend/reload")
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(@RequestBody ScheduleReloadReq scheduleReloadReq) {
         return scheduleService.getReloadRecommendJejuPlace(scheduleReloadReq);
     }

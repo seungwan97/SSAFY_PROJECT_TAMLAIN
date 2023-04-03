@@ -15,8 +15,6 @@ public interface ScheduleService {
     SuccessRes<PlaceDetailRes> getPlaceDetail(int jejuPlaceId);
     SuccessRes<List<ScheduleThumbnailRes>> getScheduleThumbnail();
     CommonRes registSchedule(ScheduleRegistReq scheduleRegistReq);
-    SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId);
+    SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getFirstRecommendJejuPlace(int surveyId);
     SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq);
-    void saveJejuPlace(ScheduleReloadReq scheduleReloadReq);
-    Map<String, List<Integer>> getJejuPlace(String id);
 }

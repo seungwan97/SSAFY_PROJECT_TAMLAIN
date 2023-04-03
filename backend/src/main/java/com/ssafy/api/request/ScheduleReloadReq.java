@@ -9,7 +9,7 @@ import lombok.Getter;
 import java.util.List;
 import java.util.Map;
 
-@ApiModel(description = "사용자의 재추천 장소를 받기 위한 Request")
+@ApiModel(description = "재추천 장소를 받기 위한 정보가 포함된 Request")
 @Getter
 public class ScheduleReloadReq {
     @ApiModelProperty(value = "설문조사 id")
@@ -17,15 +17,14 @@ public class ScheduleReloadReq {
     // 카테고리는?
     @ApiModelProperty(value = "제주 장소 삭제된 id 리스트")
     private Map<String, List<Integer>> placeDeleteId;
-
-    @ApiModelProperty(value = "제주 장소 id리스트")
-    private Map<String, List<Integer>> placeSelectId;
+    @ApiModelProperty(value = "제주 장소 id 리스트")
+    private List<Integer> selectJejuPlaceList;
 
     @Builder
-    public ScheduleReloadReq(int surveyId, Map<String, List<Integer>> placeDeleteId, Map<String, List<Integer>> placeSelectId) {
+    public ScheduleReloadReq(int surveyId, Map<String, List<Integer>> placeDeleteId, List<Integer> selectJejuPlaceList) {
         this.surveyId = surveyId;
         this.placeDeleteId = placeDeleteId;
-        this.placeSelectId = placeSelectId;
+        this.selectJejuPlaceList = selectJejuPlaceList;
     }
 }
 
