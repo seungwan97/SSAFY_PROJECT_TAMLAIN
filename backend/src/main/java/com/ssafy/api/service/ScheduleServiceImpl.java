@@ -162,27 +162,35 @@ public class ScheduleServiceImpl implements ScheduleService {
         return new CommonRes(true, "일정 등록을 완료했습니다.");
     }
 
-    @Override
-    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId) {
-        Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
-        Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
-
-        // 설문 조사 카테고리 조회
-        List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
+    // 설문 조사 카테고리 조회
+    public List<Integer> getCategoryList(int surveyId) {
         List<Integer> categoryList = new ArrayList<>();
+        List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
+
         for(SurveyFavorCategory surveyFavorCategory : surveyFavorCategoryList) {
             categoryList.add(surveyFavorCategory.getCategory().getId());
         }
 
-        // 설문 조사 Flask Req
-        FlaskSurveyReq flaskSurveyReq = FlaskSurveyReq.builder()
+        return categoryList;
+    }
+
+    // 설문 조사 Flask Req
+    public FlaskSurveyItem getFlaskSurveyItem(int surveyId, List<Integer> categoryList) {
+        Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
+        Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
+
+        FlaskSurveyItem flaskSurveyItem = FlaskSurveyItem.builder()
                 .userId(survey.getUser().getId())
                 .travelThemeCode(survey.getTravelThemeCode())
                 .season(survey.getSeason())
                 .surveyFavorCategoryList(categoryList)
                 .build();
 
-        // 제주 장소 Flask Req
+        return flaskSurveyItem;
+    }
+
+    // 제주 장소 Flask Req
+    public List<FlaskJejuPlaceItem> getFlaskJejuItemList(List<Integer> categoryList) {
         List<JejuPlace> jejuPlaceList = new ArrayList<>();
         for(Integer id : categoryList) {
             List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
@@ -206,9 +214,14 @@ public class ScheduleServiceImpl implements ScheduleService {
             flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
         }
 
-        // 리뷰 Flask Req
-        List<Review> reviewList = reviewRepository.findAll();
+        return flaskJejuPlaceItemList;
+    }
+
+    // 리뷰 Flask Req
+    public List<FlaskReviewItem> getFlaskReviewItemList() {
         List<FlaskReviewItem> flaskReviewItemList = new ArrayList<>();
+        List<Review> reviewList = reviewRepository.findAll();
+
         for (Review review : reviewList){
             FlaskReviewItem flaskReviewItem = FlaskReviewItem.builder()
                     .userId(review.getUser().getId())
@@ -220,12 +233,18 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             flaskReviewItemList.add(flaskReviewItem);
         }
+        return flaskReviewItemList;
+    }
+
+    @Override
+    public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getRecommendJejuPlace(int surveyId) {
+        List<Integer> categoryList = getCategoryList(surveyId);
 
         // Flask로 Req
         FlaskFirstRecommendReq flaskFirstRecommendReq = FlaskFirstRecommendReq.builder()
-                .flaskSurveyReq(flaskSurveyReq)
-                .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
-                .flaskReviewItemList(flaskReviewItemList)
+                .flaskSurveyItem(getFlaskSurveyItem(surveyId, categoryList))
+                .flaskJejuPlaceItemList(getFlaskJejuItemList(categoryList))
+                .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
         HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
@@ -345,7 +364,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             categoryList.add(surveyFavorCategory.getCategory().getId());
         }
 
-        FlaskSurveyReq flaskSurveyReq = FlaskSurveyReq.builder()
+        FlaskSurveyItem flaskSurveyReq = FlaskSurveyItem.builder()
                 .userId(survey.getUser().getId())
 //                .startDate(survey.getStartDate())
 //                .endDate(survey.getEndDate())
