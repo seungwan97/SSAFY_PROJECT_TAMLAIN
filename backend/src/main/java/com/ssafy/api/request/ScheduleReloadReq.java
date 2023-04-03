@@ -13,6 +13,7 @@ import java.util.Map;
 @Getter
 public class ScheduleReloadReq {
     private int surveyId;
+    // 카테고리 ?
     @ApiModelProperty(value = "제주 장소 삭제된 id 리스트")
     private Map<String, List<Integer>> placeDeleteId;
 

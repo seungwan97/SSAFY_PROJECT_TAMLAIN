@@ -167,22 +167,22 @@ public class ScheduleServiceImpl implements ScheduleService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
+        // 설문 조사 카테고리 조회
         List<SurveyFavorCategory> surveyFavorCategoryList = surveyFavorCategoryRepository.findAllBySurveyId(surveyId);
         List<Integer> categoryList = new ArrayList<>();
         for(SurveyFavorCategory surveyFavorCategory : surveyFavorCategoryList) {
             categoryList.add(surveyFavorCategory.getCategory().getId());
         }
 
+        // 설문 조사 Flask Req
         FlaskSurveyReq flaskSurveyReq = FlaskSurveyReq.builder()
                 .userId(survey.getUser().getId())
-                .startDate(survey.getStartDate())
-                .endDate(survey.getEndDate())
                 .travelThemeCode(survey.getTravelThemeCode())
                 .season(survey.getSeason())
                 .surveyFavorCategoryList(categoryList)
                 .build();
 
-//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAllByCategoryId(categoryList);
+        // 제주 장소 Flask Req
         List<JejuPlace> jejuPlaceList = new ArrayList<>();
         for(Integer id : categoryList) {
             List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
@@ -191,45 +191,46 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         }
 
+//        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
 
         for(JejuPlace jejuPlace : jejuPlaceList) {
-//            System.out.println("id: " + jejuPlace.getId());
-
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
-                    .name(jejuPlace.getName())
                     .categoryId(jejuPlace.getCategory().getId())
                     .categoryName(jejuPlace.getCategory().getCategoryName())
-                    .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
-                    .latitude(jejuPlace.getLatitude())
-                    .longitude(jejuPlace.getLongitude())
-                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+                    .reviewScoreSum(jejuPlace.getReviewScoreSum())
+                    .reviewCount(jejuPlace.getReviewCount())
                     .build();
+
+            flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
         }
 
-        getFlaskJejuItem(jejuPlaceList, flaskJejuPlaceItemList);
-
+        // 리뷰 Flask Req
         List<Review> reviewList = reviewRepository.findAll();
-        List<ReviewItem> reviewItems = new ArrayList<>();
+        List<FlaskReviewItem> flaskReviewItemList = new ArrayList<>();
         for (Review review : reviewList){
-            ReviewItem reviewItem = ReviewItem.builder()
-                    .jejuPlaceImgUrl(review.getJejuPlace().getPlaceUrl())
-                    .jejuPlaceName(review.getJejuPlace().getName())
+            FlaskReviewItem flaskReviewItem = FlaskReviewItem.builder()
+                    .userId(review.getUser().getId())
+                    .season(review.getScheduleItem().getSchedule().getSurvey().getSeason())
+                    .travelThemeCode(review.getScheduleItem().getSchedule().getSurvey().getTravelThemeCode())
+                    .jejuPlaceId(review.getJejuPlace().getId())
                     .score(review.getScore())
                     .build();
-            reviewItems.add(reviewItem);
+
+            flaskReviewItemList.add(flaskReviewItem);
         }
 
-        FlaskRecommendReq recommendReq = FlaskRecommendReq.builder()
+        // Flask로 Req
+        FlaskFirstRecommendReq flaskFirstRecommendReq = FlaskFirstRecommendReq.builder()
                 .flaskSurveyReq(flaskSurveyReq)
                 .flaskJejuPlaceItemList(flaskJejuPlaceItemList)
-                .reviewItem(reviewItems)
+                .flaskReviewItemList(flaskReviewItemList)
                 .build();
 
         HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
                 .header("Content-Type", "application/json")
-                .body(recommendReq)
+                .body(flaskFirstRecommendReq)
                 .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
 
         LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
@@ -286,7 +287,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             resultMap.put(categoryDescription, jejuPlaceResList);
         }
 
-        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 추천 장소를 받습니다.", resultMap);
+        return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 첫 추천 장소를 받습니다.", resultMap);
     }
 
     @Override
@@ -346,8 +347,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         FlaskSurveyReq flaskSurveyReq = FlaskSurveyReq.builder()
                 .userId(survey.getUser().getId())
-                .startDate(survey.getStartDate())
-                .endDate(survey.getEndDate())
+//                .startDate(survey.getStartDate())
+//                .endDate(survey.getEndDate())
                 .travelThemeCode(survey.getTravelThemeCode())
                 .season(survey.getSeason())
                 .surveyFavorCategoryList(categoryList)
@@ -465,13 +466,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         for(JejuPlace jejuPlace : jejuPlaceList) {
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
-                    .name(jejuPlace.getName())
+//                    .name(jejuPlace.getName())
                     .categoryId(jejuPlace.getCategory().getId())
                     .categoryName(jejuPlace.getCategory().getCategoryName())
-                    .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
-                    .latitude(jejuPlace.getLatitude())
-                    .longitude(jejuPlace.getLongitude())
-                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
+//                    .categoryDetailName(jejuPlace.getCategory().getCategoryDetailName())
+//                    .latitude(jejuPlace.getLatitude())
+//                    .longitude(jejuPlace.getLongitude())
+//                    .reviewScore((jejuPlace.getReviewCount() != 0) ? Math.round(((double) jejuPlace.getReviewScoreSum() / jejuPlace.getReviewCount())*10)/10.0 : 0)
                     .build();
 
             flaskJejuPlaceItemList.add(flaskJejuPlaceItem);
