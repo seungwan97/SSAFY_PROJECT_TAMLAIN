@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import numpy as np
 from flask import Flask, request, json, Response
 import pandas as pd
@@ -101,6 +102,7 @@ def getReRecommend():
     # result = json.dumps(function(data))
     # res = Response(result, mimetype="application/json")
     # return res
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
