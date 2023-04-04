@@ -12,6 +12,5 @@ public interface HistoryService {
     SuccessRes<List<ScheduleHistoryRes>> getScheduleHistory(int userId);
     CommonRes deleteScheduleHistory(int scheduleId);
     CommonRes modifyScheduleName(ScheduleModifyReq scheduleModifyReq);
-
     SuccessRes<ScheduleDetailRes> getScheduleDetail(int scheduleId);
 }
