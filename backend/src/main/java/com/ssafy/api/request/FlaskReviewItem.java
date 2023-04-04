@@ -22,9 +22,11 @@ public class FlaskReviewItem {
     private int scheduleId;
     @ApiModelProperty(value = "일차")
     private int day;
+    @ApiModelProperty(value = "카테고리 id")
+    private int categoryId;
 
     @Builder
-    public FlaskReviewItem(int userId, String season, int travelThemeCode, int jejuPlaceId, int score, int scheduleId, int day) {
+    public FlaskReviewItem(int userId, String season, int travelThemeCode, int jejuPlaceId, int score, int scheduleId, int day, int categoryId) {
         this.userId = userId;
         this.season = season;
         this.travelThemeCode = travelThemeCode;
@@ -32,5 +34,6 @@ public class FlaskReviewItem {
         this.score = score;
         this.scheduleId = scheduleId;
         this.day = day;
+        this.categoryId = categoryId;
     }
 }

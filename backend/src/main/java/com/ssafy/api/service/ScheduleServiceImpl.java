@@ -245,6 +245,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .score(review.getScore())
                     .scheduleId(review.getScheduleItem().getSchedule().getId())
                     .day(review.getScheduleItem().getDay())
+                    .categoryId(review.getJejuPlace().getCategory().getId())
                     .build();
 
             flaskReviewItemList.add(flaskReviewItem);
