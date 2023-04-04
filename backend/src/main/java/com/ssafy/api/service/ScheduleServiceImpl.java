@@ -263,7 +263,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io:5000/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
