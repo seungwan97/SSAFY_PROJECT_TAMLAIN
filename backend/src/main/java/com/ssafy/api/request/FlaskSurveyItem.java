@@ -7,9 +7,9 @@ import lombok.Getter;
 
 import java.util.List;
 
-@ApiModel(description = "Flask에서 사용자의 설문 조사 정보를 포함한 Request")
+@ApiModel(description = "Flask Request를 위한 설문 정보")
 @Getter
-public class FlaskSurveyReq {
+public class FlaskSurveyItem {
     @ApiModelProperty(value = "사용자 id")
     private int userId;
     @ApiModelProperty(value = "여행 테마 id")
@@ -20,7 +20,7 @@ public class FlaskSurveyReq {
     private List<Integer> surveyFavorCategoryList;
 
     @Builder
-    public FlaskSurveyReq(int userId, int travelThemeCode, String season, List<Integer> surveyFavorCategoryList) {
+    public FlaskSurveyItem(int userId, int travelThemeCode, String season, List<Integer> surveyFavorCategoryList) {
         this.userId = userId;
         this.travelThemeCode = travelThemeCode;
         this.season = season;
