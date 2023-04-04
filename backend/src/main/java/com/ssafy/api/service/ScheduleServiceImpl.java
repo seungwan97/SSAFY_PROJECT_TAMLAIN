@@ -316,10 +316,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 추천 결과
     public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(LinkedHashMap<String, List<Integer>> recommendMap) {
         LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
-        List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
 
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
+            List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
+
             for(Integer id : list) {
                 Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(id);
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
