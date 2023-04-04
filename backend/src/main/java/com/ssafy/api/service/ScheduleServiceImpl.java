@@ -245,6 +245,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                     .score(review.getScore())
                     .scheduleId(review.getScheduleItem().getSchedule().getId())
                     .day(review.getScheduleItem().getDay())
+                    .categoryId(review.getJejuPlace().getCategory().getId())
                     .build();
 
             flaskReviewItemList.add(flaskReviewItem);
@@ -344,22 +345,22 @@ public class ScheduleServiceImpl implements ScheduleService {
             String categoryDescription = "";
             switch(str) {
                 case "맛집" :
-                    categoryDescription = "탐나's RESTAURANT PICK";
+                    categoryDescription = "숨은 제주의 맛집! MY RESTAURANT";
                     break;
                 case "카페/간식" :
-                    categoryDescription = "아직";
+                    categoryDescription = "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서";
                     break;
                 case "액티비티/체험" :
-                    categoryDescription = "다";
+                    categoryDescription = "활발한게 좋다면? Activity!";
                     break;
                 case "스포츠/레저" :
-                    categoryDescription = "안정함";
+                    categoryDescription = "스포츠&레저의 메카, JEJU Island";
                     break;
                 case "전시" :
-                    categoryDescription = "ㅠ";
+                    categoryDescription = "기억에 남는 전시, 제주를 기억하다";
                     break;
                 case "휴양" :
-                    categoryDescription = "ㅠ";
+                    categoryDescription = "휴식이 공존하는 섬, 제주의 휴양지";
                     break;
                 default:
                     break;
@@ -375,7 +376,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         Set<String> uniqueIds = new HashSet<>(filteredPlaces);
         redisTemplate.opsForSet().add(redisKey, uniqueIds.toArray());
     }
-
-
-
 }
