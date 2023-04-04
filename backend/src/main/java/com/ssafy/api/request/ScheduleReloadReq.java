@@ -14,7 +14,7 @@ import java.util.Map;
 public class ScheduleReloadReq {
     @ApiModelProperty(value = "설문조사 id")
     private int surveyId;
-    @ApiModelProperty(value = "설문조사 id")
+    @ApiModelProperty(value = "사용자 id")
     private String userId;
     @ApiModelProperty(value = "제주 장소 삭제된 id 리스트")
     private List<String> placeDeleteId;
