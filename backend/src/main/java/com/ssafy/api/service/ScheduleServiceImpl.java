@@ -200,15 +200,17 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         }
 
+        System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
         // 삭제
         System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
             System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
             for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
                 System.out.println(jejuPlace.getId());
+                jejuPlaceList.remove(jejuPlace.getId());
             }
-            jejuPlaceList.removeAll(jejuPlaceDeleteList);
         }
+        System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
 
 //        List<JejuPlace> jejuPlaceList = jejuPlaceRepository.findAll();
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
