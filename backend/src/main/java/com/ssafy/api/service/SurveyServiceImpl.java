@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 import com.ssafy.api.request.SurveyRegistReq;
+import com.ssafy.api.response.CommonRes;
 import com.ssafy.api.response.SuccessRes;
 import com.ssafy.db.entity.*;
 import com.ssafy.db.repository.*;
@@ -90,5 +91,14 @@ public class SurveyServiceImpl implements SurveyService {
         }
 
         return new SuccessRes<Integer>(true, "설문 조사 등록을 완료했습니다.", surveyId);
+    }
+
+    @Override
+    public CommonRes deleteSurvey(int surveyId) {
+        Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
+        Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
+
+        surveyRepository.save(Survey.of(survey));
+        return new CommonRes(true, "설문 조사 삭제를 완료했습니다.");
     }
 }
