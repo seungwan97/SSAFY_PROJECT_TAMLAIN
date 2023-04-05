@@ -7,23 +7,39 @@ const ARRAY = [0, 1, 2, 3, 4];
 const Rating = (props) => {
   const [clicked, setClicked] = useState([false, false, false, false, false]);
 
-  const handleStarClick = (index, idx) => {
+  const handleStarClick = (index) => {
     let clickStates = [...clicked];
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
-
     setClicked(clickStates);
   };
- 
+
+  const id = localStorage.getItem("id");
+  const size = localStorage.getItem("size");
+
+  // useEffect(() => {
+  //   let arr = {};
+  //   arr = {
+  //     jejuPlaceId: props.dataList.jejuPlaceId,
+  //     scheduleItemId: props.dataList.scheduleItemId,
+  //     score: 0,
+  //   };
+  //   setStarData(arr);
+  //   setStarData(props.dataList);
+  // }, []);
+
+  // console.log(starData);
+
   useEffect(() => {
     sendReview();
   }, [clicked]); //컨디마 컨디업
 
   const sendReview = () => {
     let score = clicked.filter(Boolean).length;
-    props.setStarCount(score);  
+    props.setStarCount(score, props.index);
     console.log(score);
+    console.log(props.index);
   };
 
   return (
