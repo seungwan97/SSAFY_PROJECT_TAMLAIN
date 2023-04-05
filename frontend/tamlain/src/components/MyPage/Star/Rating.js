@@ -18,29 +18,38 @@ const Rating = (props) => {
   const id = localStorage.getItem("id");
   const size = localStorage.getItem("size");
 
-  // useEffect(() => {
-  //   let arr = {};
-  //   arr = {
-  //     jejuPlaceId: props.dataList.jejuPlaceId,
-  //     scheduleItemId: props.dataList.scheduleItemId,
-  //     score: 0,
-  //   };
-  //   setStarData(arr);
-  //   setStarData(props.dataList);
-  // }, []);
+  // const chk = props.chk;
 
-  // console.log(starData);
+  // console.log("visited배열 체크(rating) : " + chk);
+
+  // useEffect(() => {
+  //   sendReview();
+  //   visitedChk();
+  // }, [clicked]); //컨디마 컨디업
 
   useEffect(() => {
     sendReview();
-  }, [clicked]); //컨디마 컨디업
+  }, [clicked]);
 
   const sendReview = () => {
     let score = clicked.filter(Boolean).length;
-    props.setStarCount(score, props.index);
-    console.log(score);
-    console.log(props.index);
+    props.setStarCount(score);
+    props.setStarIdx(props.index);
+    console.log("별점 : "+score);
+    console.log("인덱스 : "+props.index);
   };
+
+  // const visitedChk = () => {
+  //   let clickStates = [...clicked];
+  //   for (let i = 0; i < size; i++){
+  //     if (chk[i]) {
+  //       for (let j = 0; j < 5; j++) {
+  //         clickStates[j] = false;
+  //       }
+  //     }
+  //   }
+  //   setClicked(clickStates);
+  // }
 
   return (
     <>
