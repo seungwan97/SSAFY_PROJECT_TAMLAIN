@@ -251,6 +251,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getFirstRecommendJejuPlace(int surveyId) {
+        System.out.println("첫추천 service");
         List<Integer> categoryList = getCategoryList(surveyId);
 
         // Flask로 Req
@@ -311,7 +312,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 추천 결과
     public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(LinkedHashMap<String, List<Integer>> recommendMap) {
         LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
-
+        HashMap<String, String> categoryDescriptionMap = new HashMap<>();
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
             List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
@@ -338,31 +339,63 @@ public class ScheduleServiceImpl implements ScheduleService {
                 jejuPlaceResList.add(jejuPlaceRes);
             }
 
-            String categoryDescription = "";
+//            String categoryDescription = "";
+//            HashMap<String, String> categoryDescriptionMap = new HashMap<>();
+            String[] categoryDescription = new String[2];
             switch(str) {
                 case "맛집" :
-                    categoryDescription = "숨은 제주의 맛집! MY RESTAURANT";
+                    categoryDescriptionMap.put("a", "숨은 제주의 맛집! MY RESTAURANT");
+                    str = "a";
+//                    sort = "a";
+//                    categoryDescription = "숨은 제주의 맛집! MY RESTAURANT";
                     break;
                 case "카페/간식" :
-                    categoryDescription = "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서";
+                    categoryDescriptionMap.put("b", "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서");
+                    str = "b";
+//                    sort = "b";
+//                    categoryDescription = "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서";
                     break;
                 case "액티비티/체험" :
-                    categoryDescription = "활발한게 좋다면? Activity!";
+                    categoryDescriptionMap.put("d", "활발한게 좋다면? Activity!");
+                    str = "d";
+//                    sort = "d";
+//                    categoryDescription = "활발한게 좋다면? Activity!";
                     break;
                 case "스포츠/레저" :
-                    categoryDescription = "스포츠&레저의 메카, JEJU Island";
+                    categoryDescriptionMap.put("f", "스포츠&레저의 메카, JEJU Island");
+                    str = "f";
+//                    sort = "f";
+//                    categoryDescription = "스포츠&레저의 메카, JEJU Island";
                     break;
                 case "전시" :
-                    categoryDescription = "기억에 남는 전시, 제주를 기억하다";
+                    categoryDescriptionMap.put("e", "기억에 남는 전시, 제주를 기억하다");
+                    str = "e";
+//                    sort = "e";
+//                    categoryDescription = "기억에 남는 전시, 제주를 기억하다";
                     break;
                 case "휴양" :
-                    categoryDescription = "휴식이 공존하는 섬, 제주의 휴양지";
+                    categoryDescriptionMap.put("c", "휴식이 공존하는 섬, 제주의 휴양지");
+                    str = "c";
+//                    sort = "c";
+//                    categoryDescription = "휴식이 공존하는 섬, 제주의 휴양지";
                     break;
                 default:
                     break;
             }
 
-            resultMap.put(categoryDescription, jejuPlaceResList);
+            resultMap.put(str, jejuPlaceResList);
+        }
+
+        List<String> keySet = new ArrayList<>(resultMap.keySet());
+        Collections.sort(keySet);
+
+        for(String s : keySet) {
+            System.out.println(s + " " + categoryDescriptionMap.get(s));
+            List<JejuPlaceRes> list2 = resultMap.get(s);
+            for(JejuPlaceRes i : list2) {
+                System.out.print(i.getMapInfo().getJejuPlaceId() + " ");
+            }
+            System.out.println();
         }
         return resultMap;
     }
