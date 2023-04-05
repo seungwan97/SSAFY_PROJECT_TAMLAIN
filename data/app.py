@@ -28,23 +28,17 @@ def getRecommendList():
     selected_subcategory_id = data['flaskSurveyItem']['surveyFavorCategoryList']
     place = pd.DataFrame.from_dict(data['flaskJejuPlaceItemList'])
     ratings = pd.DataFrame.from_dict(data['flaskReviewItemList'])
-    selected_place = []
-    # selected_place = data["flaskSceduleList"]
+    selected_place = data["flaskSceduleList"] if "flaskSceduleList" in data else []
 
     selected_category_name = place["categoryName"].unique().tolist()
-    if not selected_place:
-        place = place[~place["jejuPlaceId"].isin(selected_place)]
     # min_count = 0 # 최소 0번이상 리뷰를 작성한 사용자의 리뷰만 사용 => 현재는 미적용, 데이터가 쌓이면 적용
     # rating_counts = ratings['userId'].value_counts()
     # ratings = ratings[ratings['userId'].isin(rating_counts[rating_counts > min_count].index)]
-    print(data['flaskSurveyItem'])
-    print(ratings)
     schedule = ratings.groupby(['scheduleId', 'travelThemeCode', 'season'])['jejuPlaceId'].apply(list).reset_index(
         name='course')
     ratings = ratings.drop_duplicates(['userId', 'jejuPlaceId'], keep='last')  # 동일 유저 동일 장소 중복 리뷰 처리
 
     '''STEP 1. 선호 카테고리의 장소에 대한 평점 신뢰도를 반영힌 평점 계산(사용자 평가 평점 * 리뷰 개수를 이용한 신뢰도 수치)'''
-    print(place['reviewCount'])
     place['reviewScore'] = place.apply(
         lambda x: (x['reviewScoreSum'] / x['reviewCount']) if x['reviewCount'] > 0 else 0, axis=1)
     place['reviewReliability'] = pd.qcut(place['reviewCount'], q=4,
@@ -63,28 +57,26 @@ def getRecommendList():
     algo.fit(trainset)
     # item_list = ratings[ratings["categoryId"].isin(selected_subcategory_id)]["jejuPlaceId"].unique().tolist()
     item_list = place["jejuPlaceId"].unique().tolist()
-    print(item_list)
     predictions = [algo.predict(user_id, item_id) for item_id in item_list]
     predictions = pd.DataFrame(predictions)[["iid", "est"]]  # uid, iid, r_ui(실제 평점) ,est(예측평점)
-    # print(predictions)
     predictions.rename(columns={"iid": "jejuPlaceId"}, inplace=True)
     place = pd.merge(place, predictions, on='jejuPlaceId')
     place["prediction"] = place["score"] + place["est"]
-    print(place)
+
 
     '''STEP 3. 모든 사용자의 일정과 현재 입력된 일정간 유사도 계산(설문 유사도 & 일정 유사도)'''
-    visited_mat = coo_matrix(
-        (np.ones(len(ratings), dtype=np.int8), (ratings["scheduleId"], ratings["jejuPlaceId"]))).toarray()
-    visited_mat = visited_mat[:, selected_place].tolist()
-    my_course = np.ones(len(selected_place), dtype=np.int8)
     schedule["survey_similarity"] = schedule.apply(
         lambda x: 1.0 if x['travelThemeCode'] == theme_id and x['season'] == season_name else
         (0.5 if x['travelThemeCode'] == theme_id or x['season'] == season_name else 0), axis=1)
     if selected_place:
+        visited_mat = coo_matrix(
+            (np.ones(len(ratings), dtype=np.int8), (ratings["scheduleId"], ratings["jejuPlaceId"]))).toarray()
+        visited_mat = visited_mat[:, selected_place]
+        my_course = np.ones(len(selected_place), dtype=np.int8)
         schedule["vec"] = schedule["scheduleId"].apply(lambda x: visited_mat[x])
-        schedule["course_similarity"] = schedule.apply(lambda x: cosine_similarity(schedule["vec"], my_course), axis=1)
-        schedule = schedule[schedule["course_similarity"] > 0 and schedule["survey_similarity"] > 0]
-        schedule["similarity"] = (schedule["course_similarity"] + schedule["survey_similarity"]) >> 1
+        schedule["course_similarity"] = schedule["vec"].apply(lambda x: cosine_similarity(x, my_course))
+        schedule = schedule[(schedule["course_similarity"] > 0) & (schedule["survey_similarity"] > 0)]
+        schedule["similarity"] = (schedule["course_similarity"] + schedule["survey_similarity"]) / 2
     else:
         schedule.rename(columns={"survey_similarity": "similarity"}, inplace=True)
         schedule = schedule[schedule["similarity"] > 0]
@@ -92,13 +84,10 @@ def getRecommendList():
 
     '''STEP 4. 각 일정을 유사도로 그룹화하여 높은 유사도의 그룹 속 장소들을 상위에 추천(유사도-출연빈도 순으로 정렬)'''
     grouped_by_similarity = schedule.groupby('similarity')['course'].apply(list).reset_index(name='visited_place')
-    print(schedule)
-    print(grouped_by_similarity)
     grouped_by_similarity = grouped_by_similarity.sort_values('similarity', ascending=True)
     grouped_by_similarity["visited_place"] = grouped_by_similarity["visited_place"].apply(lambda x: Counter(sum(x, [])))
     grouped_by_similarity["visited_place"] = grouped_by_similarity["visited_place"].apply(
         lambda x: sorted(x, key=x.get, reverse=True))
-    print(grouped_by_similarity)
 
     top_recommend_place_id = []
     for place_id_list in grouped_by_similarity["visited_place"].values:
@@ -106,11 +95,11 @@ def getRecommendList():
             if id not in top_recommend_place_id:
                 top_recommend_place_id.append(id)
     ranked_place = pd.DataFrame()
-    # print(place.sort_values('jejuPlaceId', ascending=False))
+
+    top_recommend_place_id.append(6300)
     for id in top_recommend_place_id:
         ranked_place = pd.concat([ranked_place, place[place["jejuPlaceId"] == id]])
     place.drop(place[place["jejuPlaceId"].isin(top_recommend_place_id)].index, inplace=True)
-    print(len(place))
 
     place = place.sort_values('prediction', ascending=False)
     ranked_place = pd.concat([ranked_place, place])
@@ -120,7 +109,7 @@ def getRecommendList():
     grouped_place = ranked_place.groupby('categoryName')['jejuPlaceId'].apply(list)
     for name in selected_category_name:
         result[name] = grouped_place[name][:result_size]
-    print(result)
+    # print(result)
     return result
 
 
