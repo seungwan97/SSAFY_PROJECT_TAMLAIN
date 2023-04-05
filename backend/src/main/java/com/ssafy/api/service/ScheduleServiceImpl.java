@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.Period;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service("scheduleService")
@@ -157,7 +156,6 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleItemRepository.save(scheduleItem);
         }
 
-        //redis있는 특정 유저의 내용만 삭제
         redisTemplate.delete(redisTemplate.keys(REDIS_KEY_PREFIX+scheduleRegistReq.getUserId()));
 
         return new CommonRes(true, "일정 등록을 완료했습니다.");
@@ -201,14 +199,12 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
-        // 삭제
         System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
             System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
             for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
                 System.out.println(jejuPlace.getId());
             }
-            // jejuPlaceList에 있으면 삭제가 됨!!
             jejuPlaceDeleteList.forEach(jejuPlaceList::remove);
         }
         System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
@@ -277,13 +273,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getReloadRecommendJejuPlace(ScheduleReloadReq scheduleReloadReq) {
         List<JejuPlace> jejuPlaceDeleteList = new ArrayList<>();
 
-
-        // 삭제된 것들이 있으면 redis에서 꺼내와서 추가하는 코드
-        // Redis에서 해당 유저의 삭제한 장소 목록을 가져와서 jejuPlaceDeleteList에 추가
-        String userId = scheduleReloadReq.getUserId(); // 사용자 아이디
+        String userId = scheduleReloadReq.getUserId();
         Set<Object> deletePlaceIds = redisTemplate.opsForSet().members(REDIS_KEY_PREFIX + userId);
         if(deletePlaceIds != null && deletePlaceIds.isEmpty()) {
-            // 삭제된 것들 레디스에 추가
             saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
             for (Object id : deletePlaceIds) {
                 Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
