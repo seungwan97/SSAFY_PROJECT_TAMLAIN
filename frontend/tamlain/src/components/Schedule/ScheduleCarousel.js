@@ -44,6 +44,7 @@ const ScheduleCarousel = (props) => {
     const surveyId = localStorage.getItem("surveyId");
     getRecommendJejuPlace(token, surveyId).then((res) => {
       console.log(res);
+      console.log(res.data.data);
     });
   }, []);
 
