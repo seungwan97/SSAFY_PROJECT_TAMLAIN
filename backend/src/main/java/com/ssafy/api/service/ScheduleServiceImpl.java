@@ -261,13 +261,13 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
 //        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
-                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
+                .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
 
-        LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
+        HashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 첫 추천 장소를 받습니다.", getResultMap(recommendMap));
     }
 
@@ -299,20 +299,22 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskSceduleList(scheduleReloadReq.getSelectJejuPlaceList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
 //        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
-                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
+                .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
 
-        LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
+        HashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "재추천 장소를 받습니다.", getResultMap(recommendMap));
     }
 
     // 추천 결과
-    public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(LinkedHashMap<String, List<Integer>> recommendMap) {
+    public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(HashMap<String, List<Integer>> recommendMap) {
         LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
+        TreeMap<String, List<JejuPlaceRes>> treeMap = new TreeMap<>();
         HashMap<String, String> categoryDescriptionMap = new HashMap<>();
+
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
             List<JejuPlaceRes> jejuPlaceResList = new ArrayList<>();
@@ -339,64 +341,42 @@ public class ScheduleServiceImpl implements ScheduleService {
                 jejuPlaceResList.add(jejuPlaceRes);
             }
 
-//            String categoryDescription = "";
-//            HashMap<String, String> categoryDescriptionMap = new HashMap<>();
-            String[] categoryDescription = new String[2];
             switch(str) {
                 case "맛집" :
-                    categoryDescriptionMap.put("a", "숨은 제주의 맛집! MY RESTAURANT");
-                    str = "a";
-//                    sort = "a";
-//                    categoryDescription = "숨은 제주의 맛집! MY RESTAURANT";
+                    categoryDescriptionMap.put("b", "숨은 제주의 맛집! MY RESTAURANT");
+                    str = "b";
                     break;
                 case "카페/간식" :
-                    categoryDescriptionMap.put("b", "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서");
-                    str = "b";
-//                    sort = "b";
-//                    categoryDescription = "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서";
+                    categoryDescriptionMap.put("c", "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서");
+                    str = "c";
                     break;
                 case "액티비티/체험" :
                     categoryDescriptionMap.put("d", "활발한게 좋다면? Activity!");
                     str = "d";
-//                    sort = "d";
-//                    categoryDescription = "활발한게 좋다면? Activity!";
                     break;
                 case "스포츠/레저" :
                     categoryDescriptionMap.put("f", "스포츠&레저의 메카, JEJU Island");
                     str = "f";
-//                    sort = "f";
-//                    categoryDescription = "스포츠&레저의 메카, JEJU Island";
                     break;
                 case "전시" :
                     categoryDescriptionMap.put("e", "기억에 남는 전시, 제주를 기억하다");
                     str = "e";
-//                    sort = "e";
-//                    categoryDescription = "기억에 남는 전시, 제주를 기억하다";
                     break;
                 case "휴양" :
-                    categoryDescriptionMap.put("c", "휴식이 공존하는 섬, 제주의 휴양지");
-                    str = "c";
-//                    sort = "c";
-//                    categoryDescription = "휴식이 공존하는 섬, 제주의 휴양지";
+                    categoryDescriptionMap.put("a", "휴식이 공존하는 섬, 제주의 휴양지");
+                    str = "a";
                     break;
                 default:
                     break;
             }
 
-            resultMap.put(str, jejuPlaceResList);
+            treeMap.put(str, jejuPlaceResList);
         }
 
-        List<String> keySet = new ArrayList<>(resultMap.keySet());
-        Collections.sort(keySet);
-
-        for(String s : keySet) {
-            System.out.println(s + " " + categoryDescriptionMap.get(s));
-            List<JejuPlaceRes> list2 = resultMap.get(s);
-            for(JejuPlaceRes i : list2) {
-                System.out.print(i.getMapInfo().getJejuPlaceId() + " ");
-            }
-            System.out.println();
+        for(String s : treeMap.keySet()) {
+            resultMap.put(categoryDescriptionMap.get(s), treeMap.get(s));
         }
+
         return resultMap;
     }
 
