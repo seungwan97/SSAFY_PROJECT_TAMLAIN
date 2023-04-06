@@ -47,12 +47,8 @@ public class Schedule extends BaseEntity {
         return schedule;
     }
 
-    public static Schedule of(Schedule schedule) {
-        schedule.setDelete(true);
-        return schedule;
-    }
-
-    public static Schedule of(Schedule schedule, boolean isReview) {
+    public static Schedule of(Schedule schedule, boolean isDelete, boolean isReview) {
+        schedule.setDelete(isDelete);
         schedule.setReview(isReview);
         return schedule;
     }

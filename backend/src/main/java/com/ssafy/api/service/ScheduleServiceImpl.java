@@ -195,19 +195,15 @@ public class ScheduleServiceImpl implements ScheduleService {
             List<JejuPlace> list = jejuPlaceRepository.findAllByCategoryId(id);
             for(JejuPlace jejuPlace : list) {
                 jejuPlaceList.add(jejuPlace);
-                System.out.print(jejuPlace.getId() + " ");
             }
         }
 
-        System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
             jejuPlaceDeleteList.forEach(jejuPlaceList::remove);
         }
 
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
-
         for(JejuPlace jejuPlace : jejuPlaceList) {
-
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
                     .categoryId(jejuPlace.getCategory().getId())
@@ -246,7 +242,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>> getFirstRecommendJejuPlace(int surveyId) {
-        System.out.println("첫추천 service");
         List<Integer> categoryList = getCategoryList(surveyId);
 
         // Flask로 Req
