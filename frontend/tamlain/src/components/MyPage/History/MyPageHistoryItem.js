@@ -10,11 +10,12 @@ const MyPageHistoryItem = (props) => {
 
   const key = localStorage.getItem("token");
   const scheduleId = props.idx;
-  
+  console.log(scheduleId);
+
   // 별점 페이지로 이동  / schuldeId 가지고 페이지로 이동
   const reDirectStarInfo = () => {
     getReviewScheduleHistory(key, scheduleId).then((res) => {
-      let comp = res.data.success;  
+      let comp = res.data.success;
       console.log(comp);
       if (comp === false) {
         window.alert("여행 마지막 날짜 이후부터 리뷰 등록이 가능합니다.");
@@ -22,7 +23,7 @@ const MyPageHistoryItem = (props) => {
         localStorage.setItem("scheduleId", scheduleId);
         navigate(`/myPageStarInfo/${scheduleId}`);
       }
-      });
+    });
   };
 
   // 삭제 요청 모달 띄우기
@@ -45,9 +46,8 @@ const MyPageHistoryItem = (props) => {
 
   if (deleteChk == 2) {
     window.location.reload();
-    localStorage.setItem("delete",0);
+    localStorage.setItem("delete", 0);
   }
-
 
   return (
     <S.Container>
