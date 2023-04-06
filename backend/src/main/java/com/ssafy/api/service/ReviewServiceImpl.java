@@ -100,6 +100,8 @@ public class ReviewServiceImpl implements ReviewService {
                     jejuPlace.getReviewCount()+1);
 
             jejuPlaceRepository.save(newJejuPlace);
+
+            scheduleRepository.save(Schedule.of(scheduleItem.getSchedule(), true));
         }
 
         return new CommonRes(true, "리뷰 등록을 완료했습니다.");
