@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../UI/Loading/Loading";
+import LoadingLogin from "../../UI/Loading/LoadingLogin";
 
 const OAuthRedirectPage = () => {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const OAuthRedirectPage = () => {
 
   return (
     <>
-      <Loading></Loading>
+      <LoadingLogin></LoadingLogin>
     </>
   );
 };
