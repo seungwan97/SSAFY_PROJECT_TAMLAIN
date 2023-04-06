@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   position: relative;
   // object-fit: contain;
-  width: 130px;
-  height: 130px;
+  width: 150px;
+  height: 150px;
 
   // background-color: blue;
 `;

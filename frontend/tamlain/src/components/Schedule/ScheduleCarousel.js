@@ -18,7 +18,7 @@ const ScheduleCarousel = (props) => {
     infinite: true, // 무한 반복
     speed: 500, // 이동하는 속도
     slidesToShow: 4, // 4장씩 보이게
-    centerPadding: "0", // 0px하면 슬라이드 끝쪽 이미지가 안 잘린다
+    centerPadding: "0px", // 0px하면 슬라이드 끝쪽 이미지가 안 잘린다
     swipeToSlide: true,
     centerMode: true,
     // variableWidth: true, // 사진마다 각자의 width대로 적용

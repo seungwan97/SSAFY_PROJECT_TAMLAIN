@@ -67,7 +67,7 @@ const ScheduleImgContainer = (props) => {
       )}
       {!click && props.ImgUrl === "https://" && (
         <S.ImgContainer
-          src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
+          src={`${process.env.PUBLIC_URL}/assets/Icon/SquareEmptyImg.png`}
           onClick={OnClickHandler}
         />
       )}
