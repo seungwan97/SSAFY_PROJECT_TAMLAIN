@@ -11,7 +11,6 @@ jasypt:
 
 spring:
   datasource:
-    # server
     url: ENC(ndX6gKk1CNkKXk4CEltuU2IrQ3cWIl5hcVL0KMAr5vi7b5fQQZuckU45z9c8385QnJh+FD7+d0+x4Q7Y7cGW2F87lWHdquUS69Xo8hWDeHpTdH0oQvI8gt8koGqKRGkIk6idPhgzIaKoN5o/Pmu2bFd58Xfrcxln4rtSw5iBLCa3pBrNK9+v4W9U9y5alxEHxoH8evmYzyeCDnpkkor8QT47i1zAe+kb2INo+4I42BXi5Uw7cGXPxA==)
     username: ENC(bZUHmnyJmvPH7dWd/KJ7oA==)
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -38,7 +37,6 @@ spring:
   redis:
     host: ENC(aEaoaiveSmIbp+RsduWANO9WRlWFUwem0KWkZj3UU40=)
     port: 8379
-#    password: ENC(MRhLM87UTKhun3MlD+SdQY0cIRaEInLX)
 
   security:
     oauth2:
@@ -46,7 +44,6 @@ spring:
         registration:
           kakao:
             client-id: ENC(MIphkkA0IKWDEyl7CnbwR7It5pgFcV6xPtiXmKKX4V9RVKqs5U17XA+63e7Ql2AI)
-            #            redirect-uri: http://localhost:8080/oauth/callback/kakao
 #            redirect-uri: http://localhost:3000/oauth/callback/kakao
             redirect-uri: ENC(BWxUAeZaUXpUs+ZZxOzlNkJGfvFOdCZsHfCdRFM+rbS6rFw9K7PZ2yXN+RRMQz2GOF8JFZYD0ek=)
             client-authentication-method: POST
