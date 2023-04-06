@@ -214,7 +214,7 @@ const MyPageStarInfo = () => {
               </S.Container>
             ))}
             <S.RegistBtn onClick={reDirectMypage}>
-              이미 별점을 등록하셨습니다 (뒤로가기)
+              이미 등록된 별점입니다 (뒤로가기)
             </S.RegistBtn>
           </>
         )}
