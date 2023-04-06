@@ -46,13 +46,30 @@ const MyPageStarInfo = () => {
     setDataList(starInit);
 
     // 등록 버튼 비활성화용 && axios 등록된 별점 가져오기
+    
     let isChk = localStorage.getItem("disabledBtn");
     let scheduleId = localStorage.getItem("scheduleId");
     if (isChk == 1) {
       setChkActive(true);
-      getReview(key, scheduleId).then((res) => console.log(res));
+      getReview(key, scheduleId).then((res) => {
+        console.log(res)
+        let data = [];
+        for (let i = 0; i < size; i++){
+          let datas = res.data.data.reviewItemList[i];
+          data[i] = {
+            jejuPlaceImgUrl:datas.jejuPlaceImgUrl,
+            jejuPlaceName: datas.jejuPlaceName,
+            score: datas.score,
+            visit : datas.visit,
+          }
+        }
+        setAxiosData(data);
+        console.log(res.data.data.reviewItemList[0].score);
+      });
     }
   }, []);
+  const [axiosData, setAxiosData] = useState([]);
+  console.log(axiosData);
 
   useEffect(() => {
     setDataList(JSON.parse(localStorage.getItem("tmp")));
@@ -102,16 +119,28 @@ const MyPageStarInfo = () => {
   // 등록버튼 활성화 비활성화
   const [chkActive, setChkActive] = useState(false);
 
-  // 방문 비방문 배열 업데이트
+
+  // 미방문 체크시 별점 0개로 변환 시키기 
+  const [select, setSelect] = useState(false);
+
+  // 방문 미방문 배열 업데이트
   const toggleHandler = (e) => {
     visited[e.target.value] = !visited[e.target.value];
     setVisited([...visited]);
+    if (visited[e.target.value] == true) {
+      setSelect(true);
+      localStorage.setItem("chkedVisited", e.target.value);
+    } else {
+      setSelect(false);
+      localStorage.setItem("chkedVisited", -1);
+    }
     starArr[e.target.value] = 0;
     setStarArr([...starArr]);
   };
 
   // 별점 배열 업데이트
   useEffect(() => {
+    // console.log("별점배열업데이트 ");
     starArr[starIdx] = starCount;
     setStarArr([...starArr]);
   }, [starCount, starIdx]);
@@ -150,6 +179,7 @@ const MyPageStarInfo = () => {
                   index={index}
                   setStarCount={setStarCount}
                   setStarIdx={setStarIdx}
+                  setSelect={select}
                   chk={visited}
                 ></Rating>
               </S.Container>
@@ -158,11 +188,11 @@ const MyPageStarInfo = () => {
           </>
         ) : (
           <>
-            {dataList?.map((items, index) => (
+            {axiosData?.map((items, index) => (
               <S.Container key={index}>
                 <S.RadioBtn
+                  checked={items.visit ? false : true}
                   type="checkbox"
-                  value={index}
                   onClick={toggleHandler}
                 ></S.RadioBtn>
                 {items.jejuPlaceImgUrl !== "" && (
@@ -178,6 +208,7 @@ const MyPageStarInfo = () => {
                   index={index}
                   setStarCount={setStarCount}
                   setStarIdx={setStarIdx}
+                  existStar={items.score}
                   chk={visited}
                 ></Rating>
               </S.Container>
