@@ -55,8 +55,8 @@ public class HistoryServiceImpl implements HistoryService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-        scheduleRepository.save(Schedule.of(schedule));
-        surveyRepository.save(Survey.of(survey));
+        scheduleRepository.save(Schedule.of(schedule, true, schedule.isReview()));
+        surveyRepository.save(Survey.of(survey, true));
 
         return new CommonRes(true, "일정 삭제를 완료했습니다.");
     }
