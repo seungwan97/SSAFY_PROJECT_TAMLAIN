@@ -251,8 +251,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
-//        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
+//        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
@@ -293,8 +293,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskSceduleList(scheduleReloadReq.getSelectJejuPlaceList())
                 .build();
 
-        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
-//        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
+//        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
                 .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
