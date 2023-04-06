@@ -26,10 +26,9 @@ const MyPageStarInfo = () => {
     let datas = [];
     for (let i = 0; i < size; i++) {
       datas[i] = JSON.parse(localStorage.getItem("placeList" + i));
-      // datas[i] = localStorage.getItem("placeList" + i);
     }
-    console.log(datas);
-    localStorage.setItem("tmpData", JSON.stringify(datas));
+    localStorage.setItem("tmp", JSON.stringify(datas));
+    // setDataList(datas);
 
     //  방문 ,비방문 체크용
     let visitedInit = [];
@@ -43,8 +42,13 @@ const MyPageStarInfo = () => {
     for (let i = 0; i < size; i++) {
       starInit[i] = 0;
     }
-    setStarArr(starInit);
+    setDataList(starInit);
   }, []);
+
+  useEffect(() => {
+    setDataList(JSON.parse(localStorage.getItem("tmp")));
+    localStorage.removeItem("tmp");
+  }, [localStorage.getItem("tmp")]);
 
   console.log("visited배열 : " + visited);
   console.log("star 배열1 : " + starArr);
@@ -73,8 +77,9 @@ const MyPageStarInfo = () => {
 
     console.log(sendDatas);
     registReview(key, sendDatas).then((res) => console.log(res));
-    navigate("/history");
 
+    navigate("/history");
+    window.location.reload();
     //  페이지 이동 시 , 로컬 비워주기
     // localStorage.removeItem("size");
     // for (let i = 0; i < size; i++) {
@@ -115,7 +120,7 @@ const MyPageStarInfo = () => {
             )}
             {items.jejuPlaceImgUrl === "" && (
               <S.Img
-                src={`${process.env.PUBLIC_URL}/assets/Icon/SquareEmptyImg.png`}
+                src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
               />
             )}
             <S.TitleText>{items.jejuPlaceName}</S.TitleText>

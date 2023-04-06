@@ -41,18 +41,14 @@ const MyPageStarMain = () => {
       }
 
       setScheduleInfo(info);
-
-      forceUpdate();
     });
   }, []);
-
-  const [, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
 
   const navigate = useNavigate();
 
   const reDirectMyPage = () => {
     navigate("/history");
+    window.location.reload();
   };
 
   // 일정 정보

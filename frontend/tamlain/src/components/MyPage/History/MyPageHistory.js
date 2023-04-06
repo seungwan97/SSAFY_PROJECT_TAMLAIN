@@ -7,7 +7,8 @@ const MyPageHistory = () => {
 
   const key = localStorage.getItem("token");
   const user_id = localStorage.getItem("id");
-
+  const 
+  
   //  일정 useState에 저장 
   const [scheduleList, setScheduleList] = useState([
     {
@@ -25,7 +26,7 @@ const MyPageHistory = () => {
   useEffect(() => {
     getScheduleHistory(key, user_id).then((res) => {
       let size = res.data.data.length;
-      const tmp = [{}];
+      const tmp = [];
       for (var idx = 0; idx < size; idx++) {
         tmp[idx] = {
           scheduleId: res.data.data[idx].scheduleId,
