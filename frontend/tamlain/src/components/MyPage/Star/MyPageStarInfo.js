@@ -3,6 +3,7 @@ import * as S from "./MyPageStarInfo.styled";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { registReview } from "../../../utils/api/reviewApi";
+import { getReview } from "../../../utils/api/reviewApi";
 
 const MyPageStarInfo = () => {
   // 토큰
@@ -43,6 +44,14 @@ const MyPageStarInfo = () => {
       starInit[i] = 0;
     }
     setDataList(starInit);
+
+    // 등록 버튼 비활성화용 && axios 등록된 별점 가져오기
+    let isChk = localStorage.getItem("disabledBtn");
+    let scheduleId = localStorage.getItem("scheduleId");
+    if (isChk == 1) {
+      setChkActive(true);
+      getReview(key, scheduleId).then((res) => console.log(res));
+    }
   }, []);
 
   useEffect(() => {
@@ -85,7 +94,13 @@ const MyPageStarInfo = () => {
     // for (let i = 0; i < size; i++) {
     //   localStorage.removeItem("placeList" + i);
     // }
+
+    // 등록버튼 활성화 기본값으로 변경
+    setChkActive(false);
   };
+
+  // 등록버튼 활성화 비활성화
+  const [chkActive, setChkActive] = useState(false);
 
   // 방문 비방문 배열 업데이트
   const toggleHandler = (e) => {
@@ -101,6 +116,11 @@ const MyPageStarInfo = () => {
     setStarArr([...starArr]);
   }, [starCount, starIdx]);
 
+  // 별점을 등록했을 경우 등록버튼 뒤로가기버튼으로 변경
+  const reDirectMypage = () => {
+    navigate("/history");
+  };
+
   return (
     <>
       <S.Wrap>
@@ -108,31 +128,65 @@ const MyPageStarInfo = () => {
         {/* 컨테이너 장소 갯수만큼 for문 돌리면 될 듯 ,
         별점 클릭하면 ui는 별점 다르게 보이는데 데이터가 다 동일하게 찍혀서
         idx와 결합하거나 방법 찾아보기 */}
-        {dataList?.map((items, index) => (
-          <S.Container key={index}>
-            <S.RadioBtn
-              type="checkbox"
-              value={index}
-              onClick={toggleHandler}
-            ></S.RadioBtn>
-            {items.jejuPlaceImgUrl !== "" && (
-              <S.Img src={`https://${items.jejuPlaceImgUrl}`} />
-            )}
-            {items.jejuPlaceImgUrl === "" && (
-              <S.Img
-                src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
-              />
-            )}
-            <S.TitleText>{items.jejuPlaceName}</S.TitleText>
-            <Rating
-              index={index}
-              setStarCount={setStarCount}
-              setStarIdx={setStarIdx}
-              chk={visited}
-            ></Rating>
-          </S.Container>
-        ))}
-        <S.RegistBtn onClick={registStar}>등록</S.RegistBtn>
+        {!chkActive ? (
+          <>
+            {dataList?.map((items, index) => (
+              <S.Container key={index}>
+                <S.RadioBtn
+                  type="checkbox"
+                  value={index}
+                  onClick={toggleHandler}
+                ></S.RadioBtn>
+                {items.jejuPlaceImgUrl !== "" && (
+                  <S.Img src={`https://${items.jejuPlaceImgUrl}`} />
+                )}
+                {items.jejuPlaceImgUrl === "" && (
+                  <S.Img
+                    src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
+                  />
+                )}
+                <S.TitleText>{items.jejuPlaceName}</S.TitleText>
+                <Rating
+                  index={index}
+                  setStarCount={setStarCount}
+                  setStarIdx={setStarIdx}
+                  chk={visited}
+                ></Rating>
+              </S.Container>
+            ))}
+            <S.RegistBtn onClick={registStar}>등록</S.RegistBtn>
+          </>
+        ) : (
+          <>
+            {dataList?.map((items, index) => (
+              <S.Container key={index}>
+                <S.RadioBtn
+                  type="checkbox"
+                  value={index}
+                  onClick={toggleHandler}
+                ></S.RadioBtn>
+                {items.jejuPlaceImgUrl !== "" && (
+                  <S.Img src={`https://${items.jejuPlaceImgUrl}`} />
+                )}
+                {items.jejuPlaceImgUrl === "" && (
+                  <S.Img
+                    src={`${process.env.PUBLIC_URL}/assets/Icon/Square_NonePicture.png`}
+                  />
+                )}
+                <S.TitleText>{items.jejuPlaceName}</S.TitleText>
+                <Rating
+                  index={index}
+                  setStarCount={setStarCount}
+                  setStarIdx={setStarIdx}
+                  chk={visited}
+                ></Rating>
+              </S.Container>
+            ))}
+            <S.RegistBtn onClick={reDirectMypage}>
+              이미 별점을 등록하셨습니다 (뒤로가기)
+            </S.RegistBtn>
+          </>
+        )}
       </S.Wrap>
     </>
   );
