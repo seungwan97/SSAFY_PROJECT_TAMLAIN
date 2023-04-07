@@ -3,10 +3,30 @@ import { Link, useParams } from "react-router-dom";
 import $ from "jquery";
 import * as S from "./ScheduleMap.styled";
 import ScheduleCarousel from "./ScheduleCarousel";
+import client from "../../utils/client";
+import { motion } from "framer-motion";
+import { reloadRecommendJejuPlace } from "../../utils/api/scheduleApi";
 
 /*global kakao*/
 
 const { kakao } = window;
+const containerVariants = {
+  hidden: {
+    opacity: 0,
+  },
+  visible: {
+    opacity: 1,
+    transition: {
+      delay: 0.3,
+      duration: 0.8,
+    },
+  },
+  exit: {
+    x: "-100vw",
+    transition: { ease: "easeInOut" },
+  },
+};
+
 const ScheduleMap = () => {
   var idx = window.location.href.substring(
     String(window.location.href).length - 1
@@ -37,10 +57,15 @@ const ScheduleMap = () => {
   });
   const [select2, setSelect2] = useState([]);
   const [map, setMap] = useState([]);
+  const [flag, setFlag] = useState(true);
+  const [flag2, setFlag2] = useState(false);
+
+  //캐러셀 데이터 props로 내려줄 useState들
+  const [keys, setKeys] = useState([]);
+  const [values, setValues] = useState([]);
   var count;
   var divnum;
   var divtitle;
-
   //1. 최초렌더링시 실행되는 useEffect()
   useEffect(() => {
     const radioBtns = document.querySelectorAll(".radio-btn label");
@@ -48,7 +73,6 @@ const ScheduleMap = () => {
     for (let i = 0; i < radioBtns.length; i++) {
       radioBtns[i].style.display = "block";
     }
-    console.log(`marker${idx}`);
     var mapContainer = document.getElementById("map"), // 지도를 표시할 div
       mapOption = {
         center: new kakao.maps.LatLng(33.374301889561444, 126.56642690880963), // 지도의 중심좌표
@@ -57,7 +81,26 @@ const ScheduleMap = () => {
     var map1 = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
     setMap(map1);
     console.log(select);
+    setKeys(JSON.parse(localStorage.getItem("keys")));
+    setValues(JSON.parse(localStorage.getItem("values")));
   }, []);
+
+  const removeItem = (id) => {
+    const arr = values;
+    const deleteArr = JSON.parse(localStorage.getItem("placeDeleteId")) || [];
+    loop: for (let i = 0; i < arr.length; i++) {
+      for (let j = 0; j < arr[i].length; j++) {
+        if (arr[i][j].mapInfo.jejuPlaceId === id) {
+          arr[i].splice(j, 1);
+          deleteArr.push(arr[i][j].mapInfo.jejuPlaceId);
+          break loop;
+        }
+      }
+    }
+    localStorage.setItem("placeDeleteId", JSON.stringify(deleteArr));
+    localStorage.setItem("values", JSON.stringify(arr));
+    setValues(JSON.parse(localStorage.getItem("values")));
+  };
 
   //2. JSX 코드 상에서 최신화된 select 배열이 감지될때 실행되는 useEffect
   useEffect(() => {
@@ -82,8 +125,8 @@ const ScheduleMap = () => {
 
     if (isMounted.current) {
       // localStorage.setItem("marker", JSON.stringify(select2));
-      console.log(select);
-      console.log(select2);
+      // console.log(select);
+      // console.log(select2);
       $("#tagArea").empty();
       //for문 끝나고 선 표시하기 위해 저장할 좌표배열
       var linePath = [];
@@ -172,6 +215,10 @@ const ScheduleMap = () => {
 
   //동적으로 div 생성
   const createDiv = (title) => {
+    let titleTmp = title;
+    if (title.length > 6) {
+      titleTmp = title.substring(0, 6);
+    }
     let tagArea = document.getElementById("tagArea");
     divnum = document.createElement("div");
     divtitle = document.createElement("div");
@@ -194,8 +241,10 @@ const ScheduleMap = () => {
     divnum.style.backgroundColor = "#fc872a";
     divnum.style.float = "left";
 
+    divtitle.setAttribute("id", `divTitle${count}`);
     divtitle.setAttribute("class", "divTitle");
-    divtitle.innerHTML = title;
+    divtitle.setAttribute("value", title);
+    divtitle.innerHTML = titleTmp;
     tagArea.appendChild(divtitle);
     divtitle.style.color = "#fff";
     divtitle.style.width = "100px";
@@ -208,9 +257,26 @@ const ScheduleMap = () => {
     divtitle.style.borderRadius = "5px";
     divtitle.style.backgroundColor = "#fc872a";
     divtitle.style.marginBottom = "12px";
+    divtitle.style.cursor = "pointer";
 
     count++;
+    const element = document.querySelectorAll(".divTitle");
+
+    for (let i = 0; i < element.length; i++) {
+      element[i].addEventListener("click", function (e) {
+        removePlace(e);
+      });
+    }
   };
+
+  //일정표에서 직접 누르면 삭제하는 기능
+  const removePlace = (e) => {
+    setSelect(
+      select.filter((button) => button.title != e.target.getAttribute("value"))
+    );
+    setFlag(false);
+  };
+  console.log(flag);
 
   const checkSelect = (t) => {
     for (let i = 0; i < select.length; i++) {
@@ -221,8 +287,46 @@ const ScheduleMap = () => {
     return true;
   };
 
+  const goSearch = () => {
+    window.location.href = `${client.defaults.url}/scheduleMain/search/${idx}`;
+  };
+
+  const reloadRecomm = () => {
+    const token = localStorage.getItem("token");
+    const surveyId = localStorage.getItem("surveyId");
+    const userId = localStorage.getItem("id");
+    const placeDeleteId =
+      JSON.parse(localStorage.getItem("placeDeleteId")) || [];
+    const localData = JSON.parse(localStorage.getItem(`marker${idx}`)) || [];
+    const arr = [];
+    for (let i = 0; i < localData.length; i++) {
+      arr.push(localData[i].jejuPlaceId);
+    }
+    const data = {
+      surveyId: surveyId,
+      userId: userId,
+      placeDeleteId: placeDeleteId,
+      selectJejuPlaceList: arr,
+    };
+    console.log(data);
+    reloadRecommendJejuPlace(token, data).then((res) => {
+      console.log(res.data.data);
+      localStorage.setItem(
+        "values",
+        JSON.stringify(Object.values(res.data.data))
+      );
+    });
+    localStorage.removeItem("placeDeleteId");
+    window.location.reload();
+  };
+
   return (
-    <div style={{ marginTop: "15%" }}>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      style={{ marginTop: "15%" }}
+    >
       <div
         id="map"
         style={{
@@ -232,54 +336,61 @@ const ScheduleMap = () => {
           marginTop: "5%",
         }}
       ></div>
-      <S.Div>
-        <div
-          style={{
-            width: "3px",
-            height: "100vh",
-            marginLeft: "15%",
-            marginTop: "5%",
-            backgroundColor: "#fc872a",
-          }}
-        ></div>
-        <div
-          id="tagArea"
-          style={{
-            position: "absolute",
-            zIndex: "10",
-            top: "5%",
-            right: "5%",
-            marginBottom: "5px",
-          }}
-        ></div>
-      </S.Div>
-      <Link to={`/scheduleMain/search/${idx}`}>
-        <S.SearchBtn>
-          <S.SearchIcon
-            src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
-            alt="검색아이콘"
+      {(JSON.parse(localStorage.getItem(`marker${idx}`)) === null ||
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length === 0) && (
+        <S.Div>
+          <S.EmptySpace>아직 등록된 장소가 없습니다.</S.EmptySpace>
+        </S.Div>
+      )}
+      {JSON.parse(localStorage.getItem(`marker${idx}`)) !== null &&
+        JSON.parse(localStorage.getItem(`marker${idx}`)).length !== 0 && (
+          <S.Div>
+            <div
+              style={{
+                width: "3px",
+                height: "100vh",
+                marginLeft: "15%",
+                backgroundColor: "#fc872a",
+              }}
+            ></div>
+            <div
+              id="tagArea"
+              style={{
+                position: "absolute",
+                zIndex: "10",
+                top: "5%",
+                right: "5%",
+                marginBottom: "5px",
+              }}
+            ></div>
+          </S.Div>
+        )}
+
+      <S.SearchBtn onClick={goSearch}>
+        <S.SearchIcon
+          src={`${process.env.PUBLIC_URL}/assets/Icon/icon_searchlogo.png`}
+          alt="검색아이콘"
+        />
+      </S.SearchBtn>
+      <S.RecommBtn onClick={reloadRecomm}> ↺ 전체 재추천 </S.RecommBtn>
+      <p>&nbsp;</p>
+
+      <S.CarouselDiv>
+        {values.map((item, index) => (
+          <ScheduleCarousel
+            removeItem={removeItem}
+            setFlag={setFlag}
+            checkSelect={checkSelect}
+            select={select}
+            setSelect={setSelect}
+            keys={keys[index]}
+            values={item}
+            key={index}
+            flag={flag}
           />
-        </S.SearchBtn>
-      </Link>
-      <S.RecommBtn />
-      {pick.map((item, index) => (
-        <div key={index}>
-          <p>{item.title}</p>
-          <button
-            onClick={() => {
-              checkSelect(item.title) && !select.includes(item)
-                ? setSelect((select) => [...select, item])
-                : setSelect(
-                    select.filter((button) => button.title != item.title)
-                  );
-            }}
-          >
-            선택
-          </button>
-        </div>
-      ))}
-      <ScheduleCarousel />
-    </div>
+        ))}
+      </S.CarouselDiv>
+    </motion.div>
   );
 };
 export default ScheduleMap;

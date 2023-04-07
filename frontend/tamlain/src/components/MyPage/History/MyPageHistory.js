@@ -1,68 +1,101 @@
+import { useState, useEffect } from "react";
 import * as S from "./MyPageHistory.styled";
 import MyPageHistoryItem from "./MyPageHistoryItem";
+import { getScheduleHistory } from "../../../utils/api/historyApi";
 
 const MyPageHistory = () => {
-  const Dummy = [
+  const key = localStorage.getItem("token");
+  const user_id = localStorage.getItem("id");
+  const [idArr, setIdArr] = useState([]);
+
+  const [starRegistOk, setStarRegistOk] = useState([]);
+  const [starRegistScheduleId, setStarRegistScheduleId] = useState([]);
+
+  //  일정 useState에 저장
+  const [scheduleList, setScheduleList] = useState([
     {
-      id: 0,
-      image: "assets/Background/mainCarousel_0.jpg",
-      title: "제주 먹방 뿌셔",
-      date: "2023.03.02~2023.03.06",
-      period: "4박5일",
+      scheduleId: 0,
+      thumbnailImageUrl: "",
+      nickName: "",
+      name: "",
+      startDate: "",
+      endDate: "",
+      period: "",
+      review: false,
     },
-    {
-      id: 1,
-      image: "assets/Background/mainCarousel_1.jpg",
-      title: "스무글자가넘어가면어떻게되는지체크해보자",
-      date: "2023.03.03~2023.03.04",
-      period: "1박2일",
-    },
-    {
-      id: 2,
-      image: "assets/Background/mainCarousel_1.jpg",
-      title: "제주 먹방 뿌셔 뿌셔",
-      date: "2023.03.03~2023.03.04",
-      period: "12박2일",
-    },
-    {
-      id: 3,
-      image: "assets/Background/mainCarousel_0.jpg",
-      title: "제주 먹방 뿌셔 뿌셔",
-      date: "2023.03.03~2023.03.04",
-      period: "13박2일",
-    },
-    {
-      id: 4,
-      image: "assets/Background/mainCarousel_4.jpg",
-      title: "제주 먹방 뿌셔 뿌셔",
-      date: "2023.03.03~2023.03.04",
-      period: "14박2일",
-    },
-    {
-      id: 5,
-      image: "assets/Background/mainCarousel_3.jpg",
-      title: "제주 먹방 뿌셔 뿌셔",
-      date: "2023.03.03~2023.03.04",
-      period: "15박2일",
-    },
-    {
-      id: 6,
-      image: "assets/Background/mainCarousel_2.jpg",
-      title: "제주 먹방 뿌셔 뿌셔",
-      date: "2023.03.03~2023.03.04",
-      period: "16박2일",
-    },
-  ];
+  ]);
+
+  useEffect(() => {
+    getScheduleHistory(key, user_id)
+      .then((res) => {
+        let size = res.data.data.length;
+
+        let tmpArr = [];
+        let tmpArr2 = [];
+        for (let i = 0; i < size; i++) {
+          tmpArr[i] = false;
+          tmpArr2[i] = 0;
+        }
+        setStarRegistOk(tmpArr);
+        setStarRegistScheduleId(tmpArr2);
+
+        const tmp = [];
+        const scheduleIdArr = [];
+        for (var idx = 0; idx < size; idx++) {
+          scheduleIdArr.push(res.data.data[idx].scheduleId);
+          tmp[idx] = {
+            scheduleId: res.data.data[idx].scheduleId,
+            thumbnailImageUrl: res.data.data[idx].thumbnailImageUrl,
+            nickNameL: res.data.data[idx].nickName,
+            name: res.data.data[idx].name,
+            startDate: res.data.data[idx].startDate.replaceAll("-", "."),
+            endDate: res.data.data[idx].endDate.replaceAll("-", "."),
+            period:
+              res.data.data[idx].period -
+              1 +
+              "박 " +
+              res.data.data[idx].period +
+              "일",
+            review: res.data.data[idx].review,
+          };
+
+          // 별점 등록 체크용
+          starRegistOk[idx] = res.data.data[idx].review;
+          setStarRegistOk([...starRegistOk]);
+          starRegistScheduleId[idx] = res.data.data[idx].scheduleId;
+          setStarRegistScheduleId([...starRegistScheduleId]);
+          localStorage.setItem("starRegistSize", size);
+        }
+
+        localStorage.setItem("starRegistArr", JSON.stringify(starRegistOk));
+        localStorage.setItem(
+          "starRegistIdx",
+          JSON.stringify(starRegistScheduleId)
+        );
+
+        localStorage.setItem("scheduleId", JSON.stringify(scheduleIdArr));
+        setIdArr(JSON.parse(localStorage.getItem("scheduleId")));
+        console.log(res.data);
+        setScheduleList(tmp);
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  }, []);
 
   return (
     <S.Wrap>
-      {Dummy.map((items) => (
-        <S.Container key={items.id}>
+      {scheduleList.map((items, index) => (
+        <S.Container key={items.scheduleId}>
           <MyPageHistoryItem
-            img={items.image}
-            title={items.title}
-            date={items.date}
-            period={items.period}
+            idx={idArr[index]}
+            img={items.thumbnailImageUrl}
+            title={items.name}
+            date={items.startDate + " ~ " + items.endDate}
+            period={items.period.substring(
+              items.period.length - 2,
+              items.period.length - 1
+            )}
           ></MyPageHistoryItem>
         </S.Container>
       ))}

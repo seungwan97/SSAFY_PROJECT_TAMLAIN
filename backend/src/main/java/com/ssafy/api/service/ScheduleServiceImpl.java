@@ -198,21 +198,12 @@ public class ScheduleServiceImpl implements ScheduleService {
             }
         }
 
-        System.out.println("제주리스트 사이즈 : " + jejuPlaceList.size());
-        System.out.println(jejuPlaceDeleteList.size());
         if(!jejuPlaceDeleteList.isEmpty()) {
-            System.out.println("삭제 -> " + jejuPlaceDeleteList.size());
-            for(JejuPlace jejuPlace : jejuPlaceDeleteList) {
-                System.out.println(jejuPlace.getId());
-            }
             jejuPlaceDeleteList.forEach(jejuPlaceList::remove);
         }
-        System.out.println("제주 삭제 후 리스트 사이즈 : " + jejuPlaceList.size());
 
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = new ArrayList<>();
-
         for(JejuPlace jejuPlace : jejuPlaceList) {
-
             FlaskJejuPlaceItem flaskJejuPlaceItem = FlaskJejuPlaceItem.builder()
                     .jejuPlaceId(jejuPlace.getId())
                     .categoryId(jejuPlace.getCategory().getId())
@@ -260,12 +251,13 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskReviewItemList(getFlaskReviewItemList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io:5000/recommend")
+//        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
-                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
+                .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
 
-        LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
+        HashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "설문 조사에 대한 첫 추천 장소를 받습니다.", getResultMap(recommendMap));
     }
 
@@ -275,15 +267,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         String userId = scheduleReloadReq.getUserId();
         Set<Object> deletePlaceIds = redisTemplate.opsForSet().members(REDIS_KEY_PREFIX + userId);
-        if(deletePlaceIds != null && deletePlaceIds.isEmpty()) {
+        if(!scheduleReloadReq.getPlaceDeleteId().isEmpty()){
             saveFilteredPlaces(scheduleReloadReq.getUserId(), scheduleReloadReq.getPlaceDeleteId());
             for (Object id : deletePlaceIds) {
                 Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
                 JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
                 jejuPlaceDeleteList.add(jejuPlace);
             }
+            for (Object id : scheduleReloadReq.getPlaceDeleteId()){
+                Optional<JejuPlace> oJejuPlace = jejuPlaceRepository.findById(Integer.parseInt((String) id));
+                JejuPlace jejuPlace = oJejuPlace.orElseThrow(() -> new IllegalArgumentException("jejuPlace doesn't exist"));
+                jejuPlaceDeleteList.add(jejuPlace);
+            }
         }
-        System.out.println("레디스 크기 : " + redisTemplate.opsForSet().size(REDIS_KEY_PREFIX + scheduleReloadReq.getUserId()));
 
         List<Integer> categoryList = getCategoryList(scheduleReloadReq.getSurveyId());
         List<FlaskJejuPlaceItem> flaskJejuPlaceItemList = getFlaskJejuItemList(categoryList, jejuPlaceDeleteList);
@@ -297,18 +293,21 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .flaskSceduleList(scheduleReloadReq.getSelectJejuPlaceList())
                 .build();
 
-        HttpResponse<LinkedHashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
+//        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("http://127.0.0.1:5000/recommend")
+        HttpResponse<HashMap<String, List<Integer>>> httpResponse =  Unirest.post("https://j8b204.p.ssafy.io/flask/recommend")
                 .header("Content-Type", "application/json")
                 .body(flaskRecommendReq)
-                .asObject(new GenericType<LinkedHashMap<String, List<Integer>>>() {});
+                .asObject(new GenericType<HashMap<String, List<Integer>>>() {});
 
-        LinkedHashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
+        HashMap<String, List<Integer>> recommendMap = httpResponse.getBody();
         return new SuccessRes<LinkedHashMap<String, List<JejuPlaceRes>>>(true, "재추천 장소를 받습니다.", getResultMap(recommendMap));
     }
 
     // 추천 결과
-    public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(LinkedHashMap<String, List<Integer>> recommendMap) {
+    public LinkedHashMap<String, List<JejuPlaceRes>> getResultMap(HashMap<String, List<Integer>> recommendMap) {
         LinkedHashMap<String, List<JejuPlaceRes>> resultMap = new LinkedHashMap<>();
+        TreeMap<String, List<JejuPlaceRes>> treeMap = new TreeMap<>();
+        HashMap<String, String> categoryDescriptionMap = new HashMap<>();
 
         for(String str : recommendMap.keySet()) {
             List<Integer> list = recommendMap.get(str);
@@ -336,32 +335,42 @@ public class ScheduleServiceImpl implements ScheduleService {
                 jejuPlaceResList.add(jejuPlaceRes);
             }
 
-            String categoryDescription = "";
             switch(str) {
                 case "맛집" :
-                    categoryDescription = "숨은 제주의 맛집! MY RESTAURANT";
+                    categoryDescriptionMap.put("b", "숨은 제주의 맛집! MY RESTAURANT");
+                    str = "b";
                     break;
                 case "카페/간식" :
-                    categoryDescription = "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서";
+                    categoryDescriptionMap.put("c", "내 맘에 쏙 드는 Cafe, 그 여유를 찾아서");
+                    str = "c";
                     break;
                 case "액티비티/체험" :
-                    categoryDescription = "활발한게 좋다면? Activity!";
+                    categoryDescriptionMap.put("d", "활발한게 좋다면? Activity!");
+                    str = "d";
                     break;
                 case "스포츠/레저" :
-                    categoryDescription = "스포츠&레저의 메카, JEJU Island";
+                    categoryDescriptionMap.put("f", "스포츠&레저의 메카, JEJU Island");
+                    str = "f";
                     break;
                 case "전시" :
-                    categoryDescription = "기억에 남는 전시, 제주를 기억하다";
+                    categoryDescriptionMap.put("e", "기억에 남는 전시, 제주를 기억하다");
+                    str = "e";
                     break;
                 case "휴양" :
-                    categoryDescription = "휴식이 공존하는 섬, 제주의 휴양지";
+                    categoryDescriptionMap.put("a", "휴식이 공존하는 섬, 제주의 휴양지");
+                    str = "a";
                     break;
                 default:
                     break;
             }
 
-            resultMap.put(categoryDescription, jejuPlaceResList);
+            treeMap.put(str, jejuPlaceResList);
         }
+
+        for(String s : treeMap.keySet()) {
+            resultMap.put(categoryDescriptionMap.get(s), treeMap.get(s));
+        }
+
         return resultMap;
     }
 

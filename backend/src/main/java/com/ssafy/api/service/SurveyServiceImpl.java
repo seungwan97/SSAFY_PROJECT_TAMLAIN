@@ -98,7 +98,7 @@ public class SurveyServiceImpl implements SurveyService {
         Optional<Survey> oSurvey = surveyRepository.findById(surveyId);
         Survey survey = oSurvey.orElseThrow(() -> new IllegalArgumentException("survey doesn't exist"));
 
-        surveyRepository.save(Survey.of(survey));
+        surveyRepository.save(Survey.of(survey, true));
         return new CommonRes(true, "설문 조사 삭제를 완료했습니다.");
     }
 }
