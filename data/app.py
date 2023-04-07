@@ -75,10 +75,12 @@ def getRecommendList():
         my_course = np.ones(len(selected_place), dtype=np.int8)
         schedule["vec"] = schedule["scheduleId"].apply(lambda x: visited_mat[x])
         schedule["course_similarity"] = schedule["vec"].apply(lambda x: cosine_similarity(x, my_course))
+        schedule = schedule[(schedule["course_similarity"] > 0) & (schedule["survey_similarity"] > 0)]
         schedule["similarity"] = (schedule["course_similarity"] + schedule["survey_similarity"]) / 2
+
     else:
         schedule.rename(columns={"survey_similarity": "similarity"}, inplace=True)
-    schedule = schedule[schedule["similarity"] > 0]
+        schedule = schedule[schedule["similarity"] > 0]
     # schedule = schedule[schedule["similarity"] >= 0.5] # 현재는 미적용, 데이터가 쌓이면 적용
 
     '''STEP 4. 각 일정을 유사도로 그룹화하여 높은 유사도의 그룹 속 장소들을 상위에 추천(유사도-출연빈도 순으로 정렬)'''
