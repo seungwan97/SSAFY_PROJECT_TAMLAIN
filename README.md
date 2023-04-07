@@ -139,19 +139,17 @@ src
 
 ---
 
-![image](/docs/아키텍쳐 설계.png)
+![image](/docs/팀소개.jpg)
 
 # 프로젝트 산출물
 
 ---
 
-- 기능명세서
-- 아키텍처
-- 와이어프레임
-- 컨벤션
-- API
-- ERD
-- 회의록
+- [기능명세서](/docs/기능_명세서.pdf)
+- [와이어프레임](https://www.figma.com/file/W7ArwvyoHpdOmr6cK7XlrR/%ED%95%A0%EB%A7%9D-%EB%91%98%2C-%ED%95%98%EB%A5%B4%EB%B0%A9-%EB%84%B7?node-id=0-1)
+- [API](/docs/API_설계서.pdf)
+- [ERD](/docs/erd.png)
+- [회의록](/docs/아키텍쳐 설계.png)
 
 # TAMLA:IN - 서비스 화면
 
@@ -194,10 +192,5 @@ src
 
     ![image](/docs/마이페이지.gif)
 
-# TAMLA:IN - 버전
-
----
-
-# TAMLA:IN - 버그
 
 ---
